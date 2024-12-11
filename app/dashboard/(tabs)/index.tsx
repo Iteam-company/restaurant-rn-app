@@ -4,7 +4,7 @@ import { ThemedView } from '@/modules/common/components/ThemedView';
 export default function DashboardScreen() {
   return (
     <ThemedView>
-      <ThemedText>Mashka - kakashka</ThemedText>
+      <ThemedText></ThemedText>
     </ThemedView>
   );
 }

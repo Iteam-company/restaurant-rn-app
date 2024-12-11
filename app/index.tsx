@@ -1,19 +1,21 @@
-import { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
+import { useRouter } from 'expo-router';
 import { ActivityIndicator } from 'react-native-paper';
-import { View } from 'react-native';
+import Wrapper from '@/modules/common/components/Wrapper';
 
 export default function HomeScreen() {
-  const { navigate } = useNavigation();
+  const router = useRouter();
 
-  useEffect(() => {
-    // @ts-ignore
-    navigate('auth');
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      router.replace('/auth/signin');
+    }, [router])
+  );
 
   return (
-    <View>
+    <Wrapper centered>
       <ActivityIndicator animating />
-    </View>
+    </Wrapper>
   );
 }
