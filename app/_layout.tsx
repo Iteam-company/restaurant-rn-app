@@ -12,6 +12,7 @@ import { PaperProvider } from 'react-native-paper';
 import { useColorScheme } from 'react-native';
 
 import 'react-native-reanimated';
+import { theme } from '@/modules/common/theme/theme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -33,10 +34,10 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
-          <Stack.Screen name="auth" />
+          <Stack.Screen name="auth/(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
             name="dashboard/(tabs)"
             options={{ headerShown: false }}

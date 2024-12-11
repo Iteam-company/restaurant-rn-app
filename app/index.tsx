@@ -1,19 +1,26 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native-paper';
-import { View } from 'react-native';
+import Wrapper from '@/modules/common/components/Wrapper';
 
 export default function HomeScreen() {
-  const { navigate } = useNavigation();
+  const navigation = useNavigation();
+
+  const navigateToAuth = useCallback(() => {
+    navigation.reset({
+      index: 0,
+      //   @ts-ignore
+      routes: [{ name: 'auth/(tabs)' }],
+    });
+  }, [navigation]);
 
   useEffect(() => {
-    // @ts-ignore
-    navigate('auth');
+    navigateToAuth();
   }, []);
 
   return (
-    <View>
+    <Wrapper centered>
       <ActivityIndicator animating />
-    </View>
+    </Wrapper>
   );
 }
