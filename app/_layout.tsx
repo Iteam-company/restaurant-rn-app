@@ -1,21 +1,24 @@
 import {
+  createNavigationContainerRef,
   DarkTheme,
   DefaultTheme,
+  NavigationContainer,
   ThemeProvider,
 } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { PaperProvider } from 'react-native-paper';
 import { useColorScheme } from 'react-native';
 
-import 'react-native-reanimated';
 import { theme } from '@/modules/common/theme/theme';
+import 'react-native-reanimated';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+export const navigationRef = createNavigationContainerRef();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -34,8 +37,10 @@ export default function RootLayout() {
   }
 
   return (
-    <PaperProvider theme={theme}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer>
+      <PaperProvider theme={theme}>
+        {/* <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
         <Stack>
           <Stack.Screen name="auth/(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
@@ -45,7 +50,8 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
-      </ThemeProvider>
-    </PaperProvider>
+        {/* </ThemeProvider> */}
+      </PaperProvider>
+    </NavigationContainer>
   );
 }

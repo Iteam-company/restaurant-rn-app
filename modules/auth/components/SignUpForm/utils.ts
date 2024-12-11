@@ -1,6 +1,7 @@
+import { UserType } from '@/modules/common/types/user.types';
 import * as Yup from 'yup';
 
-export const initialValues = {
+export const initialValues: Partial<UserType> = {
   firstName: '',
   lastName: '',
   email: '',

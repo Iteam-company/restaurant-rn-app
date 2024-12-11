@@ -1,5 +1,6 @@
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import React, { PropsWithChildren } from 'react';
+import { useTheme } from 'react-native-paper';
 
 type WrapperProps = PropsWithChildren & {
   centered?: boolean;

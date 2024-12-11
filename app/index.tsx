@@ -1,22 +1,17 @@
-import { useCallback, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
+import { useRouter } from 'expo-router';
 import { ActivityIndicator } from 'react-native-paper';
 import Wrapper from '@/modules/common/components/Wrapper';
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
+  const router = useRouter();
 
-  const navigateToAuth = useCallback(() => {
-    navigation.reset({
-      index: 0,
-      //   @ts-ignore
-      routes: [{ name: 'auth/(tabs)' }],
-    });
-  }, [navigation]);
-
-  useEffect(() => {
-    navigateToAuth();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      router.replace('/auth/signin');
+    }, [router])
+  );
 
   return (
     <Wrapper centered>

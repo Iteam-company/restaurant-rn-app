@@ -4,8 +4,11 @@ import { StyleSheet } from 'react-native';
 import { initialValues, validationSchema } from './utils';
 import { Button, Headline, TextInput } from 'react-native-paper';
 import FormWrapper from '@/modules/common/components/FormWrapper';
+import { useSignupMutation } from '@/modules/common/redux/slices/auth-api';
 
 export default function SignUpForm() {
+  const [signUp] = useSignupMutation();
+
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
       initialValues,
