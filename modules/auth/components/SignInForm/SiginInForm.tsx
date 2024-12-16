@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { AuthMethod, getValidationSchema } from './utils';
-import FormWrapper from '@/modules/common/components/FormWrapper';
-import { useFormik } from 'formik';
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { AuthMethod, getValidationSchema } from "./utils";
+import FormWrapper from "@/modules/common/components/FormWrapper";
+import { useFormik } from "formik";
 import {
   Headline,
   SegmentedButtons,
   TextInput,
   Button,
-} from 'react-native-paper';
-import { initialValues } from '../SignInForm/utils';
+} from "react-native-paper";
+import { initialValues } from "../SignInForm/utils";
+import { useRouter } from "expo-router";
 
 export default function SiginInForm() {
-  const [authMethod, setAuthMethod] = useState<AuthMethod>('email');
+  const router = useRouter();
+
+  const [authMethod, setAuthMethod] = useState<AuthMethod>("email");
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -28,7 +31,7 @@ export default function SiginInForm() {
     validationSchema: getValidationSchema(authMethod),
     validateOnChange: true,
     onSubmit: (values) => {
-      console.log('Form submitted:', { ...values, authMethod });
+      console.log("Form submitted:", { ...values, authMethod });
     },
   });
 
@@ -40,27 +43,27 @@ export default function SiginInForm() {
         value={authMethod}
         onValueChange={(value) => {
           setAuthMethod(value as AuthMethod);
-          setFieldValue('identifier', '');
-          setFieldTouched('identifier', false);
+          setFieldValue("identifier", "");
+          setFieldTouched("identifier", false);
         }}
         buttons={[
-          { value: 'email', label: 'Email' },
-          { value: 'phone', label: 'Phone' },
+          { value: "email", label: "Email" },
+          { value: "phone", label: "Phone" },
         ]}
         style={styles.segmentedButtons}
       />
 
       <TextInput
         mode="outlined"
-        label={authMethod === 'email' ? 'Email' : 'Phone Number'}
+        label={authMethod === "email" ? "Email" : "Phone Number"}
         value={values.identifier}
-        onChangeText={(text) => setFieldValue('identifier', text)}
-        onBlur={handleBlur('identifier')}
+        onChangeText={(text) => setFieldValue("identifier", text)}
+        onBlur={handleBlur("identifier")}
         error={touched.identifier && !!errors.identifier}
-        keyboardType={authMethod === 'email' ? 'email-address' : 'phone-pad'}
-        autoCapitalize={authMethod === 'email' ? 'none' : 'sentences'}
+        keyboardType={authMethod === "email" ? "email-address" : "phone-pad"}
+        autoCapitalize={authMethod === "email" ? "none" : "sentences"}
         left={
-          <TextInput.Icon icon={authMethod === 'email' ? 'email' : 'phone'} />
+          <TextInput.Icon icon={authMethod === "email" ? "email" : "phone"} />
         }
       />
 
@@ -68,14 +71,14 @@ export default function SiginInForm() {
         mode="outlined"
         label="Password"
         value={values.password}
-        onChangeText={(text) => setFieldValue('password', text)}
-        onBlur={handleBlur('password')}
+        onChangeText={(text) => setFieldValue("password", text)}
+        onBlur={handleBlur("password")}
         error={touched.password && !!errors.password}
         secureTextEntry={!showPassword}
         left={<TextInput.Icon icon="lock" />}
         right={
           <TextInput.Icon
-            icon={showPassword ? 'eye-off' : 'eye'}
+            icon={showPassword ? "eye-off" : "eye"}
             onPress={() => setShowPassword(!showPassword)}
           />
         }
@@ -83,8 +86,20 @@ export default function SiginInForm() {
 
       <Button
         mode="elevated"
-        onPress={() => handleSubmit()}
-        style={styles.button}>
+        onPress={() => {
+          handleSubmit();
+        }}
+        style={styles.button}
+      >
+        Sign In
+      </Button>
+
+      <Button
+        mode="elevated"
+        onPress={() => {
+          router.push("/reastaurant/create");
+        }}
+      >
         Sign In
       </Button>
     </FormWrapper>
