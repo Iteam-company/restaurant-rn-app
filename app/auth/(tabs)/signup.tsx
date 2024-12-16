@@ -1,12 +1,11 @@
-import { View, Text } from 'react-native';
 import React from 'react';
 import Wrapper from '@/modules/common/components/Wrapper';
-import SiginInForm from '@/modules/auth/components/SignInForm/SiginInForm';
+import SignUpForm from '@/modules/auth/components/SignUpForm/SignUpForm';
 
 export default function Signup() {
   return (
     <Wrapper centered>
-      <SiginInForm />
+      <SignUpForm />
     </Wrapper>
   );
 }

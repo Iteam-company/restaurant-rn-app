@@ -3,13 +3,9 @@ import { StyleSheet } from 'react-native';
 import { AuthMethod, getValidationSchema } from './utils';
 import FormWrapper from '@/modules/common/components/FormWrapper';
 import { useFormik } from 'formik';
-import {
-  Headline,
-  SegmentedButtons,
-  TextInput,
-  Button,
-} from 'react-native-paper';
+import { SegmentedButtons, TextInput, Button } from 'react-native-paper';
 import { initialValues } from '../SignInForm/utils';
+import { Logo } from '@/modules/common/components/ui/Logo';
 
 export default function SiginInForm() {
   const [authMethod, setAuthMethod] = useState<AuthMethod>('email');
@@ -34,7 +30,7 @@ export default function SiginInForm() {
 
   return (
     <FormWrapper>
-      <Headline>Logo</Headline>
+      <Logo size={150} style={{ margin: 'auto' }} />
 
       <SegmentedButtons
         value={authMethod}

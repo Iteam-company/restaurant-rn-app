@@ -7,9 +7,12 @@ type WrapperProps = PropsWithChildren & {
 };
 
 export default function Wrapper({ children, centered = false }: WrapperProps) {
+  const { colors } = useTheme();
+
   const containerStyle: ViewStyle = {
     ...styles.container,
     ...(centered && styles.centered),
+    backgroundColor: colors.background,
   };
 
   return <View style={containerStyle}>{children}</View>;
