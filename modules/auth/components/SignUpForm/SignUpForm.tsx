@@ -2,9 +2,10 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { StyleSheet } from 'react-native';
 import { initialValues, validationSchema } from './utils';
-import { Button, Headline, TextInput } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import FormWrapper from '@/modules/common/components/FormWrapper';
 import { useSignupMutation } from '@/modules/common/redux/slices/auth-api';
+import { Logo } from '@/modules/common/components/ui/Logo';
 
 export default function SignUpForm() {
   const [signUp] = useSignupMutation();
@@ -14,13 +15,17 @@ export default function SignUpForm() {
       initialValues,
       validationSchema,
       onSubmit: (values) => {
+        console.log(values);
+        signUp(values)
+          .unwrap()
+          .then((data) => console.log(data, '!!!'));
         console.log('Form submitted:', values);
       },
     });
 
   return (
     <FormWrapper>
-      <Headline>Logo</Headline>
+      <Logo size={150} style={{ margin: 'auto' }} />
       <TextInput
         mode="outlined"
         label="First Name"
@@ -71,7 +76,8 @@ export default function SignUpForm() {
         left={<TextInput.Icon icon="lock" />}
         right={<TextInput.Icon icon="eye" />}
       />
-      <Button mode="elevated" onPress={() => handleSubmit()}>
+
+      <Button mode="contained" onPress={() => handleSubmit()}>
         Proceed
       </Button>
     </FormWrapper>
