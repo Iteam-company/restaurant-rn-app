@@ -1,10 +1,10 @@
 import React from 'react';
 import { HapticTab } from '@/modules/common/components/HapticTab';
 import { IconSymbol } from '@/modules/common/components/ui/IconSymbol.ios';
-import TabBarBackground from '@/modules/common/components/ui/TabBarBackground';
 import { Colors } from '@/modules/common/constants/Colors';
 import { Tabs } from 'expo-router';
 import { Platform, useColorScheme } from 'react-native';
+import { TabBackground } from '@/modules/common/components/ui/TabBarBackground';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -15,7 +15,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         // tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
+        tabBarBackground: TabBackground,
         tabBarStyle: Platform.select({
           ios: {
             // Use a transparent background on iOS to show the blur effect

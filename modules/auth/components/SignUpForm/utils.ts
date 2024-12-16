@@ -10,8 +10,8 @@ export const initialValues: Partial<UserType> = {
 };
 
 export const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  surname: Yup.string().required('Surname is required'),
+  firstName: Yup.string().required('Name is required'),
+  lastName: Yup.string().required('Surname is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
   phoneNumber: Yup.string().required('Phone number is required'),
   password: Yup.string()
