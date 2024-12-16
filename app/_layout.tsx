@@ -4,17 +4,17 @@ import {
   DefaultTheme,
   NavigationContainer,
   ThemeProvider,
-} from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react';
-import { PaperProvider } from 'react-native-paper';
-import { useColorScheme } from 'react-native';
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect } from "react";
+import { PaperProvider } from "react-native-paper";
+import { useColorScheme } from "react-native";
 
-import { theme } from '@/modules/common/theme/theme';
-import 'react-native-reanimated';
+import { theme } from "@/modules/common/theme/theme";
+import "react-native-reanimated";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -23,7 +23,7 @@ export const navigationRef = createNavigationContainerRef();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
@@ -40,11 +40,15 @@ export default function RootLayout() {
     <NavigationContainer>
       <PaperProvider theme={theme}>
         {/* <ThemeProvider
-          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
+            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
         <Stack>
           <Stack.Screen name="auth/(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
             name="dashboard/(tabs)"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="reastaurant/create"
             options={{ headerShown: false }}
           />
           <Stack.Screen name="+not-found" />
