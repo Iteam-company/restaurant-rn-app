@@ -1,13 +1,18 @@
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
+import * as SecureStore from "expo-secure-store";
 import { StyleSheet } from "react-native";
 import { initialValues, validationSchema } from "./utils";
 import { Button, TextInput } from "react-native-paper";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import { useSignupMutation } from "@/modules/common/redux/slices/auth-api";
 import { Logo } from "@/modules/common/components/ui/Logo";
+import { AUTH_TOKEN_KEY } from "@/modules/common/constants/api";
+import { useRouter } from "expo-router";
 
 export default function SignUpForm() {
+  const router = useRouter();
+
   const [signUp, { isLoading, isError, error, isSuccess, data }] =
     useSignupMutation();
 
@@ -18,7 +23,10 @@ export default function SignUpForm() {
       onSubmit: async (values) => {
         try {
           const res = await signUp({ ...values, role: "waiter" }).unwrap();
-          console.log(res);
+          if (res.access_token) {
+            SecureStore.setItem(AUTH_TOKEN_KEY, res.access_token);
+          }
+          router.push("/dashboard");
         } catch (e) {}
       },
     });
