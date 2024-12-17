@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_URL } from "../../constants/api";
+import * as SecureStore from "expo-secure-store";
+import { API_URL, AUTH_TOKEN_KEY } from "../../constants/api";
 
 interface CreateRestaurantRequest {
   restaurantName: string;
@@ -16,9 +17,8 @@ export const restaurantApi = createApi({
   reducerPath: "restaurantApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_URL}`,
-    prepareHeaders: (headers) => {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJKTVRoZUJlc3QiLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTczNDAyMTk0MSwiZXhwIjoxNzM0MDMyNzQxfQ.GnB8C1KAEcoPwYBU7GeUNiK3YzIAEJVY4uH4192bZWYr";
+    prepareHeaders: async (headers) => {
+      const token = await SecureStore.getItemAsync(AUTH_TOKEN_KEY);
       headers.set("Authorization", `Bearer ${token}`);
       return headers;
     },

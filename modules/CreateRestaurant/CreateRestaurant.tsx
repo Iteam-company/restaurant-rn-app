@@ -34,7 +34,6 @@ export default function CreateRestaurant() {
       initialValues,
       validationSchema,
       onSubmit: (values) => {
-        const response = fetch("https://jsonplaceholder.typicode.com/posts/1");
         console.log("Form submitted:", values);
         createRestaurant(values);
       },

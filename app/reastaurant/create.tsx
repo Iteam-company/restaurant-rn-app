@@ -7,11 +7,9 @@ import { Text } from "react-native-paper";
 
 export default function Create() {
   return (
-    <ApiProvider api={restaurantApi}>
-      <Wrapper centered>
-        <CreateRestaurant />
-      </Wrapper>
-    </ApiProvider>
+    <Wrapper centered>
+      <CreateRestaurant />
+    </Wrapper>
   );
 }
 
