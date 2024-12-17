@@ -1,9 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { AnyAction, configureStore, ThunkDispatch } from "@reduxjs/toolkit";
 import { persistStore } from "redux-persist";
 
 import { userApi } from "../slices/user-api";
 import { authApi } from "../slices/auth-api";
 import { restaurantApi } from "../slices/create-restaurant-api";
+import { setupListeners } from "@reduxjs/toolkit/query";
 
 const store = configureStore({
   reducer: {
@@ -21,6 +22,8 @@ const store = configureStore({
       restaurantApi.middleware,
     ]),
 });
+
+setupListeners(store.dispatch);
 const persistor = persistStore(store);
 
 export { store, persistor };

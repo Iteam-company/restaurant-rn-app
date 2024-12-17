@@ -124,9 +124,6 @@ export default function SiginInForm() {
           "Sign In"
         )}
       </Button>
-      <Button mode="elevated" onPress={() => {}}>
-        Sign In
-      </Button>
     </FormWrapper>
   );
 }
