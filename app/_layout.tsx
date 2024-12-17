@@ -15,6 +15,8 @@ import { useColorScheme } from "react-native";
 
 import { theme } from "@/modules/common/theme/theme";
 import "react-native-reanimated";
+import { Provider, useDispatch } from "react-redux";
+import { store } from "@/modules/common/redux/store/store";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -38,24 +40,26 @@ export default function RootLayout() {
 
   return (
     <NavigationContainer>
-      <PaperProvider theme={theme}>
-        {/* <ThemeProvider
+      <Provider store={store}>
+        <PaperProvider theme={theme}>
+          {/* <ThemeProvider
             value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
-        <Stack>
-          <Stack.Screen name="auth/(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="dashboard/(tabs)"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="reastaurant/create"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-        {/* </ThemeProvider> */}
-      </PaperProvider>
+          <Stack>
+            <Stack.Screen name="auth/(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="dashboard/(tabs)"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="reastaurant/create"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          <StatusBar style="auto" />
+          {/* </ThemeProvider> */}
+        </PaperProvider>
+      </Provider>
     </NavigationContainer>
   );
 }

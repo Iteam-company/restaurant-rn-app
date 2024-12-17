@@ -1,30 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { AuthMethod, getValidationSchema } from "./utils";
-import FormWrapper from "@/modules/common/components/FormWrapper";
+import * as SecureStore from "expo-secure-store";
+import { useRouter } from "expo-router";
 import { useFormik } from "formik";
 import {
   Headline,
   SegmentedButtons,
   TextInput,
   Button,
+  Text,
+  ActivityIndicator,
 } from "react-native-paper";
+import { Logo } from "@/modules/common/components/ui/Logo";
+import { useSigninMutation } from "@/modules/common/redux/slices/auth-api";
+import FormWrapper from "@/modules/common/components/FormWrapper";
+import { AuthMethod, getValidationSchema } from "./utils";
 import { initialValues } from "../SignInForm/utils";
-import { useRouter } from "expo-router";
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { AuthMethod, getValidationSchema } from './utils';
-import FormWrapper from '@/modules/common/components/FormWrapper';
-import { useFormik } from 'formik';
-import { SegmentedButtons, TextInput, Button } from 'react-native-paper';
-import { initialValues } from '../SignInForm/utils';
-import { Logo } from '@/modules/common/components/ui/Logo';
+import { AUTH_TOKEN_KEY } from "@/modules/common/constants/api";
 
 export default function SiginInForm() {
   const router = useRouter();
 
   const [authMethod, setAuthMethod] = useState<AuthMethod>("email");
   const [showPassword, setShowPassword] = useState(false);
+
+  const [signIn, { isLoading, isError, error, isSuccess, data }] =
+    useSigninMutation();
 
   const {
     values,
@@ -38,14 +39,26 @@ export default function SiginInForm() {
     initialValues,
     validationSchema: getValidationSchema(authMethod),
     validateOnChange: true,
-    onSubmit: (values) => {
-      console.log("Form submitted:", { ...values, authMethod });
+    onSubmit: async (values) => {
+      try {
+        const userToken = await signIn({
+          [authMethod]: values.identifier,
+          password: values.password,
+        }).unwrap();
+        if (userToken.access_token) {
+          SecureStore.setItem(AUTH_TOKEN_KEY, userToken.access_token);
+        }
+        router.push("/dashboard");
+      } catch (e) {
+        if (e.status === 401) {
+          console.log("unautorized");
+        }
+      }
     },
   });
-
   return (
     <FormWrapper>
-      <Logo size={150} style={{ margin: 'auto' }} />
+      <Logo size={150} style={{ margin: "auto" }} />
 
       <SegmentedButtons
         value={authMethod}
@@ -91,6 +104,12 @@ export default function SiginInForm() {
           />
         }
       />
+      <Text style={styles.errorText}>
+        {error?.status === 401 &&
+          `Password or ${
+            authMethod === "email" ? "email" : "phone number"
+          } is incorrect`}
+      </Text>
 
       <Button
         mode="elevated"
@@ -99,16 +118,11 @@ export default function SiginInForm() {
         }}
         style={styles.button}
       >
-        Sign In
-      </Button>
-
-      <Button
-        mode="elevated"
-        onPress={() => {
-          router.push("/reastaurant/create");
-        }}
-      >
-        Sign In
+        {isLoading ? (
+          <ActivityIndicator animating={true} color={"#7c8ebf"} />
+        ) : (
+          "Sign In"
+        )}
       </Button>
     </FormWrapper>
   );
@@ -120,5 +134,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 16,
+  },
+  errorText: {
+    color: "#f06060",
   },
 });
