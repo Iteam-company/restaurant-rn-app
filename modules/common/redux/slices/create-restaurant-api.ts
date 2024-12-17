@@ -18,7 +18,7 @@ export const restaurantApi = createApi({
     baseUrl: `${API_URL}`,
     prepareHeaders: (headers) => {
       const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJKTVRoZUJlc3QiLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTczNDAyMTk0MSwiZXhwIjoxNzM0MDMyNzQxfQ.GnB8C1KAEcoPwYBU7GeUNiK3YzIAEJVY4uH4192bZWYr";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJKTVRoZUJlc3QiLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTczNDM1Mjc1MiwiZXhwIjoxNzM0MzYzNTUyfQ.S_YVn36LPi9UhQ05xy5DlIg6pBQBUcXi8Zx2tu8D2pI";
       headers.set("Authorization", `Bearer ${token}`);
       return headers;
     },

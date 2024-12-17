@@ -8,7 +8,7 @@ import { restaurantApi } from "../slices/create-restaurant-api";
 const store = configureStore({
   reducer: {
     userApi: userApi.reducer,
-    authApi: authApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
     [restaurantApi.reducerPath]: restaurantApi.reducer,
   },
   // @ts-ignore
