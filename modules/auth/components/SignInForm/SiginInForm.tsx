@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
-import * as SecureStore from "expo-secure-store";
-import { useRouter } from "expo-router";
-import { useFormik } from "formik";
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import { useRouter } from 'expo-router';
+import { useFormik } from 'formik';
 import {
-  Headline,
   SegmentedButtons,
   TextInput,
   Button,
   Text,
   ActivityIndicator,
-} from "react-native-paper";
-import { Logo } from "@/modules/common/components/ui/Logo";
-import { useSigninMutation } from "@/modules/common/redux/slices/auth-api";
-import FormWrapper from "@/modules/common/components/FormWrapper";
-import { AuthMethod, getValidationSchema } from "./utils";
-import { initialValues } from "../SignInForm/utils";
-import { AUTH_TOKEN_KEY } from "@/modules/common/constants/api";
+} from 'react-native-paper';
+import { Logo } from '@/modules/common/components/ui/Logo';
+import { useSigninMutation } from '@/modules/common/redux/slices/auth-api';
+import FormWrapper from '@/modules/common/components/FormWrapper';
+import { AuthMethod, getValidationSchema } from './utils';
+import { initialValues } from '../SignInForm/utils';
+import { AUTH_TOKEN_KEY } from '@/modules/common/constants/api';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { RTKMutationPayloadType } from '@/modules/common/redux/types';
 
 export default function SiginInForm() {
   const router = useRouter();
 
-  const [authMethod, setAuthMethod] = useState<AuthMethod>("email");
+  const [authMethod, setAuthMethod] = useState<AuthMethod>('email');
   const [showPassword, setShowPassword] = useState(false);
 
-  const [signIn, { isLoading, isError, error, isSuccess, data }] =
-    useSigninMutation();
+  const [signIn, { isLoading, error }] =
+    useSigninMutation<RTKMutationPayloadType>();
 
   const {
     values,
@@ -48,43 +49,44 @@ export default function SiginInForm() {
         if (userToken.access_token) {
           SecureStore.setItem(AUTH_TOKEN_KEY, userToken.access_token);
         }
-        router.push("/dashboard");
+        router.push('/dashboard');
       } catch (e) {
-        if (e.status === 401) {
-          console.log("unautorized");
+        const error = e as FetchBaseQueryError;
+        if (error.status === 401) {
+          console.log('unautorized');
         }
       }
     },
   });
   return (
     <FormWrapper>
-      <Logo size={150} style={{ margin: "auto" }} />
+      <Logo size={150} style={{ margin: 'auto' }} />
 
       <SegmentedButtons
         value={authMethod}
         onValueChange={(value) => {
           setAuthMethod(value as AuthMethod);
-          setFieldValue("identifier", "");
-          setFieldTouched("identifier", false);
+          setFieldValue('identifier', '');
+          setFieldTouched('identifier', false);
         }}
         buttons={[
-          { value: "email", label: "Email" },
-          { value: "phone", label: "Phone" },
+          { value: 'email', label: 'Email' },
+          { value: 'phone', label: 'Phone' },
         ]}
         style={styles.segmentedButtons}
       />
 
       <TextInput
         mode="outlined"
-        label={authMethod === "email" ? "Email" : "Phone Number"}
+        label={authMethod === 'email' ? 'Email' : 'Phone Number'}
         value={values.identifier}
-        onChangeText={(text) => setFieldValue("identifier", text)}
-        onBlur={handleBlur("identifier")}
+        onChangeText={(text) => setFieldValue('identifier', text)}
+        onBlur={handleBlur('identifier')}
         error={touched.identifier && !!errors.identifier}
-        keyboardType={authMethod === "email" ? "email-address" : "phone-pad"}
-        autoCapitalize={authMethod === "email" ? "none" : "sentences"}
+        keyboardType={authMethod === 'email' ? 'email-address' : 'phone-pad'}
+        autoCapitalize={authMethod === 'email' ? 'none' : 'sentences'}
         left={
-          <TextInput.Icon icon={authMethod === "email" ? "email" : "phone"} />
+          <TextInput.Icon icon={authMethod === 'email' ? 'email' : 'phone'} />
         }
       />
 
@@ -92,14 +94,14 @@ export default function SiginInForm() {
         mode="outlined"
         label="Password"
         value={values.password}
-        onChangeText={(text) => setFieldValue("password", text)}
-        onBlur={handleBlur("password")}
+        onChangeText={(text) => setFieldValue('password', text)}
+        onBlur={handleBlur('password')}
         error={touched.password && !!errors.password}
         secureTextEntry={!showPassword}
         left={<TextInput.Icon icon="lock" />}
         right={
           <TextInput.Icon
-            icon={showPassword ? "eye-off" : "eye"}
+            icon={!showPassword ? 'eye-off' : 'eye'}
             onPress={() => setShowPassword(!showPassword)}
           />
         }
@@ -107,7 +109,7 @@ export default function SiginInForm() {
       <Text style={styles.errorText}>
         {error?.status === 401 &&
           `Password or ${
-            authMethod === "email" ? "email" : "phone number"
+            authMethod === 'email' ? 'email' : 'phone number'
           } is incorrect`}
       </Text>
 
@@ -116,12 +118,11 @@ export default function SiginInForm() {
         onPress={() => {
           handleSubmit();
         }}
-        style={styles.button}
-      >
+        style={styles.button}>
         {isLoading ? (
-          <ActivityIndicator animating={true} color={"#7c8ebf"} />
+          <ActivityIndicator animating={true} color={'#7c8ebf'} />
         ) : (
-          "Sign In"
+          'Sign In'
         )}
       </Button>
     </FormWrapper>
@@ -136,6 +137,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   errorText: {
-    color: "#f06060",
+    color: '#f06060',
   },
 });
