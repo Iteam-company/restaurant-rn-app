@@ -33,7 +33,7 @@ export default function SignUpForm() {
           if (res.access_token) {
             SecureStore.setItem(AUTH_TOKEN_KEY, res.access_token);
           }
-          router.push('/dashboard');
+          router.push('/dashboard/restaurants');
         } catch (e) {}
       },
     });
