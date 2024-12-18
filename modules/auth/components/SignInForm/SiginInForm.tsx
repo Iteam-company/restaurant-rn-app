@@ -49,7 +49,7 @@ export default function SiginInForm() {
         if (userToken.access_token) {
           SecureStore.setItem(AUTH_TOKEN_KEY, userToken.access_token);
         }
-        router.push('/dashboard');
+        router.push("/dashboard/restaurants");
       } catch (e) {
         const error = e as FetchBaseQueryError;
         if (error.status === 401) {
