@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Button, Headline, TextInput } from "react-native-paper";
-import FormWrapper from "@/modules/common/components/FormWrapper";
-import { useCreateRestaurantMutation } from "../common/redux/slices/create-restaurant-api";
+import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { Button, Headline, TextInput } from 'react-native-paper';
+import FormWrapper from '@/modules/common/components/FormWrapper';
+import { useCreateRestaurantMutation } from '@/modules/common/redux/slices/create-restaurant-api';
 
 const validationSchema = Yup.object().shape({
-  restaurantName: Yup.string().required("Restaurant name is required"),
-  address: Yup.string().required("Address is required"),
+  restaurantName: Yup.string().required('Restaurant name is required'),
+  address: Yup.string().required('Address is required'),
 });
 
 const initialValues = {
-  restaurantName: "",
-  address: "",
+  restaurantName: '',
+  address: '',
 };
 
 export default function CreateRestaurant() {
@@ -22,10 +22,10 @@ export default function CreateRestaurant() {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("Restaurant created successfully:", data);
+      console.log('Restaurant created successfully:', data);
     }
     if (isError) {
-      console.error("Error creating restaurant:", error);
+      console.error('Error creating restaurant:', error);
     }
   }, [isSuccess, isError, data, error]);
 
@@ -34,7 +34,7 @@ export default function CreateRestaurant() {
       initialValues,
       validationSchema,
       onSubmit: (values) => {
-        console.log("Form submitted:", values);
+        console.log('Form submitted:', values);
         createRestaurant(values);
       },
     });
@@ -46,8 +46,8 @@ export default function CreateRestaurant() {
         mode="outlined"
         label="Restaurant Name"
         value={values.restaurantName}
-        onChangeText={(text) => setFieldValue("restaurantName", text)}
-        onBlur={handleBlur("restaurantName")}
+        onChangeText={(text) => setFieldValue('restaurantName', text)}
+        onBlur={handleBlur('restaurantName')}
         error={touched.restaurantName && !!errors.restaurantName}
         left={<TextInput.Icon icon="store" />}
       />
@@ -55,8 +55,8 @@ export default function CreateRestaurant() {
         mode="outlined"
         label="Address"
         value={values.address}
-        onChangeText={(text) => setFieldValue("address", text)}
-        onBlur={handleBlur("address")}
+        onChangeText={(text) => setFieldValue('address', text)}
+        onBlur={handleBlur('address')}
         error={touched.address && !!errors.address}
         left={<TextInput.Icon icon="map-marker" />}
       />
