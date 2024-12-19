@@ -1,10 +1,10 @@
-import { AnyAction, configureStore, ThunkDispatch } from "@reduxjs/toolkit";
-import { persistStore } from "redux-persist";
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore } from 'redux-persist';
 
-import { userApi } from "../slices/user-api";
-import { authApi } from "../slices/auth-api";
-import { restaurantApi } from "../slices/create-restaurant-api";
-import { setupListeners } from "@reduxjs/toolkit/query";
+import { userApi } from '../slices/user-api';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { authApi } from '@/modules/auth/redux/slices/auth-api';
+import { restaurantApi } from '@/modules/restaurant/redux/slices/restaurant-api';
 
 const store = configureStore({
   reducer: {
