@@ -1,28 +1,28 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_URL } from "../../constants/api";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { API_URL } from '../../constants/api';
 
 export const authApi = createApi({
-  reducerPath: "auth-api",
+  reducerPath: 'auth-api',
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_URL}`,
   }),
   endpoints: (builder) => ({
     signin: builder.mutation({
       query: (body) => ({
-        url: "/auth/login",
-        method: "POST",
+        url: '/auth/login',
+        method: 'POST',
         body,
       }),
     }),
     signup: builder.mutation({
       query: (body) => ({
-        url: "/auth/signup",
-        method: "POST",
+        url: '/auth/signup',
+        method: 'POST',
         body,
       }),
     }),
     validateToken: builder.query({
-      query: () => "/user",
+      query: () => '/user',
     }),
   }),
 });

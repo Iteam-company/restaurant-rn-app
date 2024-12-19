@@ -4,7 +4,7 @@ import { API_URL } from '../../constants/api';
 export const userApi = createApi({
   reducerPath: 'user-api',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${API_URL}/users`,
+    baseUrl: `${API_URL}}/users`,
   }),
   endpoints: (builder) => ({
     getUsers: builder.query({
