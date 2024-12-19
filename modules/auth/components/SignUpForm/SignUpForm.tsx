@@ -5,12 +5,12 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import { initialValues, validationSchema } from './utils';
 import { Button, TextInput, Text } from 'react-native-paper';
 import FormWrapper from '@/modules/common/components/FormWrapper';
-import { useSignupMutation } from '@/modules/common/redux/slices/auth-api';
 import { Logo } from '@/modules/common/components/ui/Logo';
 import { AUTH_TOKEN_KEY } from '@/modules/common/constants/api';
 import { useRouter } from 'expo-router';
 import { UserROLES } from '@/modules/common/types/user.types';
 import { RTKMutationPayloadType } from '@/modules/common/redux/types';
+import { useSignupMutation } from '../../redux/slices/auth-api';
 
 export default function SignUpForm() {
   const router = useRouter();

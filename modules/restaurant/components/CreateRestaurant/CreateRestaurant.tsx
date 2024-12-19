@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Headline, TextInput } from 'react-native-paper';
 import FormWrapper from '@/modules/common/components/FormWrapper';
-import { useCreateRestaurantMutation } from '@/modules/common/redux/slices/create-restaurant-api';
+import { useCreateRestaurantMutation } from '../../redux/slices/restaurant-api';
 
 const validationSchema = Yup.object().shape({
   restaurantName: Yup.string().required('Restaurant name is required'),
