@@ -37,6 +37,7 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
+  // mock commit layout
 
   return (
     <NavigationContainer>
