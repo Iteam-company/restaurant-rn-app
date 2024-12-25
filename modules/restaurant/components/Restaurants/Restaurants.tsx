@@ -4,9 +4,7 @@ import Wrapper from "@/modules/common/components/Wrapper";
 
 const Restaurants = () => {
   return (
-    <Wrapper centered>
       <RestaurantList />
-    </Wrapper>
   );
 };
 

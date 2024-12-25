@@ -14,6 +14,12 @@ export const restaurantApi = createApi({
     prepareHeaders: prepareHeadersWithAuth,
   }),
   endpoints: (builder) => ({
+    getRestaurant: builder.query<RestaurantInfo, string | string[]>({
+      query: (id) => ({
+        url: `/restaurant/${id}`,
+        method: "GET",
+      }),
+    }),
     getRestaurants: builder.query<RestaurantInfo[], void>({
       query: () => ({
         url: "/restaurant/owner-by",
@@ -37,5 +43,8 @@ export const restaurantApi = createApi({
   }),
 });
 
-export const { useCreateRestaurantMutation, useGetRestaurantsQuery } =
-  restaurantApi;
+export const {
+  useCreateRestaurantMutation,
+  useGetRestaurantsQuery,
+  useGetRestaurantQuery,
+} = restaurantApi;

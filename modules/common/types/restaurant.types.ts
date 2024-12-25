@@ -16,7 +16,7 @@ export interface RestaurantInfo {
   id: number;
   name: string;
   menu: null; //to-do: change type
-  workers: any;
+  workers: UserInfo[];
   address: string;
   ownerId: number;
   image: null; //to-do: change type
