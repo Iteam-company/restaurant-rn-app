@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { IconButton, Text } from 'react-native-paper';
 
 const RestaurantList = () => {
   useEffect(() => {
@@ -9,11 +9,7 @@ const RestaurantList = () => {
 
   return (
     <View>
-      <IconButton
-        icon="plus"
-        size={24}
-        onPress={() => console.log('Pressed')}
-      />
+      <Text>Restaurants</Text>
     </View>
   );
 };

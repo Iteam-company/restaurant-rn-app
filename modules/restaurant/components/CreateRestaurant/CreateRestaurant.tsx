@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { Button, Headline, TextInput } from 'react-native-paper';
 import FormWrapper from '@/modules/common/components/FormWrapper';
 import { useCreateRestaurantMutation } from '../../redux/slices/restaurant-api';
-
-const validationSchema = Yup.object().shape({
-  restaurantName: Yup.string().required('Restaurant name is required'),
-  address: Yup.string().required('Address is required'),
-});
-
-const initialValues = {
-  restaurantName: '',
-  address: '',
-};
+import { initialValues, validationSchema } from './utils';
+import { useFileSelect } from '@/modules/common/hooks/useFileSelect';
+import { useValidateTokenQuery } from '@/modules/auth/redux/slices/auth-api';
+import Wrapper from '@/modules/common/components/Wrapper';
 
 export default function CreateRestaurant() {
+  const router = useRouter();
+  const { data: currentUser } = useValidateTokenQuery(null);
+
   const [createRestaurant, { isLoading, isError, error, isSuccess, data }] =
     useCreateRestaurantMutation();
+
+  console.log(currentUser, 'currentUser');
+
+  const { handleFileSelect } = useFileSelect(() => {}, {});
 
   useEffect(() => {
     if (isSuccess) {
@@ -35,7 +36,9 @@ export default function CreateRestaurant() {
       validationSchema,
       onSubmit: (values) => {
         console.log('Form submitted:', values);
-        createRestaurant(values);
+        if (currentUser) {
+          createRestaurant({ ...values, ownerId: currentUser?.id });
+        }
       },
     });
 
@@ -60,8 +63,11 @@ export default function CreateRestaurant() {
         error={touched.address && !!errors.address}
         left={<TextInput.Icon icon="map-marker" />}
       />
-      <Button mode="elevated" onPress={() => handleSubmit()}>
+      <Button mode="contained-tonal" onPress={() => handleSubmit()}>
         Submit
+      </Button>
+      <Button mode="elevated" onPress={() => router.back()}>
+        Back
       </Button>
     </FormWrapper>
   );
