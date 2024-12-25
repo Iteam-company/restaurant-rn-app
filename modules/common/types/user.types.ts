@@ -14,3 +14,15 @@ export enum UserROLES {
   WAITER = 'waiter',
   ADMIN = 'admin',
 }
+
+
+export interface UserInfo {
+  id:number;
+  username: '';
+  firstName: '';
+  lastName: '';
+  email: '';
+  phoneNumber: '';
+  role: UserROLES;
+  icon:null //to-do change type
+}
