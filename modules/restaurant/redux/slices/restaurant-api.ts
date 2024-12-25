@@ -5,6 +5,7 @@ import { API_URL, AUTH_TOKEN_KEY } from '../../../common/constants/api';
 interface CreateRestaurantRequest {
   restaurantName: string;
   address: string;
+  ownerId: number;
 }
 
 interface CreateRestaurantResponse {
@@ -34,6 +35,7 @@ export const restaurantApi = createApi({
         body: {
           name: restaurantInfo.restaurantName,
           address: restaurantInfo.address,
+          ownerId: restaurantInfo.ownerId,
         },
       }),
     }),
