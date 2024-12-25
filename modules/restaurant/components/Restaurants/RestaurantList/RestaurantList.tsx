@@ -6,15 +6,17 @@ import { ScrollView } from "react-native";
 import { ActivityIndicator, Text, useTheme } from "react-native-paper";
 import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { router, useNavigation } from "expo-router";
 
 const RestaurantList = () => {
+  const navigation = useNavigation();
+
   const { data, isLoading, isError } = useGetRestaurantsQuery();
   const { colors } = useTheme();
 
-
   useEffect(() => {
     console.log(data);
-  },[data])
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -46,7 +48,9 @@ const RestaurantList = () => {
               <View style={styles.titleContainer}>
                 <Title style={styles.titleLeft}>{restaurant.name}</Title>
                 <View style={styles.workers}>
-                  <Title style={styles.workersTitle}>{restaurant.workers.length}</Title>
+                  <Title style={styles.workersTitle}>
+                    {restaurant.workers.length}
+                  </Title>
                   <IconSymbol
                     size={25}
                     name="person.2.fill"
@@ -56,7 +60,16 @@ const RestaurantList = () => {
                 </View>
               </View>
               <Paragraph style={styles.address}>{restaurant.address}</Paragraph>
-              <Button mode="outlined" style={styles.button} onPress={() => {}}>
+              <Button
+                mode="outlined"
+                style={styles.button}
+                onPress={() => {
+                  router.push({
+                    pathname: "/restaurant/[id]",
+                    params: { id: restaurant.id },
+                  });
+                }}
+              >
                 View Details
               </Button>
             </Card.Content>
@@ -81,10 +94,12 @@ const styles = StyleSheet.create({
     width: windowWidth - 40,
     marginBottom: 20,
     overflow: "hidden",
+    borderRadius:14,
   },
   cardImage: {
     height: 200,
     width: "100%",
+    borderRadius:14,
   },
   cardContent: {
     width: "100%",
@@ -119,13 +134,13 @@ const styles = StyleSheet.create({
   workers: {
     display: "flex",
     flexDirection: "row",
-    alignItems:"center",
-    gap:5
+    alignItems: "center",
+    gap: 5,
   },
 
   workersTitle: {
-    fontSize:18
-  }
+    fontSize: 18,
+  },
 });
 
 export default RestaurantList;
