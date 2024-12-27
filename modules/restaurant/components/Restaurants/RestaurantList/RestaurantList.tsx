@@ -4,19 +4,12 @@ import React, { useEffect } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import { ScrollView } from "react-native";
 import { ActivityIndicator, Text, useTheme } from "react-native-paper";
-import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import { router, useNavigation } from "expo-router";
+import { Button, Card, Title, Paragraph } from "react-native-paper";
+import { router} from "expo-router";
 
 const RestaurantList = () => {
-  const navigation = useNavigation();
-
   const { data, isLoading, isError } = useGetRestaurantsQuery();
   const { colors } = useTheme();
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   if (isLoading) {
     return (
@@ -65,7 +58,7 @@ const RestaurantList = () => {
                 style={styles.button}
                 onPress={() => {
                   router.push({
-                    pathname: "/restaurant/[id]",
+                    pathname: "/restaurant/[id]/(workers)",
                     params: { id: restaurant.id },
                   });
                 }}

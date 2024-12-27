@@ -15,10 +15,15 @@ export interface CreateRestaurantResponse {
 export interface RestaurantInfo {
   id: number;
   name: string;
-  menu: null; //to-do: change type
+  menu: null;
   workers: UserInfo[];
   address: string;
   ownerId: number;
   image: null; //to-do: change type
   owner: UserInfo;
+}
+
+export interface DeleteWorker {
+  userId: number;
+  restaurantId: number;
 }
