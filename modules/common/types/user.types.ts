@@ -1,28 +1,33 @@
 export type UserType = {
   id: number;
-  username: '';
-  firstName: '';
-  lastName: '';
-  email: '';
-  phoneNumber: '';
-  password: '';
+  username: "";
+  firstName: "";
+  lastName: "";
+  email: "";
+  phoneNumber: "";
+  password: "";
   role: UserROLES;
 };
 
 export enum UserROLES {
-  OWNER = 'owner',
-  WAITER = 'waiter',
-  ADMIN = 'admin',
+  OWNER = "owner",
+  WAITER = "waiter",
+  ADMIN = "admin",
 }
 
-
 export interface UserInfo {
-  id:number;
-  username: '';
-  firstName: '';
-  lastName: '';
-  email: '';
-  phoneNumber: '';
+  id: number;
+  username: "";
+  firstName: "";
+  lastName: "";
+  email: "";
+  phoneNumber: "";
   role: UserROLES;
-  icon:null //to-do change type
+  icon: null; //to-do change type
+}
+
+export interface SearchUser {
+  limit: number;
+  page: number;
+  search: string;
 }

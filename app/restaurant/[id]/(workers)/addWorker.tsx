@@ -1,9 +1,13 @@
-import Workers from "@/modules/restaurant/components/RestaurantInfo/workers/Workers";
+import Wrapper from "@/modules/common/components/Wrapper";
+import AddWorkers from "@/modules/restaurant/components/RestaurantInfo/addWorkers/AddWorkers";
 import React from "react";
-import { Title } from "react-native-paper";
 
 const AddWorkersPage = () => {
-  return <Title>dfvjlnvd,jdfnk</Title>;
+  return (
+    <Wrapper>
+      <AddWorkers />
+    </Wrapper>
+  );
 };
 
 export default AddWorkersPage;

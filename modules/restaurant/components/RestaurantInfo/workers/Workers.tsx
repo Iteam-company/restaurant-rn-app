@@ -1,7 +1,7 @@
 import { router } from "expo-router";
-import React, { useEffect } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import { useTheme, List, Title, FAB } from "react-native-paper";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { useTheme, List, Title, FAB, Searchbar } from "react-native-paper";
 import { useLocalSearchParams } from "expo-router";
 import Wrapper from "@/modules/common/components/Wrapper";
 import Feather from "@expo/vector-icons/Feather";
@@ -13,61 +13,68 @@ import {
 const Workers = () => {
   const { id } = useLocalSearchParams();
   const { colors } = useTheme();
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const { data, isLoading } = useGetRestaurantQuery(id as string);
 
   const [deleteWorker] = useRemoveWorkerMutation();
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+  };
 
   useEffect(() => {
     console.log(data);
   }, [data]);
 
   return (
-    <>
-      <Wrapper centered>
-        <View style={styles.contant}>
-          {data && data?.workers.length > 0 ? (
-            data?.workers.map((el) => (
-              <List.Item
-                key={el.id}
-                title={el.firstName}
-                description={el.email}
-                left={(props) => (
-                  <Feather
-                    {...props}
-                    name="user"
-                    size={24}
-                    color={colors.primary}
-                  />
-                )}
-                right={(props) => (
-                  <Feather
-                    {...props}
-                    name="trash-2"
-                    size={24}
-                    color={colors.error}
-                    onPress={() => {
-                      deleteWorker({
-                        restaurantId: el.id,
-                        userId: parseInt(id as string),
-                      });
-                    }}
-                  />
-                )}
-              />
-            ))
-          ) : (
-            <Title>We don`t have workers now :(</Title>
-          )}
-        </View>
+    <Wrapper>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={handleSearch}
+        value={searchQuery}
+      />
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.content}>
+            {data && data?.workers.length > 0 ? (
+              data?.workers.map((el) => (
+                <List.Item
+                  key={el.id}
+                  title={el.firstName}
+                  description={el.email}
+                  left={(props) => (
+                    <Feather
+                      {...props}
+                      name="user"
+                      size={24}
+                      color={colors.primary}
+                    />
+                  )}
+                  right={(props) => (
+                    <Feather
+                      {...props}
+                      name="trash-2"
+                      size={24}
+                      color={colors.error}
+                      onPress={() => {
+                        deleteWorker({
+                          restaurantId: el.id,
+                          userId: parseInt(id as string),
+                        });
+                      }}
+                    />
+                  )}
+                />
+              ))
+            ) : (
+              <Title>We don`t have workers now :(</Title>
+            )}
+          </View>
+        </ScrollView>
         <FAB
           icon="plus"
-          style={{
-            position: "absolute",
-            margin: 16,
-            right: 0,
-            bottom: 0,
-          }}
+          style={styles.fab}
           onPress={() => {
             router.push({
               pathname: "/restaurant/[id]/(workers)/addWorker",
@@ -75,17 +82,28 @@ const Workers = () => {
             });
           }}
         />
-      </Wrapper>
-    </>
+      </View>
+    </Wrapper>
   );
 };
 
 export default Workers;
 
-const windowWidth = Dimensions.get("window").width;
-
 const styles = StyleSheet.create({
-  contant: {
+  container: {
+    flex: 1,
+    position: "relative",
+  },
+  scrollView: {
+    flex: 1,
+  },
+  content: {
     width: "100%",
+    paddingBottom: 80, // Додаємо відступ знизу, щоб контент не ховався за FAB
+  },
+  fab: {
+    position: "absolute",
+    right: 16,
+    bottom: 16,
   },
 });
