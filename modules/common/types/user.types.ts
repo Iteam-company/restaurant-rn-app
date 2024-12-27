@@ -26,8 +26,11 @@ export interface UserInfo {
   icon: null; //to-do change type
 }
 
-export interface SearchUser {
-  limit: number;
-  page: number;
-  search: string;
-}
+// export interface SearchUser {
+//   limit: number;
+//   page: number;
+//   search: string;
+//   restaurantId: string;
+// }
+
+export type SearchUser = Record<"limit" | "page" | "search" | "restaurantId", string>
