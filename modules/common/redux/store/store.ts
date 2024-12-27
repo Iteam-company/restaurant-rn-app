@@ -1,14 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore } from 'redux-persist';
+import { configureStore } from "@reduxjs/toolkit";
+import { persistStore } from "redux-persist";
 
-import { userApi } from '../slices/user-api';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { authApi } from '@/modules/auth/redux/slices/auth-api';
-import { restaurantApi } from '@/modules/restaurant/redux/slices/restaurant-api';
+import { userApi } from "../slices/user-api";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { authApi } from "@/modules/auth/redux/slices/auth-api";
+import { restaurantApi } from "@/modules/restaurant/redux/slices/restaurant-api";
 
 const store = configureStore({
   reducer: {
-    userApi: userApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [restaurantApi.reducerPath]: restaurantApi.reducer,
   },
