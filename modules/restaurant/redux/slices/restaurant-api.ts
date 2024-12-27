@@ -4,6 +4,7 @@ import { prepareHeadersWithAuth } from "@/modules/common/redux/utils/prepareHead
 import {
   CreateRestaurantRequest,
   CreateRestaurantResponse,
+  DeleteWorker,
   RestaurantInfo,
 } from "@/modules/common/types/restaurant.types";
 
@@ -13,18 +14,30 @@ export const restaurantApi = createApi({
     baseUrl: `${API_URL}`,
     prepareHeaders: prepareHeadersWithAuth,
   }),
+  tagTypes: ["Restaurant"],
   endpoints: (builder) => ({
-    getRestaurant: builder.query<RestaurantInfo, string | string[]>({
+    getRestaurant: builder.query<RestaurantInfo, string>({
       query: (id) => ({
         url: `/restaurant/${id}`,
         method: "GET",
       }),
+      providesTags: (result, error, id) => [
+        { type: "Restaurant", id },
+        { type: "Restaurant", id: "LIST" },
+      ],
     }),
     getRestaurants: builder.query<RestaurantInfo[], void>({
       query: () => ({
         url: "/restaurant/owner-by",
         method: "GET",
       }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Restaurant" as const, id })),
+              { type: "Restaurant", id: "LIST" },
+            ]
+          : [{ type: "Restaurant", id: "LIST" }],
     }),
     createRestaurant: builder.mutation<
       CreateRestaurantResponse,
@@ -39,6 +52,17 @@ export const restaurantApi = createApi({
           ownerId: restaurantInfo.ownerId,
         },
       }),
+      invalidatesTags: [{ type: "Restaurant", id: "LIST" }],
+    }),
+    removeWorker: builder.mutation<RestaurantInfo, DeleteWorker>({
+      query: ({ userId, restaurantId }) => ({
+        url: `/restaurant/workers/${restaurantId}/${userId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, { restaurantId }) => [
+        { type: "Restaurant", id: restaurantId },
+        { type: "Restaurant", id: "LIST" },
+      ],
     }),
   }),
 });
@@ -47,4 +71,5 @@ export const {
   useCreateRestaurantMutation,
   useGetRestaurantsQuery,
   useGetRestaurantQuery,
+  useRemoveWorkerMutation,
 } = restaurantApi;
