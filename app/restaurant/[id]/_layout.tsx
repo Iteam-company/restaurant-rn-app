@@ -10,9 +10,12 @@ import { useGetRestaurantQuery } from "@/modules/restaurant/redux/slices/restaur
 
 export default function RestaurantPageLayout() {
   const { colors } = useTheme();
-  const { id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams<{
+    id: string;
+    workerId: string;
+  }>();
 
-  const { data, isLoading } = useGetRestaurantQuery(id);
+  const { data: restaurantData, isLoading } = useGetRestaurantQuery(id);
 
   return (
     <>
@@ -24,7 +27,7 @@ export default function RestaurantPageLayout() {
       <Appbar.Header>
         <Appbar.BackAction iconColor="white" onPress={() => router.back()} />
         <Appbar.Content
-          title={`${data?.name}`}
+          title={`${restaurantData?.name}`}
           titleStyle={{ color: "white" }}
         />
       </Appbar.Header>

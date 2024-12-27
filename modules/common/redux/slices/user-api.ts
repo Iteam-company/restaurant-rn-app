@@ -18,9 +18,15 @@ export const userApi = createApi({
     }),
     createUser: builder.mutation({
       query: (body) => ({
-        url: "/users",
+        url: "/",
         method: "POST",
         body,
+      }),
+    }),
+    getUserById: builder.query<UserInfo, string>({
+      query: (id) => ({
+        url: `/one/${id}`,
+        method: "GET",
       }),
     }),
     searchUsers: builder.query<UserInfo[], Partial<SearchUser>>({
@@ -31,11 +37,16 @@ export const userApi = createApi({
           limit: searchParams.limit ?? 10,
           page: searchParams.page ?? 1,
           search: searchParams.search ?? "",
+          restaurantId: searchParams.restaurantId,
         },
       }),
     }),
   }),
 });
 
-export const { useGetUsersQuery, useCreateUserMutation, useSearchUsersQuery } =
-  userApi;
+export const {
+  useGetUsersQuery,
+  useCreateUserMutation,
+  useSearchUsersQuery,
+  useGetUserByIdQuery,
+} = userApi;

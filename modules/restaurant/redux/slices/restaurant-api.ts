@@ -65,17 +65,6 @@ export const restaurantApi = createApi({
         { type: "Restaurant", id: "LIST" },
       ],
     }),
-    searchUsers: builder.query<UserInfo[], string>({
-      query: (query) => ({
-        url: "/search",
-        method: "GET",
-        params: {
-          limit: 10,
-          page: 1,
-          search: query,
-        },
-      }),
-    }),
   }),
 });
 
@@ -84,5 +73,4 @@ export const {
   useGetRestaurantsQuery,
   useGetRestaurantQuery,
   useRemoveWorkerMutation,
-  useSearchUsersQuery,
 } = restaurantApi;

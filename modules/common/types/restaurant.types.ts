@@ -23,7 +23,5 @@ export interface RestaurantInfo {
   owner: UserInfo;
 }
 
-export interface DeleteWorker {
-  userId: number;
-  restaurantId: number;
-}
+
+export type DeleteWorker = Record<"userId" | "restaurantId", string | number>;

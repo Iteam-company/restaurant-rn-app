@@ -1,31 +1,32 @@
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useTheme, List, Title, FAB, Searchbar } from "react-native-paper";
 import { useLocalSearchParams } from "expo-router";
 import Wrapper from "@/modules/common/components/Wrapper";
 import Feather from "@expo/vector-icons/Feather";
 import {
-  useGetRestaurantQuery,
   useRemoveWorkerMutation,
 } from "@/modules/restaurant/redux/slices/restaurant-api";
+import useDebounce from "@/modules/common/hooks/useDebounce";
+import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
 
 const Workers = () => {
-  const { id } = useLocalSearchParams();
+  const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
+  // const { data, isLoading } = useGetRestaurantQuery(restaurantId);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(searchQuery, 500);
 
-  const { data, isLoading } = useGetRestaurantQuery(id as string);
-
+  const { data: findedUsers } = useSearchUsersQuery({
+    search: debouncedSearchTerm,
+    restaurantId,
+  });
   const [deleteWorker] = useRemoveWorkerMutation();
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
   };
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <Wrapper>
@@ -37,38 +38,30 @@ const Workers = () => {
       <View style={styles.container}>
         <ScrollView style={styles.scrollView}>
           <View style={styles.content}>
-            {data && data?.workers.length > 0 ? (
-              data?.workers.map((el) => (
-                <List.Item
-                  key={el.id}
-                  title={el.firstName}
-                  description={el.email}
-                  left={(props) => (
-                    <Feather
-                      {...props}
-                      name="user"
-                      size={24}
-                      color={colors.primary}
-                    />
-                  )}
-                  right={(props) => (
-                    <Feather
-                      {...props}
-                      name="trash-2"
-                      size={24}
-                      color={colors.error}
-                      onPress={() => {
-                        deleteWorker({
-                          restaurantId: el.id,
-                          userId: parseInt(id as string),
-                        });
-                      }}
-                    />
-                  )}
-                />
-              ))
-            ) : (
-              <Title>We don`t have workers now :(</Title>
+            {findedUsers?.map((el) => (
+              <List.Item
+                key={el.id}
+                title={el.firstName}
+                description={el.email}
+                onPress={() => {
+                  router.push({
+                    pathname:
+                      "/restaurant/[id]/(workers)/worker/[workerId]",
+                    params: { id: restaurantId, workerId: el.id },
+                  });
+                }}
+                left={(props) => (
+                  <Feather
+                    {...props}
+                    name="user"
+                    size={24}
+                    color={colors.primary}
+                  />
+                )}
+              />
+            ))}
+            {!findedUsers?.length && (
+              <Title>We don`t have workers now 💔</Title>
             )}
           </View>
         </ScrollView>
@@ -78,7 +71,7 @@ const Workers = () => {
           onPress={() => {
             router.push({
               pathname: "/restaurant/[id]/(workers)/addWorker",
-              params: { id: id as string },
+              params: { id: restaurantId },
             });
           }}
         />
