@@ -1,6 +1,6 @@
 import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
 import { useLocalSearchParams } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import {
   Surface,
@@ -16,6 +16,10 @@ const UserInfo = () => {
   const { colors } = useTheme();
   const { workerId } = useLocalSearchParams<{ workerId: string }>();
   const { data } = useGetUserByIdQuery(workerId);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   if (!data) return null;
 

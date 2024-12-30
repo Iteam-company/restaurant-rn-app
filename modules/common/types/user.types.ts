@@ -23,7 +23,7 @@ export interface UserInfo {
   email: string;
   phoneNumber: string;
   role: UserROLES;
-  icon: null; //to-do change type
+  icon: any; //to-do change type
 }
 
 // export interface SearchUser {
