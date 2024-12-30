@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import React, { useEffect } from "react";
+import * as FileSystem from "expo-file-system";
+import * as DocumentPicker from "expo-document-picker";
+import { StyleSheet, View } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -11,15 +13,19 @@ import {
   Avatar,
   Text,
   ActivityIndicator,
+  IconButton,
+  useTheme,
 } from "react-native-paper";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import {
   useGetUserByIdQuery,
   useUpdateUserInfoMutation,
+  useUpdateUserPhotoMutation,
 } from "@/modules/common/redux/slices/user-api";
 import { RTKMutationPayloadType } from "@/modules/common/redux/types";
 import { Dropdown } from "react-native-paper-dropdown";
 import { UserROLES } from "@/modules/common/types/user.types";
+import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
 
 interface WorkerFormData {
   firstName: string;
@@ -75,10 +81,35 @@ const EditWorker = () => {
     id: string;
   }>();
   const { data, isLoading: isLoadingUser } = useGetUserByIdQuery(workerId);
-  const [showDropDown, setShowDropDown] = useState<boolean>(false);
+  const { colors } = useTheme();
 
   const [updateUser, { isLoading: isUpdating, error }] =
     useUpdateUserInfoMutation<RTKMutationPayloadType>();
+
+  const handleFile = async (fileData: DocumentPicker.DocumentPickerAsset) => {
+    const base64 = await FileSystem.readAsStringAsync(fileData.uri, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+
+    const formData = new FormData();
+
+    updatePhoto({
+      file: {
+        data: base64,
+        uri: fileData.uri,
+        // type: "image/jpeg",
+        name: fileData.name,
+      },
+      workerId,
+    });
+  };
+
+  const [updatePhoto] = useUpdateUserPhotoMutation();
+
+  const { handleFileSelect } = useFileSelect(handleFile, {
+    copyToCacheDirectory: true,
+    type: ["image/*"],
+  });
 
   const {
     values,
@@ -141,6 +172,12 @@ const EditWorker = () => {
               )}`}
             />
           )}
+          <IconButton
+            icon="camera"
+            size={24}
+            style={[styles.photoButton, { backgroundColor: colors.surface }]}
+            onPress={handleFileSelect}
+          />
         </View>
 
         <View style={styles.form}>
@@ -262,8 +299,15 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   header: {
+    position: "relative",
     alignItems: "center",
     marginBottom: 24,
+  },
+  photoButton: {
+    position: "absolute",
+    bottom: -20,
+    right: "31%",
+    borderWidth: 2,
   },
   form: {
     gap: 12,

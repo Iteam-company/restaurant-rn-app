@@ -65,6 +65,26 @@ export const userApi = createApi({
         { type: "User", id: "LIST" },
       ],
     }),
+    updateUserPhoto: builder.mutation<void, any>({
+      query: ({ file, workerId }) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        return {
+          url: `/icon/${workerId}/admin`,
+          method: "PATCH",
+          body: formData,
+
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+      },
+      invalidatesTags: (result, error, { workerId }) => [
+        { type: "User", id: workerId },
+        { type: "User", id: "LIST" },
+      ],
+    }),
   }),
 });
 
@@ -73,5 +93,6 @@ export const {
   useCreateUserMutation,
   useSearchUsersQuery,
   useGetUserByIdQuery,
-  useUpdateUserInfoMutation
+  useUpdateUserInfoMutation,
+  useUpdateUserPhotoMutation,
 } = userApi;
