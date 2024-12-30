@@ -17,11 +17,11 @@ export enum UserROLES {
 
 export interface UserInfo {
   id: number;
-  username: "";
-  firstName: "";
-  lastName: "";
-  email: "";
-  phoneNumber: "";
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
   role: UserROLES;
   icon: null; //to-do change type
 }
@@ -33,4 +33,7 @@ export interface UserInfo {
 //   restaurantId: string;
 // }
 
-export type SearchUser = Record<"limit" | "page" | "search" | "restaurantId", string>
+export type SearchUser = Record<
+  "limit" | "page" | "search" | "restaurantId",
+  string
+>;

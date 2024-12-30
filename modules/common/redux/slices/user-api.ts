@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "../../constants/api";
 import { prepareHeadersWithAuth } from "../utils/prepareHeadersWithAuth";
 import { SearchUser, UserInfo } from "../../types/user.types";
+import { UpdateUserInfoI } from "../../types/restaurant.types";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -9,6 +10,7 @@ export const userApi = createApi({
     baseUrl: `${API_URL}/user`,
     prepareHeaders: prepareHeadersWithAuth,
   }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => ({
@@ -28,6 +30,10 @@ export const userApi = createApi({
         url: `/one/${id}`,
         method: "GET",
       }),
+      providesTags: (result, error, id) => [
+        { type: "User", id },
+        { type: "User", id: "LIST" },
+      ],
     }),
     searchUsers: builder.query<UserInfo[], Partial<SearchUser>>({
       query: (searchParams) => ({
@@ -40,6 +46,24 @@ export const userApi = createApi({
           restaurantId: searchParams.restaurantId,
         },
       }),
+      providesTags: (res) =>
+        res
+          ? [
+              ...res.map(({ id }) => ({ type: "User" as const, id })),
+              { type: "User", id: "LIST" },
+            ]
+          : [{ type: "User", id: "LIST" }],
+    }),
+    updateUserInfo: builder.mutation<void, UpdateUserInfoI>({
+      query: (request) => ({
+        url: `/${request.params.userId}/admin`,
+        method: "Patch",
+        body: request.body,
+      }),
+      invalidatesTags: (result, error, { params }) => [
+        { type: "User", id: params.userId },
+        { type: "User", id: "LIST" },
+      ],
     }),
   }),
 });
@@ -49,4 +73,5 @@ export const {
   useCreateUserMutation,
   useSearchUsersQuery,
   useGetUserByIdQuery,
+  useUpdateUserInfoMutation
 } = userApi;
