@@ -2,12 +2,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "../../../common/constants/api";
 import { prepareHeadersWithAuth } from "@/modules/common/redux/utils/prepareHeadersWithAuth";
 import {
+  UpdateUserInfoI,
   CreateRestaurantRequest,
   CreateRestaurantResponse,
   DeleteWorker,
   RestaurantInfo,
 } from "@/modules/common/types/restaurant.types";
-import { UserInfo } from "@/modules/common/types/user.types";
 
 export const restaurantApi = createApi({
   reducerPath: "restaurantApi",

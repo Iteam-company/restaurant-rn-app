@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
@@ -13,8 +13,13 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import FormWrapper from "@/modules/common/components/FormWrapper";
-import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
+import {
+  useGetUserByIdQuery,
+  useUpdateUserInfoMutation,
+} from "@/modules/common/redux/slices/user-api";
 import { RTKMutationPayloadType } from "@/modules/common/redux/types";
+import { Dropdown } from "react-native-paper-dropdown";
+import { UserROLES } from "@/modules/common/types/user.types";
 
 interface WorkerFormData {
   firstName: string;
@@ -22,8 +27,28 @@ interface WorkerFormData {
   username: string;
   email: string;
   phoneNumber: string;
-  role: string;
+  role?: UserROLES;
 }
+
+interface IOptions {
+  label: string;
+  value: UserROLES;
+}
+
+const OPTIONS: IOptions[] = [
+  {
+    label: "Admin",
+    value: UserROLES.ADMIN,
+  },
+  {
+    label: "Owner",
+    value: UserROLES.OWNER,
+  },
+  {
+    label: "Waiter",
+    value: UserROLES.WAITER,
+  },
+];
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -40,15 +65,20 @@ const initialValues: WorkerFormData = {
   username: "",
   email: "",
   phoneNumber: "",
-  role: "",
+  role: undefined,
 };
 
 const EditWorker = () => {
   const router = useRouter();
-  const { workerId } = useLocalSearchParams<{ workerId: string }>();
+  const { workerId, id: restaurantId } = useLocalSearchParams<{
+    workerId: string;
+    id: string;
+  }>();
   const { data, isLoading: isLoadingUser } = useGetUserByIdQuery(workerId);
-  //   const [updateUser, { isLoading: isUpdating, error }] =
-  //     useUpdateUserMutation<RTKMutationPayloadType>();
+  const [showDropDown, setShowDropDown] = useState<boolean>(false);
+
+  const [updateUser, { isLoading: isUpdating, error }] =
+    useUpdateUserInfoMutation<RTKMutationPayloadType>();
 
   const {
     values,
@@ -64,7 +94,10 @@ const EditWorker = () => {
     validateOnChange: true,
     onSubmit: async (formData) => {
       try {
-        // await updateUser({ id: workerId, ...formData }).unwrap();
+        await updateUser({
+          params: { userId: workerId, restaurantId },
+          body: { ...formData },
+        }).unwrap();
         router.back();
       } catch (e) {
         console.error("Failed to update worker:", e);
@@ -80,7 +113,7 @@ const EditWorker = () => {
         username: data.username || "",
         email: data.email || "",
         phoneNumber: data.phoneNumber || "",
-        role: data.role || "",
+        role: data.role,
       });
     }
   }, [data, setValues]);
@@ -178,16 +211,15 @@ const EditWorker = () => {
           {touched.phoneNumber && errors.phoneNumber && (
             <Text style={styles.errorText}>{errors.phoneNumber}</Text>
           )}
-
-          <TextInput
-            mode="outlined"
+          <Dropdown
             label="Role"
+            mode="outlined"
             value={values.role}
-            onChangeText={(text) => setFieldValue("role", text)}
-            onBlur={handleBlur("role")}
-            error={touched.role && !!errors.role}
-            left={<TextInput.Icon icon="badge-account" />}
+            options={OPTIONS}
+            onSelect={(value) => setFieldValue("role", value)}
+            CustomMenuHeader={(props) => <></>}
           />
+
           {touched.role && errors.role && (
             <Text style={styles.errorText}>{errors.role}</Text>
           )}
@@ -223,7 +255,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   surface: {
-    height:"95%",
+    height: "95%",
     margin: 16,
     padding: 16,
     borderRadius: 8,
@@ -234,7 +266,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   form: {
-    gap: 12
+    gap: 12,
   },
   submitButton: {
     marginTop: 16,

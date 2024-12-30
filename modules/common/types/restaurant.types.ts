@@ -23,5 +23,12 @@ export interface RestaurantInfo {
   owner: UserInfo;
 }
 
+export interface UpdateUserInfoI {
+  params: {
+    userId: string;
+    restaurantId: string;
+  };
+  body: Partial<UserInfo>;
+}
 
 export type DeleteWorker = Record<"userId" | "restaurantId", string | number>;
