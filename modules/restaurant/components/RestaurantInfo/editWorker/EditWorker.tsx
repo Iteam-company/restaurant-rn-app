@@ -87,19 +87,17 @@ const EditWorker = () => {
     useUpdateUserInfoMutation<RTKMutationPayloadType>();
 
   const handleFile = async (fileData: DocumentPicker.DocumentPickerAsset) => {
-    const base64 = await FileSystem.readAsStringAsync(fileData.uri, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-
     const formData = new FormData();
+    const file = {
+      name: fileData.name.split(".")[0],
+      uri: fileData.uri,
+      type: fileData.mimeType,
+      size: fileData.size,
+    };
 
+    formData.append("file", file as any);
     updatePhoto({
-      file: {
-        data: base64,
-        uri: fileData.uri,
-        // type: "image/jpeg",
-        name: fileData.name,
-      },
+      formData,
       workerId,
     });
   };
@@ -261,23 +259,23 @@ const EditWorker = () => {
             <Text style={styles.errorText}>{errors.role}</Text>
           )}
 
-          {/* {error && (
+          {error && (
             <Text style={styles.errorText}>
               Failed to update worker profile. Please try again.
             </Text>
-          )} */}
+          )}
 
           <Button
             mode="contained"
             onPress={() => handleSubmit()}
             style={styles.submitButton}
-            // disabled={isUpdating}
+            disabled={isUpdating}
           >
-            {/* {isUpdating ? (
+            {isUpdating ? (
               <ActivityIndicator animating={true} color={"#ffffff"} />
-            ) : ( */}
-            "Save Changes"
-            {/* )} */}
+            ) : (
+              <Text>Save Changes</Text>
+            )}
           </Button>
         </View>
       </Surface>
