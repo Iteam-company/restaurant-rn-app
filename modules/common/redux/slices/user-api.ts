@@ -3,6 +3,7 @@ import { API_URL } from "../../constants/api";
 import { prepareHeadersWithAuth } from "../utils/prepareHeadersWithAuth";
 import { SearchUser, UserInfo } from "../../types/user.types";
 import { UpdateUserInfoI } from "../../types/restaurant.types";
+import { createSharedTagTypes } from "../utils/api-config";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -10,7 +11,7 @@ export const userApi = createApi({
     baseUrl: `${API_URL}/user`,
     prepareHeaders: prepareHeadersWithAuth,
   }),
-  tagTypes: ["User"],
+  tagTypes: createSharedTagTypes(),
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => ({
@@ -46,13 +47,18 @@ export const userApi = createApi({
           restaurantId: searchParams.restaurantId,
         },
       }),
-      providesTags: (res) =>
-        res
-          ? [
-              ...res.map(({ id }) => ({ type: "User" as const, id })),
-              { type: "User", id: "LIST" },
-            ]
-          : [{ type: "User", id: "LIST" }],
+      providesTags: (result, error, searchParams) =>
+        [
+          { type: "User" as const, id: "SEARCH_RESULTS" },
+          { type: "User" as const, id: "LIST" },
+          ...(result?.map(({ id }) => ({ type: "User" as const, id })) ?? []),
+          searchParams?.restaurantId
+            ? {
+                type: "User" as const,
+                id: `restaurant-${searchParams.restaurantId}`,
+              }
+            : null,
+        ].filter(Boolean),
     }),
     updateUserInfo: builder.mutation<void, UpdateUserInfoI>({
       query: (request) => ({
