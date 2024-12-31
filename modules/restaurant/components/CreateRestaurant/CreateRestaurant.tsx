@@ -12,7 +12,7 @@ import Wrapper from '@/modules/common/components/Wrapper';
 
 export default function CreateRestaurant() {
   const router = useRouter();
-  const { data: currentUser } = useValidateTokenQuery(null);
+  const { data: currentUser } = useValidateTokenQuery();
 
   const [createRestaurant, { isLoading, isError, error, isSuccess, data }] =
     useCreateRestaurantMutation();

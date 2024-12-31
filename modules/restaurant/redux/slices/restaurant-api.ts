@@ -8,6 +8,7 @@ import {
   DeleteWorker,
   RestaurantInfo,
 } from "@/modules/common/types/restaurant.types";
+import { createSharedTagTypes } from "@/modules/common/redux/utils/api-config";
 
 export const restaurantApi = createApi({
   reducerPath: "restaurantApi",
@@ -15,7 +16,7 @@ export const restaurantApi = createApi({
     baseUrl: `${API_URL}`,
     prepareHeaders: prepareHeadersWithAuth,
   }),
-  tagTypes: ["Restaurant"],
+  tagTypes: createSharedTagTypes(),
   endpoints: (builder) => ({
     getRestaurant: builder.query<RestaurantInfo, string>({
       query: (id) => ({
@@ -72,6 +73,23 @@ export const restaurantApi = createApi({
         { type: "Restaurant", id: "LIST" },
       ],
     }),
+    addWorker: builder.mutation<void, { userId: number; restaurantId: number }>(
+      {
+        query: (body) => ({
+          url: `/restaurant/workers`,
+          method: "POST",
+          body,
+        }),
+        invalidatesTags: (result, error, { restaurantId, userId }) => [
+          { type: "Restaurant", id: restaurantId },
+          { type: "Restaurant", id: "LIST" },
+          { type: "User", id: "SEARCH_RESULTS" },
+          { type: "User", id: "LIST" },
+          { type: "User", id: userId },
+          { type: "User", id: `restaurant-${restaurantId}` },
+        ],
+      }
+    ),
   }),
 });
 
@@ -81,4 +99,5 @@ export const {
   useGetRestaurantQuery,
   useRemoveWorkerMutation,
   useDeleteRestaurantMutation,
+  useAddWorkerMutation,
 } = restaurantApi;
