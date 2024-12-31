@@ -3,13 +3,25 @@ import { useGetRestaurantsQuery } from "@/modules/restaurant/redux/slices/restau
 import React, { useEffect } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import { ScrollView } from "react-native";
-import { ActivityIndicator, Text, useTheme } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Divider,
+  Menu,
+  Text,
+  useTheme,
+} from "react-native-paper";
 import { Button, Card, Title, Paragraph } from "react-native-paper";
-import { router} from "expo-router";
+import { router } from "expo-router";
+import Entypo from "@expo/vector-icons/Entypo";
+import { RestaurantListItem } from "./components/RestaurantListItem";
 
 const RestaurantList = () => {
-  const { data, isLoading, isError } = useGetRestaurantsQuery();
   const { colors } = useTheme();
+  const { data, isLoading, isError } = useGetRestaurantsQuery();
+  const [visible, setVisible] = React.useState(false);
+
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
 
   if (isLoading) {
     return (
@@ -25,48 +37,14 @@ const RestaurantList = () => {
         showsVerticalScrollIndicator={false}
       >
         {data?.map((restaurant) => (
-          <Card key={restaurant.id} style={styles.card}>
-            {restaurant.image ? (
-              <Card.Cover
-                source={{ uri: restaurant.image }}
-                style={styles.cardImage}
-              />
-            ) : (
-              <Card.Cover
-                source={require("@/assets/images/mock/premium_photo-1661883237884-263e8de8869b.jpg")}
-                style={styles.cardImage}
-              />
-            )}
-            <Card.Content style={styles.cardContent}>
-              <View style={styles.titleContainer}>
-                <Title style={styles.titleLeft}>{restaurant.name}</Title>
-                <View style={styles.workers}>
-                  <Title style={styles.workersTitle}>
-                    {restaurant.workers.length}
-                  </Title>
-                  <IconSymbol
-                    size={25}
-                    name="person.2.fill"
-                    weight="medium"
-                    color={colors.primary}
-                  />
-                </View>
-              </View>
-              <Paragraph style={styles.address}>{restaurant.address}</Paragraph>
-              <Button
-                mode="outlined"
-                style={styles.button}
-                onPress={() => {
-                  router.push({
-                    pathname: "/restaurant/[id]/(workers)",
-                    params: { id: restaurant.id },
-                  });
-                }}
-              >
-                View Details
-              </Button>
-            </Card.Content>
-          </Card>
+          <RestaurantListItem
+            id={restaurant.id}
+            key={restaurant.id}
+            address={restaurant.address}
+            name={restaurant.name}
+            workersCount={restaurant.workers.length}
+            image={restaurant.image}
+          />
         ))}
       </ScrollView>
     </View>
@@ -87,12 +65,12 @@ const styles = StyleSheet.create({
     width: windowWidth - 40,
     marginBottom: 20,
     overflow: "hidden",
-    borderRadius:14,
+    borderRadius: 14,
   },
   cardImage: {
     height: 200,
     width: "100%",
-    borderRadius:14,
+    borderRadius: 14,
   },
   cardContent: {
     width: "100%",
@@ -133,6 +111,14 @@ const styles = StyleSheet.create({
 
   workersTitle: {
     fontSize: 18,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  menuIcon: {
+    padding: 8,
   },
 });
 

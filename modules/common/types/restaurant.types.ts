@@ -19,7 +19,7 @@ export interface RestaurantInfo {
   workers: UserInfo[];
   address: string;
   ownerId: number;
-  image: null; //to-do: change type
+  image: string;
   owner: UserInfo;
 }
 

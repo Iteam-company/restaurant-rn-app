@@ -55,6 +55,13 @@ export const restaurantApi = createApi({
       }),
       invalidatesTags: [{ type: "Restaurant", id: "LIST" }],
     }),
+    deleteRestaurant: builder.mutation<void, number>({
+      query: (restaurantId) => ({
+        url: `/restaurant/${restaurantId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Restaurant", id: "LIST" }],
+    }),
     removeWorker: builder.mutation<RestaurantInfo, DeleteWorker>({
       query: ({ userId, restaurantId }) => ({
         url: `/restaurant/workers/${restaurantId}/${userId}`,
@@ -73,4 +80,5 @@ export const {
   useGetRestaurantsQuery,
   useGetRestaurantQuery,
   useRemoveWorkerMutation,
+  useDeleteRestaurantMutation,
 } = restaurantApi;
