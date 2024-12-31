@@ -65,11 +65,12 @@ export const userApi = createApi({
         { type: "User", id: "LIST" },
       ],
     }),
-    updateUserPhoto: builder.mutation<void, any>({
-      query: ({ file, workerId }) => {
-        const formData = new FormData();
-        formData.append("file", file);
-
+    updateUserPhoto: builder.mutation<
+      void,
+      { formData: FormData; workerId: string }
+    >({
+      query: ({ formData, workerId }) => {
+        console.log(formData);
         return {
           url: `/icon/${workerId}/admin`,
           method: "PATCH",
