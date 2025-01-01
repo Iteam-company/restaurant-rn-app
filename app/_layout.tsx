@@ -18,7 +18,6 @@ import 'react-native-reanimated';
 import { Provider, useDispatch } from 'react-redux';
 import { store } from '@/modules/common/redux/store/store';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 export const navigationRef = createNavigationContainerRef();
 
@@ -37,14 +36,11 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-  // mock commit layout
 
   return (
     <NavigationContainer>
       <Provider store={store}>
         <PaperProvider theme={theme}>
-          {/* <ThemeProvider
-            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
           <Stack>
             <Stack.Screen name="auth/(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
