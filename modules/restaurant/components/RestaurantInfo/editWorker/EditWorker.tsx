@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import * as FileSystem from "expo-file-system";
+import React, { useEffect, useState } from "react";
 import * as DocumentPicker from "expo-document-picker";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Dropdown } from "react-native-paper-dropdown";
 import {
   TextInput,
   Button,
@@ -23,9 +23,10 @@ import {
   useUpdateUserPhotoMutation,
 } from "@/modules/common/redux/slices/user-api";
 import { RTKMutationPayloadType } from "@/modules/common/types";
-import { Dropdown } from "react-native-paper-dropdown";
 import { UserROLES } from "@/modules/common/types/user.types";
 import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
+import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 
 interface WorkerFormData {
   firstName: string;
@@ -76,13 +77,16 @@ const initialValues: WorkerFormData = {
 
 const EditWorker = () => {
   const router = useRouter();
+  const { colors } = useTheme();
+  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const { workerId, id: restaurantId } = useLocalSearchParams<{
     workerId: string;
     id: string;
   }>();
   const { data, isLoading: isLoadingUser } = useGetUserByIdQuery(workerId);
-  const { colors } = useTheme();
 
+  const [removeWorker] = useRemoveWorkerMutation();
+  const [updatePhoto] = useUpdateUserPhotoMutation();
   const [updateUser, { isLoading: isUpdating, error }] =
     useUpdateUserInfoMutation<RTKMutationPayloadType>();
 
@@ -101,9 +105,6 @@ const EditWorker = () => {
       workerId,
     });
   };
-
-  const [updatePhoto] = useUpdateUserPhotoMutation();
-
   const { handleFileSelect } = useFileSelect(handleFile, {
     copyToCacheDirectory: true,
     type: ["image/*"],
@@ -156,130 +157,160 @@ const EditWorker = () => {
   }
 
   return (
-    <FormWrapper>
-      <Surface style={styles.surface}>
-        <View style={styles.header}>
-          <Title>Edit Worker Profile</Title>
-          {data?.icon ? (
-            <Avatar.Image size={80} source={{ uri: data.icon }} />
-          ) : (
-            <Avatar.Text
-              size={80}
-              label={`${values.firstName.charAt(0)}${values.lastName.charAt(
-                0
-              )}`}
-            />
-          )}
-          <IconButton
-            icon="camera"
-            size={24}
-            style={[styles.photoButton, { backgroundColor: colors.surface }]}
-            onPress={handleFileSelect}
-          />
-        </View>
-
-        <View style={styles.form}>
-          <TextInput
-            mode="outlined"
-            label="First Name"
-            value={values.firstName}
-            onChangeText={(text) => setFieldValue("firstName", text)}
-            onBlur={handleBlur("firstName")}
-            error={touched.firstName && !!errors.firstName}
-            left={<TextInput.Icon icon="account" />}
-          />
-          {touched.firstName && errors.firstName && (
-            <Text style={styles.errorText}>{errors.firstName}</Text>
-          )}
-
-          <TextInput
-            mode="outlined"
-            label="Last Name"
-            value={values.lastName}
-            onChangeText={(text) => setFieldValue("lastName", text)}
-            onBlur={handleBlur("lastName")}
-            error={touched.lastName && !!errors.lastName}
-            left={<TextInput.Icon icon="account" />}
-          />
-          {touched.lastName && errors.lastName && (
-            <Text style={styles.errorText}>{errors.lastName}</Text>
-          )}
-
-          <TextInput
-            mode="outlined"
-            label="Username"
-            value={values.username}
-            onChangeText={(text) => setFieldValue("username", text)}
-            onBlur={handleBlur("username")}
-            error={touched.username && !!errors.username}
-            left={<TextInput.Icon icon="account-circle" />}
-          />
-          {touched.username && errors.username && (
-            <Text style={styles.errorText}>{errors.username}</Text>
-          )}
-
-          <TextInput
-            mode="outlined"
-            label="Email"
-            value={values.email}
-            onChangeText={(text) => setFieldValue("email", text)}
-            onBlur={handleBlur("email")}
-            error={touched.email && !!errors.email}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            left={<TextInput.Icon icon="email" />}
-          />
-          {touched.email && errors.email && (
-            <Text style={styles.errorText}>{errors.email}</Text>
-          )}
-
-          <TextInput
-            mode="outlined"
-            label="Phone Number"
-            value={values.phoneNumber}
-            onChangeText={(text) => setFieldValue("phoneNumber", text)}
-            onBlur={handleBlur("phoneNumber")}
-            error={touched.phoneNumber && !!errors.phoneNumber}
-            keyboardType="phone-pad"
-            left={<TextInput.Icon icon="phone" />}
-          />
-          {touched.phoneNumber && errors.phoneNumber && (
-            <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-          )}
-          <Dropdown
-            label="Role"
-            mode="outlined"
-            value={values.role}
-            options={OPTIONS}
-            onSelect={(value) => setFieldValue("role", value)}
-            CustomMenuHeader={(props) => <></>}
-          />
-
-          {touched.role && errors.role && (
-            <Text style={styles.errorText}>{errors.role}</Text>
-          )}
-
-          {error && (
-            <Text style={styles.errorText}>
-              Failed to update worker profile. Please try again.
-            </Text>
-          )}
-
-          <Button
-            mode="contained"
-            onPress={() => handleSubmit()}
-            style={styles.submitButton}
-            disabled={isUpdating}
-          >
-            {isUpdating ? (
-              <ActivityIndicator animating={true} color={"#ffffff"} />
+    <ScrollView>
+      <FormWrapper>
+        <Surface style={styles.surface}>
+          <View style={styles.header}>
+            <Title>Edit Worker Profile</Title>
+            {data?.icon ? (
+              <Avatar.Image size={80} source={{ uri: data.icon }} />
             ) : (
-              <Text>Save Changes</Text>
+              <Avatar.Text
+                size={80}
+                label={`${values.firstName.charAt(0)}${values.lastName.charAt(
+                  0
+                )}`}
+              />
             )}
-          </Button>
-        </View>
-      </Surface>
-    </FormWrapper>
+            <IconButton
+              icon="camera"
+              size={24}
+              style={[styles.photoButton, { backgroundColor: colors.surface }]}
+              onPress={handleFileSelect}
+            />
+          </View>
+
+          <View style={styles.form}>
+            <TextInput
+              mode="outlined"
+              label="First Name"
+              value={values.firstName}
+              onChangeText={(text) => setFieldValue("firstName", text)}
+              onBlur={handleBlur("firstName")}
+              error={touched.firstName && !!errors.firstName}
+              left={<TextInput.Icon icon="account" />}
+            />
+            {touched.firstName && errors.firstName && (
+              <Text style={styles.errorText}>{errors.firstName}</Text>
+            )}
+
+            <TextInput
+              mode="outlined"
+              label="Last Name"
+              value={values.lastName}
+              onChangeText={(text) => setFieldValue("lastName", text)}
+              onBlur={handleBlur("lastName")}
+              error={touched.lastName && !!errors.lastName}
+              left={<TextInput.Icon icon="account" />}
+            />
+            {touched.lastName && errors.lastName && (
+              <Text style={styles.errorText}>{errors.lastName}</Text>
+            )}
+
+            <TextInput
+              mode="outlined"
+              label="Username"
+              value={values.username}
+              onChangeText={(text) => setFieldValue("username", text)}
+              onBlur={handleBlur("username")}
+              error={touched.username && !!errors.username}
+              left={<TextInput.Icon icon="account-circle" />}
+            />
+            {touched.username && errors.username && (
+              <Text style={styles.errorText}>{errors.username}</Text>
+            )}
+
+            <TextInput
+              mode="outlined"
+              label="Email"
+              value={values.email}
+              onChangeText={(text) => setFieldValue("email", text)}
+              onBlur={handleBlur("email")}
+              error={touched.email && !!errors.email}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              left={<TextInput.Icon icon="email" />}
+            />
+            {touched.email && errors.email && (
+              <Text style={styles.errorText}>{errors.email}</Text>
+            )}
+
+            <TextInput
+              mode="outlined"
+              label="Phone Number"
+              value={values.phoneNumber}
+              onChangeText={(text) => setFieldValue("phoneNumber", text)}
+              onBlur={handleBlur("phoneNumber")}
+              error={touched.phoneNumber && !!errors.phoneNumber}
+              keyboardType="phone-pad"
+              left={<TextInput.Icon icon="phone" />}
+            />
+            {touched.phoneNumber && errors.phoneNumber && (
+              <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+            )}
+            <Dropdown
+              label="Role"
+              mode="outlined"
+              value={values.role}
+              options={OPTIONS}
+              onSelect={(value) => setFieldValue("role", value)}
+              CustomMenuHeader={(props) => <></>}
+            />
+
+            {touched.role && errors.role && (
+              <Text style={styles.errorText}>{errors.role}</Text>
+            )}
+
+            {error && (
+              <Text style={styles.errorText}>
+                Failed to update worker profile. Please try again.
+              </Text>
+            )}
+
+            <View>
+              <Button
+                mode="contained"
+                onPress={() => handleSubmit()}
+                style={styles.submitButton}
+                disabled={isUpdating}
+              >
+                {isUpdating ? (
+                  <ActivityIndicator animating={true} color={"#ffffff"} />
+                ) : (
+                  <Text>Save Changes</Text>
+                )}
+              </Button>
+              <Button
+                mode="contained"
+                onPress={() => {
+                  setIsOpenDialog(true);
+                }}
+                style={[styles.submitButton, { backgroundColor: colors.error }]}
+                disabled={isUpdating}
+              >
+                Delete User
+              </Button>
+            </View>
+          </View>
+        </Surface>
+      </FormWrapper>
+      <ConfirmationDialog
+        action={() => {
+          removeWorker({ userId: data?.id ?? "", restaurantId: restaurantId });
+          router.push({
+            pathname: "/restaurant/[id]/(workers)",
+            params: {
+              id: restaurantId,
+            },
+          });
+        }}
+        text={`Are you sure you want to delete ${data?.username} ? This action cannot be undone.`}
+        close={() => {
+          setIsOpenDialog(false);
+        }}
+        isOpen={isOpenDialog}
+      />
+    </ScrollView>
   );
 };
 
@@ -290,9 +321,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   surface: {
-    height: "95%",
-    margin: 16,
-    padding: 16,
+    height: "auto",
+    margin: 10,
+    padding: 20,
     borderRadius: 8,
     elevation: 4,
   },

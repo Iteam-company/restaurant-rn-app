@@ -10,7 +10,6 @@ const store = configureStore({
     [workerApi.reducerPath]: workerApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
   },
-  // @ts-ignore
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,

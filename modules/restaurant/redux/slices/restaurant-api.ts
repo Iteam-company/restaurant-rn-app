@@ -36,7 +36,7 @@ export const restaurantApi = workerApi
           ...(result?.map(({ id }) => ({
             type: TagTypes.RESTAURANT,
             id,
-          })) ?? []),
+          })) ?? []), //NOTE: maybe replace just id to restaurant-${restaurantId}
         ],
       }),
 
@@ -69,14 +69,14 @@ export const restaurantApi = workerApi
           url: `/restaurant/workers/${restaurantId}/${userId}`,
           method: "DELETE",
         }),
-        invalidatesTags: (result, error, { restaurantId }) => [
+        invalidatesTags: (result, error, { restaurantId, userId }) => [
           { type: TagTypes.RESTAURANT, id: restaurantId },
           { type: TagTypes.RESTAURANT, id: "LIST" },
           { type: TagTypes.USER, id: "LIST" },
+          { type: TagTypes.USER, id: userId },
           { type: TagTypes.USER, id: `restaurant-${restaurantId}` },
         ],
       }),
-
       addWorker: builder.mutation<
         void,
         { userId: number; restaurantId: number }
