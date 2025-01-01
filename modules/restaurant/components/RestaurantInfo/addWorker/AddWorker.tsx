@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as SecureStore from "expo-secure-store";
 import { ActivityIndicator, StyleSheet } from "react-native";
 import { Button, TextInput, Text, Title } from "react-native-paper";
 import FormWrapper from "@/modules/common/components/FormWrapper";
-import { Logo } from "@/modules/common/components/ui/Logo";
-import { AUTH_TOKEN_KEY } from "@/modules/common/constants/api";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { UserROLES } from "@/modules/common/types/user.types";
-import { RTKMutationPayloadType } from "@/modules/common/redux/types";
+import { RTKMutationPayloadType } from "@/modules/common/types";
 import {
   initialValues,
   validationSchema,
 } from "@/modules/common/utils/createUserSchema";
-import {
-  useGetUserIdByTokenMutation,
-  useSignupMutation,
-} from "@/modules/auth/redux/slices/auth-api";
+import { useSignupMutation } from "@/modules/auth/redux/slices/auth-api";
 import { useAddWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 
 export default function AddWorker() {
@@ -25,8 +19,6 @@ export default function AddWorker() {
 
   const [signUp, { isLoading, error }] =
     useSignupMutation<RTKMutationPayloadType>();
-
-  const [getUserInfo] = useGetUserIdByTokenMutation();
   const [addWorkerToRestaurant] = useAddWorkerMutation();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -41,11 +33,9 @@ export default function AddWorker() {
             ...values,
             role: UserROLES.WAITER,
           }).unwrap();
-          if (res.access_token) {
-            const userInfo = await getUserInfo(res.access_token).unwrap();
-            console.log(userInfo);
+          if (res.id) {
             await addWorkerToRestaurant({
-              userId: userInfo.id,
+              userId: res.id,
               restaurantId: parseInt(id),
             });
             router.push({

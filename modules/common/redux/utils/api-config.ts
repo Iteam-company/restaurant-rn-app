@@ -1,6 +1,6 @@
-export const API_TAGS = {
+export const TagTypes = {
   USER: "User",
   RESTAURANT: "Restaurant",
 } as const;
 
-export const createSharedTagTypes = () => [API_TAGS.USER, API_TAGS.RESTAURANT];
+export type TagType = (typeof TagTypes)[keyof typeof TagTypes];

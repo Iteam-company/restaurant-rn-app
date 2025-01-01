@@ -23,16 +23,8 @@ export interface UserInfo {
   email: string;
   phoneNumber: string;
   role: UserROLES;
-  icon: any; //to-do change type
+  icon: string;
 }
-
-// export interface SearchUser {
-//   limit: number;
-//   page: number;
-//   search: string;
-//   restaurantId: string;
-// }
-
 export type SearchUser = Record<
   "limit" | "page" | "search" | "restaurantId",
   string

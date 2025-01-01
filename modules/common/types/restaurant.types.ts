@@ -1,4 +1,4 @@
-import { UserInfo, UserType } from "./user.types";
+import { UserInfo } from "./user.types";
 
 export interface CreateRestaurantRequest {
   restaurantName: string;

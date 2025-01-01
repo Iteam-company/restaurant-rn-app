@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { Dimensions, View, StyleSheet } from "react-native";
 import {
@@ -15,6 +15,7 @@ import {
 import { router } from "expo-router";
 import Entypo from "@expo/vector-icons/Entypo";
 import { useDeleteRestaurantMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 
 interface RestaurantListItemProps {
   id: number;
@@ -32,8 +33,8 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
   image,
 }) => {
   const { colors } = useTheme();
-  const [visible, setVisible] = React.useState(false);
-  const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
+  const [visible, setVisible] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const [deleteRestaurant] = useDeleteRestaurantMutation();
 
@@ -45,13 +46,9 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
     setShowDeleteDialog(true);
   };
 
-  const hideDeleteDialog = () => {
-    setShowDeleteDialog(false);
-  };
-
   const confirmDelete = (restaurantId: number) => {
     deleteRestaurant(restaurantId);
-    hideDeleteDialog();
+    setShowDeleteDialog(false);
   };
 
   return (
@@ -127,7 +124,18 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
         </Card.Content>
       </Card>
 
-      <Portal>
+      <ConfirmationDialog
+        text={` Are you sure you want to delete ${name}? This action cannot be undone.`}
+        action={() => {
+          confirmDelete(id);
+        }}
+        close={() => {
+          setShowDeleteDialog(false);
+        }}
+        isOpen={showDeleteDialog}
+      />
+
+      {/* <Portal>
         <Dialog
           visible={showDeleteDialog}
           onDismiss={hideDeleteDialog}
@@ -136,8 +144,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
           <Dialog.Title>Confirm Deletion</Dialog.Title>
           <Dialog.Content>
             <Paragraph>
-              Are you sure you want to delete "{name}"? This action cannot be
-              undone.
+             
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
@@ -145,14 +152,14 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
             <Button
               textColor={colors.error}
               onPress={() => {
-                confirmDelete(id);
+               
               }}
             >
               Delete
             </Button>
           </Dialog.Actions>
         </Dialog>
-      </Portal>
+      </Portal> */}
     </>
   );
 };
@@ -218,8 +225,5 @@ const styles = StyleSheet.create({
   },
   menuIcon: {
     padding: 8,
-  },
-  dialog: {
-    borderRadius: 14,
   },
 });

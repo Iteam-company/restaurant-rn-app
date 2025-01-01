@@ -9,7 +9,7 @@ import { Logo } from "@/modules/common/components/ui/Logo";
 import { AUTH_TOKEN_KEY } from "@/modules/common/constants/api";
 import { useRouter } from "expo-router";
 import { UserROLES } from "@/modules/common/types/user.types";
-import { RTKMutationPayloadType } from "@/modules/common/redux/types";
+import { RTKMutationPayloadType } from "@/modules/common/types";
 import { useSignupMutation } from "../../redux/slices/auth-api";
 
 export default function SignUpForm() {

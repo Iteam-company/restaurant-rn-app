@@ -1,97 +1,101 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_URL } from "../../../common/constants/api";
-import { prepareHeadersWithAuth } from "@/modules/common/redux/utils/prepareHeadersWithAuth";
+// src/modules/common/redux/apis/restaurant-api.ts
+import { workerApi } from "@/modules/common/redux/slices/worker-api";
+import { TagTypes } from "@/modules/common/redux/utils/api-config";
 import {
-  UpdateUserInfoI,
   CreateRestaurantRequest,
   CreateRestaurantResponse,
   DeleteWorker,
   RestaurantInfo,
 } from "@/modules/common/types/restaurant.types";
-import { createSharedTagTypes } from "@/modules/common/redux/utils/api-config";
 
-export const restaurantApi = createApi({
-  reducerPath: "restaurantApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${API_URL}`,
-    prepareHeaders: prepareHeadersWithAuth,
-  }),
-  tagTypes: createSharedTagTypes(),
-  endpoints: (builder) => ({
-    getRestaurant: builder.query<RestaurantInfo, string>({
-      query: (id) => ({
-        url: `/restaurant/${id}`,
-        method: "GET",
+export const restaurantApi = workerApi
+  .enhanceEndpoints({
+    addTagTypes: [TagTypes.RESTAURANT, TagTypes.USER],
+  })
+  .injectEndpoints({
+    overrideExisting: true,
+    endpoints: (builder) => ({
+      getRestaurant: builder.query<RestaurantInfo, string>({
+        query: (id) => ({
+          url: `/restaurant/${id}`,
+          method: "GET",
+        }),
+        providesTags: (result, error, id) => [
+          { type: TagTypes.RESTAURANT, id },
+          { type: TagTypes.RESTAURANT, id: "LIST" },
+        ],
       }),
-      providesTags: (result, error, id) => [
-        { type: "Restaurant", id },
-        { type: "Restaurant", id: "LIST" },
-      ],
-    }),
-    getRestaurants: builder.query<RestaurantInfo[], void>({
-      query: () => ({
-        url: "/restaurant/owner-by",
-        method: "GET",
+
+      getRestaurants: builder.query<RestaurantInfo[], void>({
+        query: () => ({
+          url: "/restaurant/owner-by",
+          method: "GET",
+        }),
+        providesTags: (result) => [
+          { type: TagTypes.RESTAURANT, id: "LIST" },
+          ...(result?.map(({ id }) => ({
+            type: TagTypes.RESTAURANT,
+            id,
+          })) ?? []),
+        ],
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: "Restaurant" as const, id })),
-              { type: "Restaurant", id: "LIST" },
-            ]
-          : [{ type: "Restaurant", id: "LIST" }],
-    }),
-    createRestaurant: builder.mutation<
-      CreateRestaurantResponse,
-      CreateRestaurantRequest
-    >({
-      query: (restaurantInfo) => ({
-        url: "/restaurant",
-        method: "POST",
-        body: {
-          name: restaurantInfo.restaurantName,
-          address: restaurantInfo.address,
-          ownerId: restaurantInfo.ownerId,
-        },
+
+      createRestaurant: builder.mutation<
+        CreateRestaurantResponse,
+        CreateRestaurantRequest
+      >({
+        query: (restaurantInfo) => ({
+          url: "/restaurant",
+          method: "POST",
+          body: {
+            name: restaurantInfo.restaurantName,
+            address: restaurantInfo.address,
+            ownerId: restaurantInfo.ownerId,
+          },
+        }),
+        invalidatesTags: [{ type: TagTypes.RESTAURANT, id: "LIST" }],
       }),
-      invalidatesTags: [{ type: "Restaurant", id: "LIST" }],
-    }),
-    deleteRestaurant: builder.mutation<void, number>({
-      query: (restaurantId) => ({
-        url: `/restaurant/${restaurantId}`,
-        method: "DELETE",
+
+      deleteRestaurant: builder.mutation<void, number>({
+        query: (restaurantId) => ({
+          url: `/restaurant/${restaurantId}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: [{ type: TagTypes.RESTAURANT, id: "LIST" }],
       }),
-      invalidatesTags: [{ type: "Restaurant", id: "LIST" }],
-    }),
-    removeWorker: builder.mutation<RestaurantInfo, DeleteWorker>({
-      query: ({ userId, restaurantId }) => ({
-        url: `/restaurant/workers/${restaurantId}/${userId}`,
-        method: "DELETE",
+
+      removeWorker: builder.mutation<RestaurantInfo, DeleteWorker>({
+        query: ({ userId, restaurantId }) => ({
+          url: `/restaurant/workers/${restaurantId}/${userId}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: (result, error, { restaurantId }) => [
+          { type: TagTypes.RESTAURANT, id: restaurantId },
+          { type: TagTypes.RESTAURANT, id: "LIST" },
+          { type: TagTypes.USER, id: "LIST" },
+          { type: TagTypes.USER, id: `restaurant-${restaurantId}` },
+        ],
       }),
-      invalidatesTags: (result, error, { restaurantId }) => [
-        { type: "Restaurant", id: restaurantId },
-        { type: "Restaurant", id: "LIST" },
-      ],
-    }),
-    addWorker: builder.mutation<void, { userId: number; restaurantId: number }>(
-      {
+
+      addWorker: builder.mutation<
+        void,
+        { userId: number; restaurantId: number }
+      >({
         query: (body) => ({
           url: `/restaurant/workers`,
           method: "POST",
           body,
         }),
         invalidatesTags: (result, error, { restaurantId, userId }) => [
-          { type: "Restaurant", id: restaurantId },
-          { type: "Restaurant", id: "LIST" },
-          { type: "User", id: "SEARCH_RESULTS" },
-          { type: "User", id: "LIST" },
-          { type: "User", id: userId },
-          { type: "User", id: `restaurant-${restaurantId}` },
+          { type: TagTypes.RESTAURANT, id: restaurantId },
+          { type: TagTypes.RESTAURANT, id: "LIST" },
+          { type: TagTypes.USER, id: "LIST" },
+          { type: TagTypes.USER, id: userId },
+          { type: TagTypes.USER, id: `restaurant-${restaurantId}` },
         ],
-      }
-    ),
-  }),
-});
+      }),
+    }),
+  });
 
 export const {
   useCreateRestaurantMutation,
