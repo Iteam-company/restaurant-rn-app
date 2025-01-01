@@ -1,99 +1,106 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_URL } from "../../constants/api";
-import { prepareHeadersWithAuth } from "../utils/prepareHeadersWithAuth";
-import { SearchUser, UserInfo } from "../../types/user.types";
+import { UserInfo } from "../../types/user.types";
 import { UpdateUserInfoI } from "../../types/restaurant.types";
-import { createSharedTagTypes } from "../utils/api-config";
+import { SearchUser } from "../../types/user.types";
+import { TagTypes } from "../utils/api-config";
+import { workerApi } from "./worker-api";
 
-export const userApi = createApi({
-  reducerPath: "userApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${API_URL}/user`,
-    prepareHeaders: prepareHeadersWithAuth,
-  }),
-  tagTypes: createSharedTagTypes(),
-  endpoints: (builder) => ({
-    getUsers: builder.query({
-      query: () => ({
-        url: "/",
-        method: "GET",
+export const userApi = workerApi
+  .enhanceEndpoints({
+    addTagTypes: [TagTypes.USER],
+  })
+  .injectEndpoints({
+    overrideExisting: true,
+    endpoints: (builder) => ({
+      getUsers: builder.query({
+        query: () => ({
+          url: "/user",
+          method: "GET",
+        }),
+        providesTags: [{ type: TagTypes.USER, id: "LIST" }],
       }),
-    }),
-    createUser: builder.mutation({
-      query: (body) => ({
-        url: "/",
-        method: "POST",
-        body,
+
+      createUser: builder.mutation({
+        query: (body) => ({
+          url: "/user",
+          method: "POST",
+          body,
+        }),
+        invalidatesTags: [{ type: TagTypes.USER, id: "LIST" }],
       }),
-    }),
-    getUserById: builder.query<UserInfo, string>({
-      query: (id) => ({
-        url: `/one/${id}`,
-        method: "GET",
+
+      getUserById: builder.query<UserInfo, string>({
+        query: (id) => ({
+          url: `/user/one/${id}`,
+          method: "GET",
+        }),
+        providesTags: (result, error, id) => [
+          { type: TagTypes.USER, id },
+          { type: TagTypes.USER, id: "LIST" },
+        ],
       }),
-      providesTags: (result, error, id) => [
-        { type: "User", id },
-        { type: "User", id: "LIST" },
-      ],
-    }),
-    searchUsers: builder.query<UserInfo[], Partial<SearchUser>>({
-      query: (searchParams) => ({
-        url: "/search",
-        method: "GET",
-        params: {
-          limit: searchParams.limit ?? 10,
-          page: searchParams.page ?? 1,
-          search: searchParams.search ?? "",
-          restaurantId: searchParams.restaurantId,
+
+      searchUsers: builder.query<UserInfo[], Partial<SearchUser>>({
+        query: (searchParams) => ({
+          url: "/user/search",
+          method: "GET",
+          params: {
+            limit: searchParams.limit ?? 10,
+            page: searchParams.page ?? 1,
+            search: searchParams.search ?? "",
+            restaurantId: searchParams.restaurantId,
+          },
+        }),
+        providesTags: (result, error, searchParams) => {
+          const tags = [
+            { type: TagTypes.USER, id: "LIST" },
+            ...(result?.map(({ id }) => ({
+              type: TagTypes.USER,
+              id,
+            })) ?? []),
+          ];
+
+          if (searchParams?.restaurantId) {
+            tags.push({
+              type: TagTypes.USER,
+              id: `restaurant-${searchParams.restaurantId}`,
+            });
+          }
+
+          return tags;
         },
       }),
-      providesTags: (result, error, searchParams) =>
-        [
-          { type: "User" as const, id: "SEARCH_RESULTS" },
-          { type: "User" as const, id: "LIST" },
-          ...(result?.map(({ id }) => ({ type: "User" as const, id })) ?? []),
-          searchParams?.restaurantId
-            ? {
-                type: "User" as const,
-                id: `restaurant-${searchParams.restaurantId}`,
-              }
-            : null,
-        ].filter(Boolean),
-    }),
-    updateUserInfo: builder.mutation<void, UpdateUserInfoI>({
-      query: (request) => ({
-        url: `/${request.params.userId}/admin`,
-        method: "Patch",
-        body: request.body,
+
+      updateUserInfo: builder.mutation<void, UpdateUserInfoI>({
+        query: (request) => ({
+          url: `/user/${request.params.userId}/admin`,
+          method: "PATCH",
+          body: request.body,
+        }),
+        invalidatesTags: (result, error, { params }) => [
+          { type: TagTypes.USER, id: params.userId },
+          { type: TagTypes.USER, id: "LIST" },
+        ],
       }),
-      invalidatesTags: (result, error, { params }) => [
-        { type: "User", id: params.userId },
-        { type: "User", id: "LIST" },
-      ],
-    }),
-    updateUserPhoto: builder.mutation<
-      void,
-      { formData: FormData; workerId: string }
-    >({
-      query: ({ formData, workerId }) => {
-        console.log(formData);
-        return {
-          url: `/icon/${workerId}/admin`,
+
+      updateUserPhoto: builder.mutation<
+        void,
+        { formData: FormData; workerId: string }
+      >({
+        query: ({ formData, workerId }) => ({
+          url: `/user/icon/${workerId}/admin`,
           method: "PATCH",
           body: formData,
-
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        };
-      },
-      invalidatesTags: (result, error, { workerId }) => [
-        { type: "User", id: workerId },
-        { type: "User", id: "LIST" },
-      ],
+        }),
+        invalidatesTags: (result, error, { workerId }) => [
+          { type: TagTypes.USER, id: workerId },
+          { type: TagTypes.USER, id: "LIST" },
+        ],
+      }),
     }),
-  }),
-});
+  });
 
 export const {
   useGetUsersQuery,

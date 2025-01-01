@@ -22,7 +22,7 @@ import {
   useUpdateUserInfoMutation,
   useUpdateUserPhotoMutation,
 } from "@/modules/common/redux/slices/user-api";
-import { RTKMutationPayloadType } from "@/modules/common/redux/types";
+import { RTKMutationPayloadType } from "@/modules/common/types";
 import { Dropdown } from "react-native-paper-dropdown";
 import { UserROLES } from "@/modules/common/types/user.types";
 import { useFileSelect } from "@/modules/common/hooks/useFileSelect";

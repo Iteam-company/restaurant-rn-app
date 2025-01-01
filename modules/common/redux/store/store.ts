@@ -1,26 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore } from "redux-persist";
 
-import { userApi } from "../slices/user-api";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { authApi } from "@/modules/auth/redux/slices/auth-api";
-import { restaurantApi } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { workerApi } from "../slices/worker-api";
 
 const store = configureStore({
   reducer: {
-    [userApi.reducerPath]: userApi.reducer,
+    [workerApi.reducerPath]: workerApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
-    [restaurantApi.reducerPath]: restaurantApi.reducer,
   },
   // @ts-ignore
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat([
-      userApi.middleware,
-      authApi.middleware,
-      restaurantApi.middleware,
-    ]),
+    }).concat([authApi.middleware, workerApi.middleware]),
 });
 
 setupListeners(store.dispatch);

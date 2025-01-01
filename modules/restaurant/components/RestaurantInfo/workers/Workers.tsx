@@ -1,20 +1,18 @@
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { useTheme, List, Title, FAB, Searchbar } from "react-native-paper";
+import { useTheme, List, Title, FAB, Searchbar,Avatar } from "react-native-paper";
 import { useLocalSearchParams } from "expo-router";
 import Wrapper from "@/modules/common/components/Wrapper";
 import Feather from "@expo/vector-icons/Feather";
-import {
-  useRemoveWorkerMutation,
-} from "@/modules/restaurant/redux/slices/restaurant-api";
+import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 import useDebounce from "@/modules/common/hooks/useDebounce";
+
 import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
 
 const Workers = () => {
   const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
-  // const { data, isLoading } = useGetRestaurantQuery(restaurantId);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedSearchTerm = useDebounce(searchQuery, 500);
 
@@ -45,19 +43,26 @@ const Workers = () => {
                 description={el.email}
                 onPress={() => {
                   router.push({
-                    pathname:
-                      "/restaurant/[id]/(workers)/worker/[workerId]",
+                    pathname: "/restaurant/[id]/(workers)/worker/[workerId]",
                     params: { id: restaurantId, workerId: el.id },
                   });
                 }}
-                left={(props) => (
-                  <Feather
-                    {...props}
-                    name="user"
-                    size={24}
-                    color={colors.primary}
-                  />
-                )}
+                left={(props) =>
+                  el.icon ? (
+                    <Avatar.Image
+                      {...props}
+                      size={24}
+                      source={{ uri: el.icon }}
+                    />
+                  ) : (
+                    <Feather
+                      {...props}
+                      name="user"
+                      size={24}
+                      color={colors.primary}
+                    />
+                  )
+                }
               />
             ))}
             {!findedUsers?.length && (
