@@ -30,6 +30,15 @@ export default function RestaurantPageLayout() {
           title={`${restaurantData?.name}`}
           titleStyle={{ color: "white" }}
         />
+        <Appbar.Action
+          icon="home-outline"
+          iconColor="white"
+          onPress={() =>
+            router.push({
+              pathname: "/dashboard/(tabs)/restaurants",
+            })
+          }
+        />
       </Appbar.Header>
       <Tabs
         screenOptions={{
