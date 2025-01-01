@@ -23,7 +23,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   confirmButtonText = "Delete",
   cancelButtonText = "Cancel",
   action,
-  text = "Are you shure?",
+  text = "Are you sure?",
   close,
   isOpen,
 }) => {

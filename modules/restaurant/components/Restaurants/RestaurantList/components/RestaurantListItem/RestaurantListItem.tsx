@@ -125,7 +125,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
       </Card>
 
       <ConfirmationDialog
-        text={` Are you sure you want to delete ${name}? This action cannot be undone.`}
+        text={`Are you sure you want to delete ${name}? This action cannot be undone.`}
         action={() => {
           confirmDelete(id);
         }}
