@@ -1,3 +1,7 @@
-export const API_URL = "http://192.168.1.42:3000";
+import Constants from 'expo-constants';
 
-export const AUTH_TOKEN_KEY = "auth_token";
+const expoConstants = Constants.expoConfig?.extra ?? {};
+
+export const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+export const AUTH_TOKEN_KEY = 'auth_token';

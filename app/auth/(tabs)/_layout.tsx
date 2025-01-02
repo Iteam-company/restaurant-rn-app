@@ -1,7 +1,5 @@
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
-import { authApi } from "@/modules/common/redux/slices/auth-api";
-import { ApiProvider } from "@reduxjs/toolkit/query/react";
 import { Tabs } from "expo-router";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
