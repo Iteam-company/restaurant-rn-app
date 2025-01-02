@@ -2,10 +2,12 @@ import React from "react";
 import { View } from "react-native";
 import Wrapper from "@/modules/common/components/Wrapper";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { FAB, useTheme } from "react-native-paper";
+import { FAB, Title } from "react-native-paper";
 import { MenuDetails } from "@/modules/menu/components/MenuDetails";
+import { router, useLocalSearchParams } from "expo-router";
 
 export default function MenuPage() {
+  const { id, menuId } = useLocalSearchParams<{ id: string; menuId: string }>();
   return (
     <Wrapper>
       <MenuDetails />
@@ -22,8 +24,15 @@ export default function MenuPage() {
           margin: 16,
           right: 0,
           bottom: 0,
+          zIndex: 999,
         }}
-        // onPress={() => router.push("./addMenu")}
+        onPress={() => {
+          console.log("vfdjinffvjvn");
+          router.push({
+            pathname: "/restaurant/[id]/(menu)/menu/addMenuItem/[menuId]",
+            params: { id, menuId },
+          });
+        }}
       />
     </Wrapper>
   );
