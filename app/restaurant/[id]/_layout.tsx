@@ -78,7 +78,7 @@ export default function RestaurantPageLayout() {
           }}
         />
         <Tabs.Screen
-          name="menu"
+          name="(menu)"
           options={{
             title: "Menu",
             tabBarIcon: ({ color }) => (

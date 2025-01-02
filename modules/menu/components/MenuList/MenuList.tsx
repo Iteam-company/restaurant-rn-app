@@ -1,13 +1,10 @@
-import React from "react";
 import { View } from "react-native";
 import { Title } from "react-native-paper";
 
-const Restaurant = () => {
+export const MenuList = () => {
   return (
     <View>
-      <Title>Menu</Title>
+      <Title>hvbbkhvbfgkhbbg</Title>
     </View>
   );
 };
-
-export default Restaurant;
