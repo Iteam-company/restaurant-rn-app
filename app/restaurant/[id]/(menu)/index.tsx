@@ -1,8 +1,7 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import { MenuList } from "@/modules/menu/components/MenuList";
-import { router } from "expo-router";
+import { router} from "expo-router";
 import { FAB } from "react-native-paper";
-import { Title } from "react-native-paper";
 
 export default function MenuPage() {
   return (

@@ -17,7 +17,6 @@ import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/resta
 import useDebounce from "@/modules/common/hooks/useDebounce";
 
 import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
-import { RTKMutationPayloadType } from "@/modules/common/types";
 
 const Workers = () => {
   const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
