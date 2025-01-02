@@ -1,16 +1,17 @@
 import React from "react";
-import { IconSymbol } from "@/modules/common/components/ui/IconSymbol.ios";
+import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { Colors } from "@/modules/common/constants/Colors";
 import { Tabs } from "expo-router";
 import { Platform, useColorScheme } from "react-native";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
+import { useTheme } from "react-native-paper";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { colors } = useTheme();
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: colors.primary,
         headerShown: false,
         // tabBarButton: HapticTab,
         tabBarBackground: TabBackground,
@@ -23,9 +24,9 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="restaurants"
         options={{
-          title: "Home",
+          title: "Restaurants",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="house.fill" color={color} />
           ),

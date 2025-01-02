@@ -9,7 +9,7 @@ export default function HomeScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      router.replace('/auth/signin');
+      router.push('/auth/signin');
     }, [router])
   );
 

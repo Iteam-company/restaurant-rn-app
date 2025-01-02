@@ -11,13 +11,13 @@ import {
   ActivityIndicator,
 } from 'react-native-paper';
 import { Logo } from '@/modules/common/components/ui/Logo';
-import { useSigninMutation } from '@/modules/common/redux/slices/auth-api';
 import FormWrapper from '@/modules/common/components/FormWrapper';
 import { AuthMethod, getValidationSchema } from './utils';
 import { initialValues } from '../SignInForm/utils';
 import { AUTH_TOKEN_KEY } from '@/modules/common/constants/api';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { RTKMutationPayloadType } from '@/modules/common/redux/types';
+import { RTKMutationPayloadType } from '@/modules/common/types';
+import { useSigninMutation } from '../../redux/slices/auth-api';
 
 export default function SiginInForm() {
   const router = useRouter();
@@ -49,7 +49,7 @@ export default function SiginInForm() {
         if (userToken.access_token) {
           SecureStore.setItem(AUTH_TOKEN_KEY, userToken.access_token);
         }
-        router.push('/dashboard');
+        router.push('/dashboard/restaurants');
       } catch (e) {
         const error = e as FetchBaseQueryError;
         if (error.status === 401) {

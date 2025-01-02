@@ -4,28 +4,27 @@ import {
   DefaultTheme,
   NavigationContainer,
   ThemeProvider,
-} from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
-import { PaperProvider } from "react-native-paper";
-import { useColorScheme } from "react-native";
+} from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import React, { useEffect } from 'react';
+import { PaperProvider } from 'react-native-paper';
+import { useColorScheme } from 'react-native';
 
-import { theme } from "@/modules/common/theme/theme";
-import "react-native-reanimated";
-import { Provider, useDispatch } from "react-redux";
-import { store } from "@/modules/common/redux/store/store";
+import { theme } from '@/modules/common/theme/theme';
+import 'react-native-reanimated';
+import { Provider, useDispatch } from 'react-redux';
+import { store } from '@/modules/common/redux/store/store';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 export const navigationRef = createNavigationContainerRef();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -42,8 +41,6 @@ export default function RootLayout() {
     <NavigationContainer>
       <Provider store={store}>
         <PaperProvider theme={theme}>
-          {/* <ThemeProvider
-            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
           <Stack>
             <Stack.Screen name="auth/(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
@@ -51,7 +48,7 @@ export default function RootLayout() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="reastaurant/create"
+              name="restaurant/create"
               options={{ headerShown: false }}
             />
             <Stack.Screen name="+not-found" />
