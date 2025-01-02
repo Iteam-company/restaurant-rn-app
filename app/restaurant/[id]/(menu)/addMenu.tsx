@@ -1,10 +1,10 @@
-import { Title } from "react-native-paper";
-import { View } from "react-native";
+import Wrapper from "@/modules/common/components/Wrapper";
+import { AddMenu } from "@/modules/menu/components/AddMenu";
 
-export default function AddMenu() {
+export default function AddMenuPage() {
   return (
-    <View>
-      <Title>Add Menu</Title>
-    </View>
+    <Wrapper centered>
+      <AddMenu />
+    </Wrapper>
   );
 }

@@ -8,7 +8,6 @@ import { useCreateRestaurantMutation } from '../../redux/slices/restaurant-api';
 import { initialValues, validationSchema } from './utils';
 import { useFileSelect } from '@/modules/common/hooks/useFileSelect';
 import { useValidateTokenQuery } from '@/modules/auth/redux/slices/auth-api';
-import Wrapper from '@/modules/common/components/Wrapper';
 
 export default function CreateRestaurant() {
   const router = useRouter();
