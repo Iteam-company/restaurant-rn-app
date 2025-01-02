@@ -82,7 +82,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
               style={styles.button}
               onPress={() => {
                 router.push({
-                  pathname: "/restaurant/[id]/(workers)",
+                  pathname: "/restaurant/[id]/(menu)",
                   params: { id },
                 });
               }}

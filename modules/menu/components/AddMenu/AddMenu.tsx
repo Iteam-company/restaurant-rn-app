@@ -25,7 +25,6 @@ export const AddMenu = () => {
   const { id: restaurantId } = useLocalSearchParams<{
     id: string;
   }>();
-
   const [createMenu, { isLoading: isCreatingMenu }] =
     useCreateMenuMutation<RTKMutationPayloadType>();
 
