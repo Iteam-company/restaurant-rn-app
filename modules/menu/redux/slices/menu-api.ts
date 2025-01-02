@@ -71,6 +71,23 @@ export const menuApi = createApi({
         { type: "MENU", id: args },
       ],
     }),
+    createMenuItem: builder.mutation<any, void>({
+      query: (body) => ({
+        url: "/menu/item",
+        method: "POST",
+        body,
+      }),
+    }),
+    connectItemToMenu: builder.mutation<
+      any,
+      { menuId: string | number; itemId: number }
+    >({
+      query: (params) => ({
+        url: `/menu/${params.menuId}/${params.itemId}`,
+        method: "POST",
+        body: {},
+      }),
+    }),
   }),
 });
 
@@ -81,4 +98,6 @@ export const {
   useConnectMenuToRestaurantMutation,
   useDeleteMenuConnectionMutation,
   useDeleteMenuMutation,
+  useCreateMenuItemMutation,
+  useConnectItemToMenuMutation,
 } = menuApi;
