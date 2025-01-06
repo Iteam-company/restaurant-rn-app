@@ -16,4 +16,14 @@ export interface IMenu {
   name: string;
   season: SeasonsEnum;
   categories: CategoriesEnum;
+  menuItems: IMenuItem[];
+}
+
+export interface IMenuItem {
+  id: number;
+  name: string;
+  description: string;
+  ingredients: string;
+  timeForCook: string;
+  price: number;
 }

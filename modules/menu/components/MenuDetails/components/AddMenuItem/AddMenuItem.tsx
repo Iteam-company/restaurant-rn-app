@@ -1,20 +1,44 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import { useFormik } from "formik";
 import React from "react";
-import { View } from "react-native";
-import { Button, Headline, TextInput } from "react-native-paper";
-import { Dropdown } from "react-native-paper-dropdown";
+import {
+  ActivityIndicator,
+  Button,
+  Headline,
+  TextInput,
+} from "react-native-paper";
 import { initialValues, validationSchema } from "./utils";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import {
+  useConnectItemToMenuMutation,
+  useCreateMenuItemMutation,
+} from "@/modules/menu/redux/slices/menu-api";
+import { RTKMutationPayloadType } from "@/modules/common/types";
 
 export const AddMenuItem = () => {
+  const { menuId } = useLocalSearchParams<{ menuId: string }>();
+
+  const [createMenu, { isLoading: isCreating }] =
+    useCreateMenuItemMutation<RTKMutationPayloadType>();
+  const [connectItemToMenu, { isLoading: isConnecting }] =
+    useConnectItemToMenuMutation<RTKMutationPayloadType>();
+
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
       initialValues,
       validationSchema,
       validateOnChange: true,
       onSubmit: async (formData) => {
-        console.log(formData);
+        try {
+          const body = { ...formData, price: parseInt(formData.price) };
+          const res = await createMenu(body).unwrap();
+          if (res.id) {
+            await connectItemToMenu({ menuId, itemId: res.id });
+            router.back();
+          }
+        } catch {
+          console.error("error");
+        }
       },
     });
 
@@ -65,9 +89,10 @@ export const AddMenuItem = () => {
         mode="outlined"
         label="Price"
         value={values.price?.toString() ?? ""}
-        onChangeText={(text) =>
-          setFieldValue("price", text ? Number(text) : null)
-        }
+        onChangeText={(text) => {
+          const numericValue = text.replace(/[^0-9]/g, "");
+          setFieldValue("price", numericValue);
+        }}
         onBlur={handleBlur("price")}
         error={touched.price && !!errors.price}
         keyboardType="numeric"
@@ -75,12 +100,11 @@ export const AddMenuItem = () => {
       />
 
       <Button mode="contained-tonal" onPress={() => handleSubmit()}>
-        {/* {isConnecting || isCreatingMenu ? (
-      <ActivityIndicator animating={true} color={"#7c8ebf"} />
-    ) : (
-      "Submit"
-    )} */}
-        Add New Item
+        {isConnecting || isCreating ? (
+          <ActivityIndicator animating={true} color={"#7c8ebf"} />
+        ) : (
+          "Add New Item"
+        )}
       </Button>
       <Button mode="elevated" onPress={() => router.back()}>
         Back

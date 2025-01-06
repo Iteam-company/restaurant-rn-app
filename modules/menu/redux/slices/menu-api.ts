@@ -2,7 +2,8 @@ import { API_URL } from "@/modules/common/constants/api";
 import { prepareHeadersWithAuth } from "@/modules/common/redux/utils/prepareHeadersWithAuth";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { MenuFormData } from "../../components/AddMenu/utils";
-import { IMenu } from "../../types";
+import { IMenu, IMenuItem } from "../../types";
+import { MenuItemFormData } from "../../components/MenuDetails/components/AddMenuItem/utils";
 
 export const menuApi = createApi({
   reducerPath: "menu-api",
@@ -25,7 +26,7 @@ export const menuApi = createApi({
         })) ?? []),
       ],
     }),
-    getMenu: builder.query<any, string>({
+    getMenu: builder.query<IMenu, string>({
       query: (menuId) => ({
         url: `/menu/${menuId}`,
         method: "GET",
@@ -71,7 +72,7 @@ export const menuApi = createApi({
         { type: "MENU", id: args },
       ],
     }),
-    createMenuItem: builder.mutation<any, void>({
+    createMenuItem: builder.mutation<{ id: number }, Partial<IMenuItem>>({
       query: (body) => ({
         url: "/menu/item",
         method: "POST",
@@ -79,14 +80,27 @@ export const menuApi = createApi({
       }),
     }),
     connectItemToMenu: builder.mutation<
-      any,
+      void,
       { menuId: string | number; itemId: number }
     >({
       query: (params) => ({
-        url: `/menu/${params.menuId}/${params.itemId}`,
+        url: `/menu/item/${params.menuId}/${params.itemId}`,
         method: "POST",
         body: {},
       }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "MENU" as const, id: arg.menuId },
+      ],
+    }),
+    deleteMenuItem: builder.mutation<void, { menuId: string; itemId: number }>({
+      query: (params) => ({
+        url: `/menu/item/${params.itemId}`,
+        method: "DELETE",
+        body: {},
+      }),
+      invalidatesTags: (result, error, args) => [
+        { type: "MENU" as const, id: args.menuId },
+      ],
     }),
   }),
 });
@@ -100,4 +114,5 @@ export const {
   useDeleteMenuMutation,
   useCreateMenuItemMutation,
   useConnectItemToMenuMutation,
+  useDeleteMenuItemMutation,
 } = menuApi;

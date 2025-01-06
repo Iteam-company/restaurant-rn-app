@@ -60,19 +60,23 @@ export const MenuCard: FC<MenuCardProps> = ({
     deleteMenuConnection({ restaurantId, menuId: id });
     deleteMenu(id);
   };
+
   return (
-    <View>
+    <View style={styles.container}>
       <Card
         style={styles.card}
         onPress={() => {
-          router.push(`./menu/${id}`);
+          router.push({
+            pathname: "/restaurant/[id]/(menu)/menu/[menuId]",
+            params: { id: restaurantId, menuId: id },
+          });
         }}
       >
         <Card.Content>
           <View style={styles.headerContainer}>
             <Title>{title}</Title>
 
-            <View style={styles.menuContainer}>
+            <View>
               <Menu
                 visible={menuVisible}
                 onDismiss={closeMenu}
@@ -84,7 +88,6 @@ export const MenuCard: FC<MenuCardProps> = ({
                   />
                 }
                 anchorPosition="bottom"
-                contentStyle={styles.menuContent}
               >
                 <Menu.Item
                   title="Edit"
@@ -152,9 +155,12 @@ export const MenuCard: FC<MenuCardProps> = ({
 };
 
 const styles = StyleSheet.create({
-  card: {
+  container: {
+    paddingHorizontal: 4,
+    marginVertical: 8,
     width: "100%",
-    margin: 8,
+  },
+  card: {
     elevation: 4,
     borderRadius: 12,
   },
@@ -164,8 +170,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
-  menuContainer: {},
-  menuContent: {},
   tagsContainer: {
     flexDirection: "row",
     marginTop: 12,
