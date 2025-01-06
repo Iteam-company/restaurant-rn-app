@@ -1,19 +1,19 @@
 import * as Yup from "yup";
 
-export interface MenuFormData {
+export interface MenuItemFormData {
   name: string;
   description: string;
   ingredients: string;
   timeForCook: string;
-  price: number | null;
+  price: string;
 }
 
-export const initialValues: MenuFormData = {
+export const initialValues: MenuItemFormData = {
   name: "",
   description: "",
   ingredients: "",
   timeForCook: "",
-  price: null,
+  price: "",
 };
 
 export const validationSchema = Yup.object().shape({
