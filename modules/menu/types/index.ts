@@ -5,11 +5,13 @@ export enum SeasonsEnum {
   WINTER = "winter",
 }
 
+
 export enum CategoriesEnum {
   APPETIZERS = "appetizers",
   MAIN_COURSES = "main courses",
   DESSERTS = "desserts",
 }
+
 
 export interface IMenu {
   id: number;
