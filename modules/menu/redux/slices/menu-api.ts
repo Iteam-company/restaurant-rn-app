@@ -2,7 +2,7 @@ import { API_URL } from "@/modules/common/constants/api";
 import { prepareHeadersWithAuth } from "@/modules/common/redux/utils/prepareHeadersWithAuth";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { MenuFormData } from "../../components/AddMenu/utils";
-import { IMenu, IMenuItem } from "../../types";
+import { IMenu, IMenuItem, IMenuItemsSearchRequst } from "../../types";
 import { MenuItemFormData } from "../../components/MenuDetails/components/AddMenuItem/utils";
 
 export const menuApi = createApi({
@@ -108,6 +108,16 @@ export const menuApi = createApi({
         method: "GET",
       }),
     }),
+    getMenuItemsBySearch: builder.query<IMenuItem[], IMenuItemsSearchRequst>({
+      query: (params) => ({
+        url: `/menu/item/search`,
+        method: "GET",
+        params
+      }),
+      providesTags: (result, error, arg) => [
+        { type: "MENU" as const, id: arg.menuId },
+      ],
+    }),
   }),
 });
 
@@ -122,4 +132,5 @@ export const {
   useConnectItemToMenuMutation,
   useDeleteMenuItemMutation,
   useGetMenuItemQuery,
+  useGetMenuItemsBySearchQuery,
 } = menuApi;

@@ -9,9 +9,7 @@ export default function ItemPage() {
 
   return (
     <Wrapper>
-      <Title>
         <Item />
-      </Title>
       <FAB
         icon="pencil-outline"
         style={{

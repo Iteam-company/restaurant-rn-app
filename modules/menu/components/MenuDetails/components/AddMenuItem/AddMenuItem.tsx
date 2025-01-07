@@ -32,8 +32,8 @@ export const AddMenuItem = () => {
         try {
           const body = {
             ...formData,
-            price: parseInt(formData.price),
-            weight: parseInt(formData.weight),
+            price: parseFloat(formData.price),
+            weight: parseFloat(formData.weight),
           };
           const res = await createMenu(body).unwrap();
           if (res.id) {
@@ -94,7 +94,7 @@ export const AddMenuItem = () => {
         label="Price"
         value={values.price?.toString() ?? ""}
         onChangeText={(text) => {
-          const numericValue = text.replace(/[^0-9]/g, "");
+          const numericValue = text.replace(/[^0-9].[^0-9]/g, "");
           setFieldValue("price", numericValue);
         }}
         onBlur={handleBlur("price")}

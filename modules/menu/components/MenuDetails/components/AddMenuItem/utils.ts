@@ -45,6 +45,17 @@ export const validationSchema = Yup.object().shape({
   price: Yup.number()
     .typeError("Price must be a number")
     .min(0, "Price must be greater than or equal to 0")
-    .nullable()
-    .required("Price is required"),
+    .required("Price is required")
+    .test(
+      "decimal-places",
+      "Price can only have up to 2 decimal places",
+      (value) => {
+        if (value == null) return true;
+        return /^\d+(\.\d{0,2})?$/.test(value.toString());
+      }
+    ),
+
+  weight: Yup.number()
+    .required("Weight is required")
+    .min(0, "Weight must be greater than or equal to 0"),
 });

@@ -1,18 +1,36 @@
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { useGetMenuQuery } from "../../redux/slices/menu-api";
+import {
+  useGetMenuItemsBySearchQuery,
+  useGetMenuQuery,
+} from "../../redux/slices/menu-api";
 import { ScrollView } from "react-native";
-import { ActivityIndicator, Title, useTheme } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Searchbar,
+  Title,
+  useTheme,
+} from "react-native-paper";
 import { MenuItemCard } from "./components/MenuItemCard";
+import useDebounce from "@/modules/common/hooks/useDebounce";
 
 export const MenuDetails = () => {
   const { colors } = useTheme();
   const { menuId } = useLocalSearchParams<{ menuId: string }>();
-  const { data, isLoading } = useGetMenuQuery(menuId);
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(searchQuery, 500);
+
+  const { data, isLoading } = useGetMenuItemsBySearchQuery({
+    menuId,
+    search: debouncedSearchTerm,
+  });
+  // const { data, isLoading } = useGetMenuQuery(menuId);
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+  };
+
   return (
     <ScrollView>
       {isLoading ? (
@@ -20,19 +38,25 @@ export const MenuDetails = () => {
           <ActivityIndicator size="large" color={colors.primary} />
         </View>
       ) : (
-        data?.menuItems.map((el) => (
-          <MenuItemCard
-            key={el.id}
-            id={el.id}
-            ingredients={el.ingredients}
-            name={el.name}
-            price={el.price}
+        <>
+          <Searchbar
+            placeholder="Search"
+            onChangeText={handleSearch}
+            value={searchQuery}
+            style={styles.searchBar}
           />
-        ))
+          {data?.map((el) => (
+            <MenuItemCard
+              key={el.id}
+              id={el.id}
+              ingredients={el.ingredients}
+              name={el.name}
+              price={el.price}
+            />
+          ))}
+        </>
       )}
-      {!data?.menuItems.length && !isLoading && (
-        <Title>Not found any menu</Title>
-      )}
+      {!data?.length && !isLoading && <Title>Not found any menu</Title>}
     </ScrollView>
   );
 };
@@ -42,5 +66,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  searchBar: {
+    marginBottom: 15,
   },
 });
