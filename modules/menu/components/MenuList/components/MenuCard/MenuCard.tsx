@@ -1,13 +1,10 @@
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { RTKMutationPayloadType } from "@/modules/common/types";
-import {
-  useDeleteMenuConnectionMutation,
-  useDeleteMenuMutation,
-} from "@/modules/menu/redux/slices/menu-api";
+import { useDeleteMenuMutation } from "@/modules/menu/redux/slices/menu-api";
 import { CategoriesEnum, SeasonsEnum } from "@/modules/menu/types";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { FC, useState } from "react";
-import { View, StyleSheet, ScrollViewBase } from "react-native";
+import { View, StyleSheet } from "react-native";
 import {
   Card,
   Chip,
@@ -26,7 +23,6 @@ interface MenuCardProps {
   season: SeasonsEnum;
 }
 
-
 export const MenuCard: FC<MenuCardProps> = ({
   id,
   title,
@@ -35,8 +31,6 @@ export const MenuCard: FC<MenuCardProps> = ({
 }) => {
   const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
-  const [deleteMenuConnection, { isLoading: isDisconnecting }] =
-    useDeleteMenuConnectionMutation<RTKMutationPayloadType>();
   const [deleteMenu, { isLoading: isDeleting }] =
     useDeleteMenuMutation<RTKMutationPayloadType>();
   const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
@@ -46,7 +40,6 @@ export const MenuCard: FC<MenuCardProps> = ({
   const closeMenu = () => setMenuVisible(false);
 
   const handleDeleteMenu = () => {
-    deleteMenuConnection({ restaurantId, menuId: id });
     deleteMenu(id);
   };
 
