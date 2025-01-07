@@ -5,6 +5,7 @@ export interface MenuItemFormData {
   description: string;
   ingredients: string;
   timeForCook: string;
+  weight: string;
   price: string;
 }
 
@@ -14,6 +15,7 @@ export const initialValues: MenuItemFormData = {
   ingredients: "",
   timeForCook: "",
   price: "",
+  weight: "",
 };
 
 export const validationSchema = Yup.object().shape({

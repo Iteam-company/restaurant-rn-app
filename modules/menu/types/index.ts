@@ -26,4 +26,5 @@ export interface IMenuItem {
   ingredients: string;
   timeForCook: string;
   price: number;
+  weight: number;
 }

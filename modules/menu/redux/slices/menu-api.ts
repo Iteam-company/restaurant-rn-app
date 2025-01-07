@@ -102,6 +102,12 @@ export const menuApi = createApi({
         { type: "MENU" as const, id: args.menuId },
       ],
     }),
+    getMenuItem: builder.query<IMenuItem, string>({
+      query: (itemId) => ({
+        url: `/menu/item/${itemId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -115,4 +121,5 @@ export const {
   useCreateMenuItemMutation,
   useConnectItemToMenuMutation,
   useDeleteMenuItemMutation,
+  useGetMenuItemQuery,
 } = menuApi;

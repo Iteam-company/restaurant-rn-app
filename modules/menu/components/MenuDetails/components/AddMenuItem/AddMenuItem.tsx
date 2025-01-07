@@ -30,7 +30,11 @@ export const AddMenuItem = () => {
       validateOnChange: true,
       onSubmit: async (formData) => {
         try {
-          const body = { ...formData, price: parseInt(formData.price) };
+          const body = {
+            ...formData,
+            price: parseInt(formData.price),
+            weight: parseInt(formData.weight),
+          };
           const res = await createMenu(body).unwrap();
           if (res.id) {
             await connectItemToMenu({ menuId, itemId: res.id });
@@ -97,6 +101,20 @@ export const AddMenuItem = () => {
         error={touched.price && !!errors.price}
         keyboardType="numeric"
         left={<TextInput.Icon icon="currency-usd" />}
+      />
+
+      <TextInput
+        mode="outlined"
+        label="Weight (gram)"
+        value={values.weight?.toString() ?? ""}
+        onChangeText={(text) => {
+          const numericValue = text.replace(/[^0-9]/g, "");
+          setFieldValue("weight", numericValue);
+        }}
+        onBlur={handleBlur("weight")}
+        error={touched.weight && !!errors.weight}
+        keyboardType="numeric"
+        left={<TextInput.Icon icon="scale" />}
       />
 
       <Button mode="contained-tonal" onPress={() => handleSubmit()}>
