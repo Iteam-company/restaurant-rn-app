@@ -1,7 +1,7 @@
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { RTKMutationPayloadType } from "@/modules/common/types";
 import { useDeleteMenuItemMutation } from "@/modules/menu/redux/slices/menu-api";
-import { useLocalSearchParams, usePathname } from "expo-router";
+import { router, useLocalSearchParams, usePathname } from "expo-router";
 import { FC, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
@@ -27,7 +27,10 @@ export const MenuItemCard: FC<MenuItemCardProps> = ({
   ingredients,
   price,
 }) => {
-  const { menuId } = useLocalSearchParams<{ menuId: string }>();
+  const { id: restaurantId, menuId } = useLocalSearchParams<{
+    menuId: string;
+    id: string;
+  }>();
   const { colors } = useTheme();
   const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
@@ -41,7 +44,15 @@ export const MenuItemCard: FC<MenuItemCardProps> = ({
     deleteMenuItem({ menuId, itemId: id });
   };
   return (
-    <Card style={styles.card}>
+    <Card
+      style={styles.card}
+      onPress={() => {
+        router.push({
+          pathname: "/restaurant/[id]/(menu)/item/[itemId]",
+          params: { id: restaurantId, itemId: id },
+        });
+      }}
+    >
       <Card.Content style={styles.content}>
         <View style={styles.infoContainer}>
           <Text variant="titleLarge" style={styles.name}>
