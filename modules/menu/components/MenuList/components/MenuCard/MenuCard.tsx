@@ -17,6 +17,7 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
+import { categoryIcons, seasonIcons } from "../../utils";
 
 interface MenuCardProps {
   id: number;
@@ -25,18 +26,6 @@ interface MenuCardProps {
   season: SeasonsEnum;
 }
 
-const seasonIcons: Record<SeasonsEnum, string> = {
-  [SeasonsEnum.WINTER]: "snowflake",
-  [SeasonsEnum.SPRING]: "flower",
-  [SeasonsEnum.SUMMER]: "white-balance-sunny",
-  [SeasonsEnum.FALL]: "leaf",
-};
-
-const categoryIcons: Record<CategoriesEnum, string> = {
-  [CategoriesEnum.APPETIZERS]: "silverware-variant",
-  [CategoriesEnum.MAIN_COURSES]: "food-variant",
-  [CategoriesEnum.DESSERTS]: "cake-variant",
-};
 
 export const MenuCard: FC<MenuCardProps> = ({
   id,
