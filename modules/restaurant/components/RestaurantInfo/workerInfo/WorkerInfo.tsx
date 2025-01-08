@@ -16,11 +16,7 @@ const UserInfo = () => {
   const { colors } = useTheme();
   const { workerId } = useLocalSearchParams<{ workerId: string }>();
   const { data } = useGetUserByIdQuery(workerId);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
+  
   if (!data) return null;
 
   const InfoBlock = ({

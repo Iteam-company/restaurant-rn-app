@@ -17,10 +17,6 @@ export const Item = () => {
 
   const { data } = useGetMenuItemQuery(itemId);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
