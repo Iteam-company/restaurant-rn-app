@@ -1,0 +1,61 @@
+import * as Yup from "yup";
+
+export interface MenuItemFormData {
+  name: string;
+  description: string;
+  ingredients: string;
+  timeForCook: string;
+  weight: string;
+  price: string;
+}
+
+export const initialValues: MenuItemFormData = {
+  name: "",
+  description: "",
+  ingredients: "",
+  timeForCook: "",
+  price: "",
+  weight: "",
+};
+
+export const validationSchema = Yup.object().shape({
+  name: Yup.string()
+    .required("Name is required")
+    .max(100, "Name must be less than 100 characters")
+    .trim(),
+
+  description: Yup.string()
+    .required("Description is required")
+    .max(500, "Description must be less than 500 characters")
+    .trim(),
+
+  ingredients: Yup.string()
+    .required("Ingredients are required")
+    .max(1000, "Ingredients list must be less than 1000 characters")
+    .trim(),
+
+  timeForCook: Yup.string()
+    .required("Cooking time is required")
+    .matches(
+      /^(\d+\s*(min|mins|hour|hours|h|m)(\s*and\s*\d+\s*(min|mins|hour|hours|h|m))?)?$/,
+      "Invalid time format. Use formats like '30 mins', '2 hours', '1 hour and 30 mins'"
+    )
+    .trim(),
+
+  price: Yup.number()
+    .typeError("Price must be a number")
+    .min(0, "Price must be greater than or equal to 0")
+    .required("Price is required")
+    .test(
+      "decimal-places",
+      "Price can only have up to 2 decimal places",
+      (value) => {
+        if (value == null) return true;
+        return /^\d+(\.\d{0,2})?$/.test(value.toString());
+      }
+    ),
+
+  weight: Yup.number()
+    .required("Weight is required")
+    .min(0, "Weight must be greater than or equal to 0"),
+});

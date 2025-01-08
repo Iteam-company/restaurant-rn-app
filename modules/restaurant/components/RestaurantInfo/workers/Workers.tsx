@@ -1,5 +1,5 @@
-import { router } from "expo-router";
-import React, { useState } from "react";
+import { router, useGlobalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import {
   useTheme,
@@ -17,10 +17,9 @@ import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/resta
 import useDebounce from "@/modules/common/hooks/useDebounce";
 
 import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
-import { RTKMutationPayloadType } from "@/modules/common/types";
 
 const Workers = () => {
-  const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
+  const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
   const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedSearchTerm = useDebounce(searchQuery, 500);
@@ -29,7 +28,6 @@ const Workers = () => {
     search: debouncedSearchTerm,
     restaurantId,
   });
-  const [deleteWorker] = useRemoveWorkerMutation();
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);

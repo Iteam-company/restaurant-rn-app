@@ -1,6 +1,6 @@
-import Wrapper from '@/modules/common/components/Wrapper';
-import CreateRestaurant from '@/modules/restaurant/components/CreateRestaurant/CreateRestaurant';
-import { StyleSheet } from 'react-native';
+import Wrapper from "@/modules/common/components/Wrapper";
+import CreateRestaurant from "@/modules/restaurant/components/CreateRestaurant/CreateRestaurant";
+import { StyleSheet } from "react-native";
 
 export default function Create() {
   return (
@@ -12,13 +12,13 @@ export default function Create() {
 
 const styles = StyleSheet.create({
   headerImage: {
-    color: '#808080',
+    color: "#808080",
     bottom: -90,
     left: -35,
-    position: 'absolute',
+    position: "absolute",
   },
   titleContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 8,
   },
 });
