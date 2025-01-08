@@ -1,7 +1,13 @@
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
-import { router, Stack, Tabs, useLocalSearchParams } from "expo-router";
-import React from "react";
+import {
+  router,
+  Stack,
+  Tabs,
+  useGlobalSearchParams,
+  useLocalSearchParams,
+} from "expo-router";
+import React, { useEffect } from "react";
 import { Platform, StyleSheet } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -10,7 +16,7 @@ import { useGetRestaurantQuery } from "@/modules/restaurant/redux/slices/restaur
 
 export default function RestaurantPageLayout() {
   const { colors } = useTheme();
-  const { id } = useLocalSearchParams<{
+  const { id } = useGlobalSearchParams<{
     id: string;
     workerId: string;
   }>();
@@ -27,7 +33,7 @@ export default function RestaurantPageLayout() {
       <Appbar.Header>
         <Appbar.BackAction iconColor="white" onPress={() => router.back()} />
         <Appbar.Content
-          title={`${restaurantData?.name}`}
+          title={restaurantData?.name ? restaurantData?.name : ""}
           titleStyle={{ color: "white" }}
         />
         <Appbar.Action

@@ -2,13 +2,13 @@ import { useGetAllMenuQuery } from "../../redux/slices/menu-api";
 import { MenuCard } from "./components/MenuCard";
 import { Chip, Title, useTheme } from "react-native-paper";
 import { ActivityIndicator, ScrollView, View, StyleSheet } from "react-native";
-import { useLocalSearchParams } from "expo-router";
-import React, { useState, useMemo, useEffect } from "react";
+import { useGlobalSearchParams } from "expo-router";
+import React, { useState, useMemo } from "react";
 import { CategoriesEnum, SeasonsEnum } from "../../types";
 import { categoryIcons, seasonIcons } from "./utils";
 
 export const MenuList = () => {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id } = useGlobalSearchParams<{ id: string }>();
   const { data, isLoading } = useGetAllMenuQuery(id);
   const { colors } = useTheme();
 
@@ -46,11 +46,6 @@ export const MenuList = () => {
         : [...prev, category]
     );
   };
-
-  useEffect(() => {
-    console.log(filteredData);
-  }, [filteredData]);
-
   return (
     <ScrollView>
       {isLoading ? (
