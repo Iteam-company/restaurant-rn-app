@@ -4,9 +4,12 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { FAB } from "react-native-paper";
 import { MenuDetails } from "@/modules/menu/components/MenuDetails";
 import { router, useLocalSearchParams } from "expo-router";
+import { Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const MenuItemPage = () => {
   const { id, menuId } = useLocalSearchParams<{ id: string; menuId: string }>();
+  const insets = useSafeAreaInsets();
 
   return (
     <Wrapper>
@@ -23,7 +26,7 @@ const MenuItemPage = () => {
           position: "absolute",
           margin: 16,
           right: 0,
-          bottom: 0,
+          bottom: Platform.select({ ios: insets.bottom * 2.5, default: 0 }),
           zIndex: 999,
         }}
         onPress={() => {

@@ -11,10 +11,13 @@ export default function AuthTabsLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: colors.primary,
+        tabBarInactiveBackgroundColor: colors.background,
+        tabBarActiveBackgroundColor: colors.background,
         tabBarBackground: TabBackground,
         headerShown: false,
         tabBarStyle: Platform.select({
           ios: {
+            backgroundColor: colors.background,
             position: "absolute",
           },
           default: {},
