@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import {
   useGetMenuItemsBySearchQuery,
   useGetMenuQuery,
@@ -14,12 +14,14 @@ import {
 } from "react-native-paper";
 import { MenuItemCard } from "./components/MenuItemCard";
 import useDebounce from "@/modules/common/hooks/useDebounce";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const MenuDetails = () => {
   const { colors } = useTheme();
   const { menuId } = useLocalSearchParams<{ menuId: string }>();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedSearchTerm = useDebounce(searchQuery, 500);
+  const insets = useSafeAreaInsets();
 
   const { data, isLoading } = useGetMenuItemsBySearchQuery({
     menuId,
@@ -32,7 +34,12 @@ export const MenuDetails = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView
+      style={Platform.select({
+        ios: { marginBottom: insets.bottom * 2.5 - 10 },
+        default: {},
+      })}
+    >
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
