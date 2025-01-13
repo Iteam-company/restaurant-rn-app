@@ -1,16 +1,24 @@
 import { useGetAllMenuQuery } from "../../redux/slices/menu-api";
 import { MenuCard } from "./components/MenuCard";
 import { Chip, Title, useTheme } from "react-native-paper";
-import { ActivityIndicator, ScrollView, View, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  View,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 import React, { useState, useMemo } from "react";
 import { CategoriesEnum, SeasonsEnum } from "../../types";
 import { categoryIcons, seasonIcons } from "./utils";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const MenuList = () => {
   const { id } = useGlobalSearchParams<{ id: string }>();
   const { data, isLoading } = useGetAllMenuQuery(id);
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const [selectedSeasons, setSelectedSeasons] = useState<SeasonsEnum[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<
@@ -47,7 +55,12 @@ export const MenuList = () => {
     );
   };
   return (
-    <ScrollView>
+    <ScrollView
+      style={Platform.select({
+        ios: { marginBottom: insets.bottom * 2.5 - 10 },
+        default: {},
+      })}
+    >
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />

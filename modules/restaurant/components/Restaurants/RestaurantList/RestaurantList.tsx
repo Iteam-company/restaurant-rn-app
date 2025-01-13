@@ -1,7 +1,7 @@
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { useGetRestaurantsQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
 import React, { useEffect } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Platform } from "react-native";
 import { ScrollView } from "react-native";
 import {
   ActivityIndicator,
@@ -14,9 +14,11 @@ import { Button, Card, Title, Paragraph } from "react-native-paper";
 import { router } from "expo-router";
 import Entypo from "@expo/vector-icons/Entypo";
 import { RestaurantListItem } from "./components/RestaurantListItem";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const RestaurantList = () => {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
   const { data, isLoading, isError } = useGetRestaurantsQuery();
   const [visible, setVisible] = React.useState(false);
 
@@ -31,8 +33,17 @@ const RestaurantList = () => {
     );
   }
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       <ScrollView
+        style={{
+          ...Platform.select({
+            ios: {
+              marginTop: insets.top - 10,
+              marginBottom: insets.bottom + 30,
+            },
+            default: { marginTop: 30 },
+          }),
+        }}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
@@ -56,7 +67,6 @@ const windowWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     width: windowWidth,
-    marginTop: 30,
   },
   scrollContent: {
     margin: 20,

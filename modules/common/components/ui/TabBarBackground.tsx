@@ -1,5 +1,5 @@
-import { Platform, View, StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { Platform, View, StyleSheet } from "react-native";
+import { useTheme } from "react-native-paper";
 
 export const TabBackground = () => {
   const { colors, dark } = useTheme();
@@ -10,7 +10,7 @@ export const TabBackground = () => {
         styles.container,
         {
           backgroundColor: dark ? colors.surface : colors.background,
-          borderTopColor: '',
+          borderTopColor: "",
         },
         Platform.select({
           ios: styles.ios,
@@ -24,7 +24,7 @@ export const TabBackground = () => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.5,
   },
   ios: {
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: -3,
