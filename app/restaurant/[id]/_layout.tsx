@@ -49,10 +49,13 @@ export default function RestaurantPageLayout() {
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: colors.primary,
+          tabBarInactiveBackgroundColor: colors.background,
+          tabBarActiveBackgroundColor: colors.background,
           headerShown: false,
           tabBarBackground: TabBackground,
           tabBarStyle: Platform.select({
             ios: {
+              backgroundColor: colors.background,
               position: "absolute",
             },
             default: {},
