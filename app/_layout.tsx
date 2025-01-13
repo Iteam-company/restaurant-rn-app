@@ -58,7 +58,7 @@ export default function RootLayout() {
               />
               <Stack.Screen name="+not-found" />
             </Stack>
-            <StatusBar style="inverted" />
+            <StatusBar style="light" />
             {/* </ThemeProvider> */}
           </SafeAreaProvider>
         </PaperProvider>
