@@ -48,7 +48,19 @@ const Workers = () => {
             <ActivityIndicator size="large" color={colors.primary} />
           </View>
         ) : (
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={
+              (styles.scrollView,
+              {
+                ...Platform.select({
+                  ios: {
+                    marginBottom: insets.bottom + 30,
+                  },
+                  default: { marginTop: 30 },
+                }),
+              })
+            }
+          >
             <View style={styles.content}>
               {findedUsers?.map((el) => (
                 <List.Item

@@ -33,10 +33,9 @@ const RestaurantList = () => {
     );
   }
   return (
-    <View
-      style={[
-        styles.container,
-        {
+    <View style={[styles.container]}>
+      <ScrollView
+        style={{
           ...Platform.select({
             ios: {
               marginTop: insets.top - 10,
@@ -44,10 +43,7 @@ const RestaurantList = () => {
             },
             default: { marginTop: 30 },
           }),
-        },
-      ]}
-    >
-      <ScrollView
+        }}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
