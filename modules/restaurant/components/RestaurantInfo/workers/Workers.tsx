@@ -1,6 +1,6 @@
 import { router, useGlobalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Platform } from "react-native";
 import {
   useTheme,
   List,
@@ -17,12 +17,14 @@ import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/resta
 import useDebounce from "@/modules/common/hooks/useDebounce";
 
 import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Workers = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
   const { colors } = useTheme();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedSearchTerm = useDebounce(searchQuery, 500);
+  const insets = useSafeAreaInsets();
 
   const { data: findedUsers, isLoading } = useSearchUsersQuery({
     search: debouncedSearchTerm,
@@ -46,7 +48,19 @@ const Workers = () => {
             <ActivityIndicator size="large" color={colors.primary} />
           </View>
         ) : (
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={
+              (styles.scrollView,
+              {
+                ...Platform.select({
+                  ios: {
+                    marginBottom: insets.bottom + 30,
+                  },
+                  default: { marginTop: 30 },
+                }),
+              })
+            }
+          >
             <View style={styles.content}>
               {findedUsers?.map((el) => (
                 <List.Item
@@ -85,7 +99,10 @@ const Workers = () => {
         )}
         <FAB
           icon="plus"
-          style={styles.fab}
+          style={[
+            styles.fab,
+            Platform.select({ ios: insets.bottom * 2.5, default: 0 }),
+          ]}
           onPress={() => {
             router.push({
               pathname: "/restaurant/[id]/(workers)/addWorker",
