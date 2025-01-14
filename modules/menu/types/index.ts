@@ -34,4 +34,5 @@ export interface IMenuItem {
   timeForCook: string;
   price: number;
   weight: number;
+  image: string;
 }
