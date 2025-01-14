@@ -19,6 +19,7 @@ import useDebounce from "@/modules/common/hooks/useDebounce";
 import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 
 const Workers = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
@@ -50,17 +51,10 @@ const Workers = () => {
           </View>
         ) : (
           <ScrollView
-            style={
-              (styles.scrollView,
-              {
-                ...Platform.select({
-                  ios: {
-                    marginBottom: insets.bottom + 30,
-                  },
-                  default: { marginTop: 30 },
-                }),
-              })
-            }
+            style={[
+              styles.scrollView,
+              getScrollViewUiSettings(insets, { default: { marginTop: 30 } }),
+            ]}
           >
             <View style={styles.content}>
               {findedUsers?.map((el) => (
@@ -129,8 +123,9 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: "absolute",
-    right: 16,
-    bottom: 16,
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
   loadingContainer: {
     flex: 1,

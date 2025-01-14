@@ -28,6 +28,7 @@ import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 
 interface WorkerFormData {
   firstName: string;
@@ -160,14 +161,7 @@ const EditWorker = () => {
 
   return (
     <ScrollView
-      style={{
-        ...Platform.select({
-          ios: {
-            marginBottom: insets.bottom + 30,
-          },
-          default: { marginTop: 30 },
-        }),
-      }}
+      style={getScrollViewUiSettings(insets, { default: { marginTop: 30 } })}
     >
       <FormWrapper>
         <Surface style={styles.surface}>
