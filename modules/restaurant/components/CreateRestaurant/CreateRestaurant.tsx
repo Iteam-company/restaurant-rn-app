@@ -46,7 +46,7 @@ export default function CreateRestaurant() {
     });
 
   return (
-    <ScrollView style={getScrollViewUiSettings(insets)}>
+    <ScrollView style={[styles.container, getScrollViewUiSettings(insets)]}>
       <FormWrapper>
         <Headline>Logo</Headline>
         <TextInput
@@ -78,4 +78,11 @@ export default function CreateRestaurant() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column-reverse",
+    paddingBottom: 100,
+    width: "100%",
+  },
+});
