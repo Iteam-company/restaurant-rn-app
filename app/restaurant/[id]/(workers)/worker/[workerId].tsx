@@ -5,6 +5,7 @@ import React from "react";
 import { FAB, Title } from "react-native-paper";
 import WorkerInfo from "@/modules/restaurant/components/RestaurantInfo/workerInfo/WorkerInfo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 
 const WorkerInfoPage = () => {
   const { id: restaurantId, workerId } = useLocalSearchParams<{
@@ -18,10 +19,7 @@ const WorkerInfoPage = () => {
       <WorkerInfo />
       <FAB
         icon="pencil"
-        style={
-          (styles.fab,
-          { bottom: Platform.select({ ios: insets.bottom * 2.5, default: 0 }) })
-        }
+        style={[styles.fab, getFabUiSettings(insets)]}
         onPress={() => {
           router.push({
             pathname: "/restaurant/[id]/(workers)/worker/edit/[workerId]",

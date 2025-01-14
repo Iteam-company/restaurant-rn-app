@@ -1,4 +1,5 @@
 import Wrapper from "@/modules/common/components/Wrapper";
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { MenuList } from "@/modules/menu/components/MenuList";
 import { router } from "expo-router";
 import { Platform } from "react-native";
@@ -13,12 +14,15 @@ export default function MenuPage() {
       <MenuList />
       <FAB
         icon="plus"
-        style={{
-          position: "absolute",
-          margin: 16,
-          right: 0,
-          bottom: Platform.select({ ios: insets.bottom * 2.5, default: 0 }),
-        }}
+        style={[
+          {
+            position: "absolute",
+            margin: 16,
+            right: 0,
+            bottom: 0,
+          },
+          getFabUiSettings(insets),
+        ]}
         onPress={() => router.push("./addMenu")}
       />
     </Wrapper>

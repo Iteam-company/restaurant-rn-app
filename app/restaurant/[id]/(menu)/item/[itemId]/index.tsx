@@ -1,4 +1,5 @@
 import Wrapper from "@/modules/common/components/Wrapper";
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { Item } from "@/modules/menu/components/Item/components/Item";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -15,12 +16,15 @@ export default function ItemPage() {
       <Item />
       <FAB
         icon="pencil-outline"
-        style={{
-          position: "absolute",
-          margin: 16,
-          right: 0,
-          bottom: Platform.select({ ios: insets.bottom * 2.5, default: 0 }),
-        }}
+        style={[
+          {
+            position: "absolute",
+            margin: 16,
+            right: 0,
+            bottom: 0,
+          },
+          getFabUiSettings(insets),
+        ]}
         onPress={() =>
           router.push({
             pathname: "/restaurant/[id]/(menu)/item/[itemId]/editItem",

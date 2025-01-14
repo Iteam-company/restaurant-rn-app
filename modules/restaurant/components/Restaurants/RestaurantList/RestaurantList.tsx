@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import Entypo from "@expo/vector-icons/Entypo";
 import { RestaurantListItem } from "./components/RestaurantListItem";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 
 const RestaurantList = () => {
   const { colors } = useTheme();
@@ -33,21 +34,12 @@ const RestaurantList = () => {
     );
   }
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          ...Platform.select({
-            ios: {
-              marginTop: insets.top - 10,
-              marginBottom: insets.bottom + 30,
-            },
-            default: { marginTop: 30 },
-          }),
-        },
-      ]}
-    >
+    <View style={[styles.container]}>
       <ScrollView
+        style={getScrollViewUiSettings(insets, {
+          isTopMargin: true,
+          default: { marginTop: 30 },
+        })}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
