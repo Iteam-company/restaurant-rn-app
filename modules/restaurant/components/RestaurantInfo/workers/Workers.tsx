@@ -18,6 +18,8 @@ import useDebounce from "@/modules/common/hooks/useDebounce";
 
 import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 
 const Workers = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
@@ -48,7 +50,12 @@ const Workers = () => {
             <ActivityIndicator size="large" color={colors.primary} />
           </View>
         ) : (
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={[
+              styles.scrollView,
+              getScrollViewUiSettings(insets, { default: { marginTop: 30 } }),
+            ]}
+          >
             <View style={styles.content}>
               {findedUsers?.map((el) => (
                 <List.Item
@@ -85,20 +92,17 @@ const Workers = () => {
             </View>
           </ScrollView>
         )}
-        <FAB
-          icon="plus"
-          style={[
-            styles.fab,
-            Platform.select({ ios: insets.bottom * 2.5, default: 0 }),
-          ]}
-          onPress={() => {
-            router.push({
-              pathname: "/restaurant/[id]/(workers)/addWorker",
-              params: { id: restaurantId },
-            });
-          }}
-        />
       </View>
+      <FAB
+        icon="plus"
+        style={[styles.fab, getFabUiSettings(insets)]}
+        onPress={() => {
+          router.push({
+            pathname: "/restaurant/[id]/(workers)/addWorker",
+            params: { id: restaurantId },
+          });
+        }}
+      />
     </Wrapper>
   );
 };
@@ -119,8 +123,9 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: "absolute",
-    right: 16,
-    bottom: 16,
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
   loadingContainer: {
     flex: 1,

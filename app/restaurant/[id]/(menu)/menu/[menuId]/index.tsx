@@ -6,6 +6,7 @@ import { MenuDetails } from "@/modules/menu/components/MenuDetails";
 import { router, useLocalSearchParams } from "expo-router";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 
 const MenuItemPage = () => {
   const { id, menuId } = useLocalSearchParams<{ id: string; menuId: string }>();
@@ -22,13 +23,16 @@ const MenuItemPage = () => {
             color="white"
           />
         )}
-        style={{
-          position: "absolute",
-          margin: 16,
-          right: 0,
-          bottom: Platform.select({ ios: insets.bottom * 2.5, default: 0 }),
-          zIndex: 999,
-        }}
+        style={[
+          {
+            position: "absolute",
+            margin: 16,
+            right: 0,
+            bottom: 0,
+            zIndex: 999,
+          },
+          getFabUiSettings(insets),
+        ]}
         onPress={() => {
           router.push({
             pathname: "/restaurant/[id]/(menu)/menu/[menuId]/addMenuItem",

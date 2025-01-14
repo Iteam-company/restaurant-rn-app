@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as DocumentPicker from "expo-document-picker";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Platform } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -27,6 +27,8 @@ import { UserROLES } from "@/modules/common/types/user.types";
 import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 
 interface WorkerFormData {
   firstName: string;
@@ -84,6 +86,7 @@ const EditWorker = () => {
     id: string;
   }>();
   const { data, isLoading: isLoadingUser } = useGetUserByIdQuery(workerId);
+  const insets = useSafeAreaInsets();
 
   const [removeWorker] = useRemoveWorkerMutation();
   const [updatePhoto] = useUpdateUserPhotoMutation();
@@ -157,7 +160,9 @@ const EditWorker = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView
+      style={getScrollViewUiSettings(insets, { default: { marginTop: 30 } })}
+    >
       <FormWrapper>
         <Surface style={styles.surface}>
           <View style={styles.header}>

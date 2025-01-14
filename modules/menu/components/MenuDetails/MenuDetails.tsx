@@ -15,6 +15,7 @@ import {
 import { MenuItemCard } from "./components/MenuItemCard";
 import useDebounce from "@/modules/common/hooks/useDebounce";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 
 export const MenuDetails = () => {
   const { colors } = useTheme();
@@ -34,12 +35,7 @@ export const MenuDetails = () => {
   };
 
   return (
-    <ScrollView
-      style={Platform.select({
-        ios: { marginBottom: insets.bottom * 2.5 - 10 },
-        default: {},
-      })}
-    >
+    <ScrollView style={getScrollViewUiSettings(insets)}>
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
