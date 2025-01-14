@@ -18,6 +18,7 @@ import useDebounce from "@/modules/common/hooks/useDebounce";
 
 import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 
 const Workers = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
@@ -97,20 +98,17 @@ const Workers = () => {
             </View>
           </ScrollView>
         )}
-        <FAB
-          icon="plus"
-          style={[
-            styles.fab,
-            Platform.select({ ios: insets.bottom * 2.5, default: 0 }),
-          ]}
-          onPress={() => {
-            router.push({
-              pathname: "/restaurant/[id]/(workers)/addWorker",
-              params: { id: restaurantId },
-            });
-          }}
-        />
       </View>
+      <FAB
+        icon="plus"
+        style={[styles.fab, getFabUiSettings(insets)]}
+        onPress={() => {
+          router.push({
+            pathname: "/restaurant/[id]/(workers)/addWorker",
+            params: { id: restaurantId },
+          });
+        }}
+      />
     </Wrapper>
   );
 };
