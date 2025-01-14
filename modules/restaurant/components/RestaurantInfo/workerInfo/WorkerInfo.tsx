@@ -1,7 +1,8 @@
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import {
   Surface,
   Text,
@@ -11,12 +12,14 @@ import {
   Icon,
   useTheme,
 } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const UserInfo = () => {
   const { colors } = useTheme();
   const { workerId } = useLocalSearchParams<{ workerId: string }>();
   const { data } = useGetUserByIdQuery(workerId);
-  
+  const insets = useSafeAreaInsets();
+
   if (!data) return null;
 
   const InfoBlock = ({
@@ -50,7 +53,7 @@ const UserInfo = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={[styles.container, getScrollViewUiSettings(insets)]}>
       <Surface style={styles.headerSurface}>
         <View style={styles.header}>
           {data.icon ? (
@@ -93,7 +96,7 @@ const UserInfo = () => {
           value={data.id.toString()}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
