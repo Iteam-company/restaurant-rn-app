@@ -38,7 +38,10 @@ const RestaurantList = () => {
       <ScrollView
         style={getScrollViewUiSettings(insets, {
           isTopMargin: true,
-          default: { marginTop: 30 },
+          offset: -10,
+          default: {
+            marginTop: 30,
+          },
         })}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -53,6 +56,12 @@ const RestaurantList = () => {
             image={restaurant.image}
           />
         ))}
+        <Button
+          style={styles.addButton}
+          onPress={() => router.push("/restaurant/create")}
+        >
+          Add new Restaurant
+        </Button>
       </ScrollView>
     </View>
   );
@@ -66,6 +75,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     margin: 20,
+    paddingBottom: 30,
   },
   card: {
     width: windowWidth - 40,
@@ -125,6 +135,12 @@ const styles = StyleSheet.create({
   },
   menuIcon: {
     padding: 8,
+  },
+  addButton: {
+    paddingVertical: 5,
+    borderRadius: 40,
+    borderColor: "#3A4150",
+    borderWidth: 1,
   },
 });
 

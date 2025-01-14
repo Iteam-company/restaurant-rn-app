@@ -13,19 +13,6 @@ export default function Restaurants() {
   return (
     <Wrapper centered>
       <RestaurantsComponent />
-      <FAB
-        icon="plus"
-        style={[
-          {
-            position: "absolute",
-            margin: 16,
-            right: 0,
-            bottom: 0,
-          },
-          getFabUiSettings(insets),
-        ]}
-        onPress={() => router.push("/restaurant/create")}
-      />
     </Wrapper>
   );
 }
