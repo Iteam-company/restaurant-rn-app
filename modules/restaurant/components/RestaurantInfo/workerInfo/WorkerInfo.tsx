@@ -1,7 +1,8 @@
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import {
   Surface,
   Text,
@@ -11,12 +12,14 @@ import {
   Icon,
   useTheme,
 } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const UserInfo = () => {
   const { colors } = useTheme();
   const { workerId } = useLocalSearchParams<{ workerId: string }>();
   const { data } = useGetUserByIdQuery(workerId);
-  
+  const insets = useSafeAreaInsets();
+
   if (!data) return null;
 
   const InfoBlock = ({
@@ -50,50 +53,52 @@ const UserInfo = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <Surface style={styles.headerSurface}>
-        <View style={styles.header}>
-          {data.icon ? (
-            <Avatar.Image size={100} source={{ uri: data.icon }} />
-          ) : (
-            <Avatar.Text
-              size={100}
-              label={`${data.firstName.charAt(0)}${data.lastName.charAt(0)}`}
-            />
-          )}
-          <Title
-            style={styles.name}
-          >{`${data.firstName} ${data.lastName}`}</Title>
-          <Surface
-            style={[
-              styles.roleContainer,
-              { backgroundColor: colors.secondaryContainer },
-            ]}
-          >
-            <Icon
-              source="badge-account-horizontal"
-              size={20}
-              color={colors.primary}
-            />
-            <Text style={styles.role}>{data.role}</Text>
-          </Surface>
+    <ScrollView style={getScrollViewUiSettings(insets)}>
+      <View style={styles.container}>
+        <Surface style={styles.headerSurface}>
+          <View style={styles.header}>
+            {data.icon ? (
+              <Avatar.Image size={100} source={{ uri: data.icon }} />
+            ) : (
+              <Avatar.Text
+                size={100}
+                label={`${data.firstName.charAt(0)}${data.lastName.charAt(0)}`}
+              />
+            )}
+            <Title
+              style={styles.name}
+            >{`${data.firstName} ${data.lastName}`}</Title>
+            <Surface
+              style={[
+                styles.roleContainer,
+                { backgroundColor: colors.secondaryContainer },
+              ]}
+            >
+              <Icon
+                source="badge-account-horizontal"
+                size={20}
+                color={colors.primary}
+              />
+              <Text style={styles.role}>{data.role}</Text>
+            </Surface>
+          </View>
+        </Surface>
+
+        <View style={styles.infoGrid}>
+          <InfoBlock icon="account" label="Username" value={data.username} />
+
+          <InfoBlock icon="email" label="Email" value={data.email} />
+
+          <InfoBlock icon="phone" label="Phone" value={data.phoneNumber} />
+
+          <InfoBlock
+            icon="card-account-details"
+            label="ID"
+            value={data.id.toString()}
+          />
         </View>
-      </Surface>
-
-      <View style={styles.infoGrid}>
-        <InfoBlock icon="account" label="Username" value={data.username} />
-
-        <InfoBlock icon="email" label="Email" value={data.email} />
-
-        <InfoBlock icon="phone" label="Phone" value={data.phoneNumber} />
-
-        <InfoBlock
-          icon="card-account-details"
-          label="ID"
-          value={data.id.toString()}
-        />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

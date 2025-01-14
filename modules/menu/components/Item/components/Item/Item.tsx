@@ -1,27 +1,37 @@
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useGetMenuItemQuery } from "@/modules/menu/redux/slices/menu-api";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import {
   Card,
   Chip,
   Divider,
   Paragraph,
+  Text,
   Title,
   useTheme,
 } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const Item = () => {
   const { colors } = useTheme();
   const { itemId } = useLocalSearchParams<{ itemId: string }>();
+  const insets = useSafeAreaInsets();
 
   const { data } = useGetMenuItemQuery(itemId);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={[styles.container, getScrollViewUiSettings(insets)]}>
       <Card style={styles.card}>
         <Card.Cover
-          source={require("@/assets/images/mock/dish-mock.jpg")}
+          source={
+            data?.image
+              ? {
+                  uri: data?.image,
+                }
+              : require("@/assets/images/mock/dish-mock.jpg")
+          }
           style={styles.image}
         />
 
@@ -45,10 +55,10 @@ export const Item = () => {
             style={(styles.divider, [{ backgroundColor: colors.primary }])}
           />
           <Title style={styles.ingredientsTitle}>Ingredients:</Title>
-          <Paragraph style={styles.ingredients}>{data?.ingredients}</Paragraph>
+          <Text style={styles.ingredients}>{data?.ingredients}</Text>
         </Card.Content>
       </Card>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -60,10 +70,12 @@ const styles = StyleSheet.create({
   },
   card: {
     borderRadius: 12,
+    marginVertical: 16,
   },
   image: {
-    height: "50%",
+    height: 300,
     borderRadius: 12,
+    objectFit: "cover",
   },
   header: {
     flexDirection: "row",
