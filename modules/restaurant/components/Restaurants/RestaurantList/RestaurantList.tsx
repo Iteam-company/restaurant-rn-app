@@ -38,7 +38,7 @@ const RestaurantList = () => {
       <ScrollView
         style={getScrollViewUiSettings(insets, {
           isTopMargin: true,
-          offset: -10,
+          botttomOffset: -10,
           default: {
             marginTop: 30,
           },
