@@ -36,35 +36,40 @@ export const MenuDetails = () => {
 
   return (
     <ScrollView style={getScrollViewUiSettings(insets)}>
-      {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
-      ) : (
-        <>
-          <Searchbar
-            placeholder="Search"
-            onChangeText={handleSearch}
-            value={searchQuery}
-            style={styles.searchBar}
-          />
-          {data?.map((el) => (
-            <MenuItemCard
-              key={el.id}
-              id={el.id}
-              ingredients={el.ingredients}
-              name={el.name}
-              price={el.price}
+      <View style={styles.container}>
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.primary} />
+          </View>
+        ) : (
+          <>
+            <Searchbar
+              placeholder="Search"
+              onChangeText={handleSearch}
+              value={searchQuery}
+              style={styles.searchBar}
             />
-          ))}
-        </>
-      )}
-      {!data?.length && !isLoading && <Title>Not found any menu</Title>}
+            {data?.map((el) => (
+              <MenuItemCard
+                key={el.id}
+                id={el.id}
+                ingredients={el.ingredients}
+                name={el.name}
+                price={el.price}
+              />
+            ))}
+          </>
+        )}
+        {!data?.length && !isLoading && <Title>Not found any menu</Title>}
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 16,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",

@@ -1,11 +1,11 @@
-import { Platform } from "react-native";
+import { Platform, ViewStyle } from "react-native";
 import { EdgeInsets } from "react-native-safe-area-context";
 
 type ScrollViewOptions = {
   isTopMargin?: boolean;
   botttomOffset?: number;
   topOffset?: number;
-  default?: any;
+  default?: ViewStyle;
 };
 
 const getScrollViewUiSettings = (
