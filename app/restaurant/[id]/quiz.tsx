@@ -1,13 +1,13 @@
+import Wrapper from "@/modules/common/components/Wrapper";
+import QuizList from "@/modules/quiz/components/QuizList";
 import React from "react";
-import { View } from "react-native";
-import { Title } from "react-native-paper";
 
-const Restaurant = () => {
+const Quiz = () => {
   return (
-    <View>
-      <Title>fvdhvfdkvjh</Title>
-    </View>
+    <Wrapper centered paddingOff>
+      <QuizList />
+    </Wrapper>
   );
 };
 
-export default Restaurant;
+export default Quiz;
