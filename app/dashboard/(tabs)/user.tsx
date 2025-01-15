@@ -4,7 +4,7 @@ import { Platform, StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
-import UserInfo from "@/modules/restaurant/components/RestaurantInfo/userInfo/UserInfo";
+import CurrentUserInfo from "@/modules/restaurant/components/RestaurantInfo/userInfo/CurrentUserInfo";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 
 export default function User() {
@@ -15,7 +15,7 @@ export default function User() {
 
   return (
     <Wrapper centered>
-      <UserInfo />
+      <CurrentUserInfo />
       {currentUser && (
         <FAB
           icon="pencil"
