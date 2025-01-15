@@ -1,7 +1,7 @@
 import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import {
@@ -12,10 +12,13 @@ import {
   Divider,
   Icon,
   useTheme,
+  Button,
 } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as SecureStore from "expo-secure-store";
+import { AUTH_TOKEN_KEY } from "@/modules/common/constants/api";
 
-const UserInfo = () => {
+const CurrentUserInfo = () => {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { data: currentUser } = useValidateTokenQuery();
@@ -53,12 +56,21 @@ const UserInfo = () => {
     </Surface>
   );
 
+  function handleLogOut() {
+    SecureStore.deleteItemAsync(AUTH_TOKEN_KEY);
+
+    router.push("/auth/(tabs)/signin");
+  }
+
   return (
     <ScrollView
       style={[
         styles.container,
-        { top: insets.top },
-        getScrollViewUiSettings(insets, { offset: 16 }),
+        getScrollViewUiSettings(insets, {
+          isTopMargin: true,
+          topOffset: 16,
+          botttomOffset: 16,
+        }),
       ]}
     >
       <Surface style={styles.headerSurface}>
@@ -103,6 +115,14 @@ const UserInfo = () => {
           value={data.id.toString()}
         />
       </View>
+
+      <Button
+        onPress={handleLogOut}
+        style={[styles.logOutButton]}
+        labelStyle={styles.logOutLabel}
+      >
+        Log out
+      </Button>
     </ScrollView>
   );
 };
@@ -118,7 +138,6 @@ const styles = StyleSheet.create({
     padding: 24,
     borderRadius: 12,
     elevation: 4,
-    marginBottom: 16,
   },
   header: {
     alignItems: "center",
@@ -143,6 +162,7 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
   },
   infoGrid: {
+    marginVertical: 16,
     gap: 16,
   },
   infoBlock: {
@@ -171,6 +191,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
   },
+  logOutButton: {
+    borderColor: "#E16D7A",
+    paddingVertical: 5,
+    borderRadius: 40,
+    borderWidth: 1,
+  },
+  logOutLabel: {
+    color: "#E16D7A",
+  },
 });
 
-export default UserInfo;
+export default CurrentUserInfo;
