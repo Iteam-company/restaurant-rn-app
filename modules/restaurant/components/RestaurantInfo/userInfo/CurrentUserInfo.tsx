@@ -67,6 +67,7 @@ const CurrentUserInfo = () => {
       style={[
         getScrollViewUiSettings(insets, {
           isTopMargin: true,
+          default: { paddingVertical: 16 },
         }),
         { width: "100%" },
       ]}
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     gap: 16,
-    paddingVertical: 10,
+    paddingVertical: 16,
   },
   headerSurface: {
     padding: 24,
