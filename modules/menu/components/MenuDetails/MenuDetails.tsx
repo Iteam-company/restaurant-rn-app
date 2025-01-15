@@ -35,7 +35,9 @@ export const MenuDetails = () => {
   };
 
   return (
-    <ScrollView style={getScrollViewUiSettings(insets)}>
+    <ScrollView
+      style={[{ paddingVertical: 16 }, getScrollViewUiSettings(insets)]}
+    >
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary} />

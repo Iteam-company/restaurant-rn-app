@@ -10,7 +10,7 @@ export default function MenuPage() {
   const insets = useSafeAreaInsets();
 
   return (
-    <Wrapper>
+    <Wrapper paddingOff>
       <MenuList />
       <FAB
         icon="plus"
