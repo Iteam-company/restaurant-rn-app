@@ -78,7 +78,7 @@ export default function RestaurantPageLayout() {
           }}
         />
         <Tabs.Screen
-          name="quiz"
+          name="(quiz)"
           options={{
             title: "Quiz",
             tabBarIcon: ({ color }) => (
