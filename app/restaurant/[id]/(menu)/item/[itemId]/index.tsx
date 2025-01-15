@@ -12,7 +12,7 @@ export default function ItemPage() {
   const insets = useSafeAreaInsets();
 
   return (
-    <Wrapper>
+    <Wrapper paddingOff>
       <Item />
       <FAB
         icon="pencil-outline"

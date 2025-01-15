@@ -13,7 +13,7 @@ const MenuItemPage = () => {
   const insets = useSafeAreaInsets();
 
   return (
-    <Wrapper>
+    <Wrapper paddingOff>
       <MenuDetails />
       <FAB
         icon={() => (

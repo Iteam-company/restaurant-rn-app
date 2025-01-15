@@ -38,24 +38,25 @@ const Workers = () => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper paddingOff>
       <Searchbar
         placeholder="Search"
+        style={{ marginTop: 10 }}
         onChangeText={handleSearch}
         value={searchQuery}
       />
-      <View style={styles.container}>
-        {isLoading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={colors.primary} />
-          </View>
-        ) : (
-          <ScrollView
-            style={[
-              styles.scrollView,
-              getScrollViewUiSettings(insets, { default: { marginTop: 30 } }),
-            ]}
-          >
+      <ScrollView
+        style={[
+          styles.scrollView,
+          getScrollViewUiSettings(insets, { botttomOffset: 10 }),
+        ]}
+      >
+        <View style={styles.container}>
+          {isLoading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={colors.primary} />
+            </View>
+          ) : (
             <View style={styles.content}>
               {findedUsers?.map((el) => (
                 <List.Item
@@ -90,9 +91,9 @@ const Workers = () => {
                 <Title>We don't have workers now 💔</Title>
               )}
             </View>
-          </ScrollView>
-        )}
-      </View>
+          )}
+        </View>
+      </ScrollView>
       <FAB
         icon="plus"
         style={[styles.fab, getFabUiSettings(insets)]}
@@ -119,7 +120,6 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "100%",
-    paddingBottom: 80,
   },
   fab: {
     position: "absolute",

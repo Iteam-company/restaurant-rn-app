@@ -4,7 +4,7 @@ import React from "react";
 
 const AddWorkersPage = () => {
   return (
-    <Wrapper>
+    <Wrapper paddingOff>
       <AddWorkers />
     </Wrapper>
   );
