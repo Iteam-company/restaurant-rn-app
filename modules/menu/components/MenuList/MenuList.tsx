@@ -57,66 +57,71 @@ export const MenuList = () => {
   };
   return (
     <ScrollView style={getScrollViewUiSettings(insets)}>
-      {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
-      ) : (
-        <>
-          <View style={styles.tagsContainer}>
-            {Object.values(SeasonsEnum).map((season) => (
-              <Chip
-                key={season}
-                icon={seasonIcons[season]}
-                mode="outlined"
-                selected={selectedSeasons.includes(season)}
-                onPress={() => toggleSeason(season)}
-                style={
-                  selectedSeasons.includes(season)
-                    ? undefined
-                    : styles.selectedChip
-                }
-              >
-                {season}
-              </Chip>
-            ))}
-            {Object.values(CategoriesEnum).map((category) => (
-              <Chip
-                key={category}
-                icon={categoryIcons[category]}
-                mode="outlined"
-                selected={selectedCategories.includes(category)}
-                onPress={() => toggleCategory(category)}
-                style={
-                  selectedCategories.includes(category)
-                    ? undefined
-                    : styles.selectedChip
-                }
-              >
-                {category}
-              </Chip>
-            ))}
+      <View style={styles.container}>
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.primary} />
           </View>
+        ) : (
+          <>
+            <View style={styles.tagsContainer}>
+              {Object.values(SeasonsEnum).map((season) => (
+                <Chip
+                  key={season}
+                  icon={seasonIcons[season]}
+                  mode="outlined"
+                  selected={selectedSeasons.includes(season)}
+                  onPress={() => toggleSeason(season)}
+                  style={
+                    selectedSeasons.includes(season)
+                      ? undefined
+                      : styles.selectedChip
+                  }
+                >
+                  {season}
+                </Chip>
+              ))}
+              {Object.values(CategoriesEnum).map((category) => (
+                <Chip
+                  key={category}
+                  icon={categoryIcons[category]}
+                  mode="outlined"
+                  selected={selectedCategories.includes(category)}
+                  onPress={() => toggleCategory(category)}
+                  style={
+                    selectedCategories.includes(category)
+                      ? undefined
+                      : styles.selectedChip
+                  }
+                >
+                  {category}
+                </Chip>
+              ))}
+            </View>
 
-          {filteredData?.map((el) => (
-            <MenuCard
-              key={el.id}
-              id={el.id}
-              title={el.name}
-              category={el.categories}
-              season={el.season}
-            />
-          ))}
-        </>
-      )}
-      {!filteredData?.length && !isLoading && (
-        <Title style={styles.notFound}>Not found any menu</Title>
-      )}
+            {filteredData?.map((el) => (
+              <MenuCard
+                key={el.id}
+                id={el.id}
+                title={el.name}
+                category={el.categories}
+                season={el.season}
+              />
+            ))}
+          </>
+        )}
+        {!filteredData?.length && !isLoading && (
+          <Title style={styles.notFound}>Not found any menu</Title>
+        )}
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 16,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
