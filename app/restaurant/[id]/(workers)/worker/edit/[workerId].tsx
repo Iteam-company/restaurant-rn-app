@@ -3,10 +3,8 @@ import EditWorker from "@/modules/restaurant/components/RestaurantInfo/editWorke
 import React from "react";
 
 const EditWorkersPage = () => {
-
-
   return (
-    <Wrapper>
+    <Wrapper paddingOff>
       <EditWorker />
     </Wrapper>
   );

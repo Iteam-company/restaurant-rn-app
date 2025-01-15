@@ -22,42 +22,46 @@ export const Item = () => {
   const { data } = useGetMenuItemQuery(itemId);
 
   return (
-    <ScrollView style={[styles.container, getScrollViewUiSettings(insets)]}>
-      <Card style={styles.card}>
-        <Card.Cover
-          source={
-            data?.image
-              ? {
-                  uri: data?.image,
-                }
-              : require("@/assets/images/mock/dish-mock.jpg")
-          }
-          style={styles.image}
-        />
-
-        <Card.Content>
-          <View style={styles.header}>
-            <Title style={styles.title}>{data?.name}</Title>
-            <Title style={styles.price}>{data?.price} $</Title>
-          </View>
-
-          <View style={styles.infoContainer}>
-            <Chip icon="clock" mode="outlined" style={styles.chip}>
-              {data?.timeForCook}
-            </Chip>
-            <Chip icon="scale" mode="outlined" style={styles.chip}>
-              {data?.weight} grams
-            </Chip>
-          </View>
-
-          <Paragraph style={styles.description}>{data?.description}</Paragraph>
-          <Divider
-            style={(styles.divider, [{ backgroundColor: colors.primary }])}
+    <ScrollView style={[getScrollViewUiSettings(insets)]}>
+      <View style={styles.container}>
+        <Card style={styles.card}>
+          <Card.Cover
+            source={
+              data?.image
+                ? {
+                    uri: data?.image,
+                  }
+                : require("@/assets/images/mock/dish-mock.jpg")
+            }
+            style={styles.image}
           />
-          <Title style={styles.ingredientsTitle}>Ingredients:</Title>
-          <Text style={styles.ingredients}>{data?.ingredients}</Text>
-        </Card.Content>
-      </Card>
+
+          <Card.Content>
+            <View style={styles.header}>
+              <Title style={styles.title}>{data?.name}</Title>
+              <Title style={styles.price}>{data?.price} $</Title>
+            </View>
+
+            <View style={styles.infoContainer}>
+              <Chip icon="clock" mode="outlined" style={styles.chip}>
+                {data?.timeForCook}
+              </Chip>
+              <Chip icon="scale" mode="outlined" style={styles.chip}>
+                {data?.weight} grams
+              </Chip>
+            </View>
+
+            <Paragraph style={styles.description}>
+              {data?.description}
+            </Paragraph>
+            <Divider
+              style={(styles.divider, [{ backgroundColor: colors.primary }])}
+            />
+            <Title style={styles.ingredientsTitle}>Ingredients:</Title>
+            <Text style={styles.ingredients}>{data?.ingredients}</Text>
+          </Card.Content>
+        </Card>
+      </View>
     </ScrollView>
   );
 };
