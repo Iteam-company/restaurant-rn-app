@@ -4,7 +4,7 @@ import { Text } from "react-native-paper";
 
 const AddQuizPage = () => {
   return (
-    <Wrapper centered>
+    <Wrapper centered paddingOff>
       <AddQuiz />
     </Wrapper>
   );

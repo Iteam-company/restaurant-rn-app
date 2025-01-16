@@ -11,7 +11,7 @@ export default function Restaurants() {
   const insets = useSafeAreaInsets();
 
   return (
-    <Wrapper centered>
+    <Wrapper centered paddingOff>
       <RestaurantsComponent />
     </Wrapper>
   );

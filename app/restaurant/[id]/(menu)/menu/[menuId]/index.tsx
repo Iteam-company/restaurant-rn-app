@@ -7,6 +7,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
+import UpwardDropDown from "@/modules/common/components/UpwardDropDown";
 
 const MenuItemPage = () => {
   const { id, menuId } = useLocalSearchParams<{ id: string; menuId: string }>();
@@ -15,31 +16,7 @@ const MenuItemPage = () => {
   return (
     <Wrapper paddingOff>
       <MenuDetails />
-      <FAB
-        icon={() => (
-          <MaterialCommunityIcons
-            name="hamburger-plus"
-            size={24}
-            color="white"
-          />
-        )}
-        style={[
-          {
-            position: "absolute",
-            margin: 16,
-            right: 0,
-            bottom: 0,
-            zIndex: 999,
-          },
-          getFabUiSettings(insets),
-        ]}
-        onPress={() => {
-          router.push({
-            pathname: "/restaurant/[id]/(menu)/menu/[menuId]/addMenuItem",
-            params: { id, menuId },
-          });
-        }}
-      />
+      <UpwardDropDown restaurantId={id} menuId={menuId} />
     </Wrapper>
   );
 };
