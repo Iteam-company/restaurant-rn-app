@@ -51,7 +51,12 @@ export const AddMenuItem = () => {
     });
 
   return (
-    <ScrollView style={[{ width: "100%" }, getScrollViewUiSettings(insets)]}>
+    <ScrollView
+      style={[
+        { width: "100%" },
+        getScrollViewUiSettings(insets, { botttomOffset: 10 }),
+      ]}
+    >
       <FormWrapper>
         <Headline>Add New Menu Item</Headline>
         <TextInput
