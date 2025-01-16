@@ -1,13 +1,12 @@
 import Wrapper from "@/modules/common/components/Wrapper";
-import AddQuiz from "@/modules/quiz/components/AddQuiz/AddQuiz";
+import React from "react";
 import { Text } from "react-native-paper";
 
-const AddQuizPage = () => {
+const Question = () => {
   return (
     <Wrapper centered>
-      <AddQuiz />
+      <Text>To do questions</Text>
     </Wrapper>
   );
 };
-
-export default AddQuizPage;
+export default Question;

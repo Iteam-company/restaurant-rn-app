@@ -17,14 +17,20 @@ import {
 } from "@/modules/menu/components/MenuList/utils";
 import { useState } from "react";
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
+import { useDeleteQuizMutation } from "../../redux/slices/quiz-api";
+import { router, useGlobalSearchParams } from "expo-router";
 
 type Params = {
   quiz: IQuizInfo;
 };
 
 const QuizItem = ({ quiz }: Params) => {
+  const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
+
   const [menuVisible, setMenuVisible] = useState(false);
   const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
+
+  const [deleteQuiz, { isLoading }] = useDeleteQuizMutation();
 
   const { colors } = useTheme();
 
@@ -45,11 +51,19 @@ const QuizItem = ({ quiz }: Params) => {
   const closeMenu = () => setMenuVisible(false);
 
   const handleDeleteQuiz = () => {
-    console.log("ToDo delete quiz");
+    deleteQuiz(`${quiz.id}`);
   };
 
   return (
-    <Card style={styles.container}>
+    <Card
+      style={styles.container}
+      onPress={() =>
+        router.push({
+          pathname: `/restaurant/[id]/(quiz)/quiz`,
+          params: { id: restaurantId, quizId: quiz.id },
+        })
+      }
+    >
       <Card.Content>
         <View style={styles.headerContainer}>
           <Title>{quiz.title}</Title>
