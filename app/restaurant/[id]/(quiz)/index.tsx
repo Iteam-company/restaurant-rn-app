@@ -19,8 +19,8 @@ const Quiz = () => {
         style={[styles.fab, getFabUiSettings(insets)]}
         onPress={() => {
           router.push({
-            pathname: "/restaurant/[id]/(quiz)/addQuiz/addQuiz",
-            params: { id: restaurantId },
+            pathname: "/restaurant/[id]/(quiz)/[menuId]/addQuiz/addQuiz",
+            params: { id: restaurantId, menuId: -1 },
           });
         }}
       />

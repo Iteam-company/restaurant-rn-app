@@ -23,18 +23,19 @@ import {
 import { Dropdown } from "react-native-paper-dropdown";
 import { DifficultyLevelEnum } from "../../types";
 import { useGetAllMenuQuery } from "@/modules/menu/redux/slices/menu-api";
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const AddQuiz = () => {
-  const { id: restaurantId, quizId } = useGlobalSearchParams<{
+  const { id: restaurantId, menuId } = useGlobalSearchParams<{
     id: string;
-    quizId: string;
+    menuId: string;
   }>();
+  const insets = useSafeAreaInsets();
 
   const { data: menu } = useGetAllMenuQuery(restaurantId);
 
   const [createQuiz, { isLoading: isCreatingQuiz }] = useCreateQuizMutation();
-  const [connectQuizToMenu, { isLoading: isConnectingQuizToMenu }] =
-    useConnectQuizToMenuMutation();
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
@@ -50,7 +51,7 @@ const AddQuiz = () => {
     });
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[getScrollViewUiSettings(insets), { width: "100%" }]}>
       <FormWrapper>
         <Headline>Add New Quiz</Headline>
         <TextInput
@@ -93,7 +94,7 @@ const AddQuiz = () => {
         <Dropdown
           label={"Menu"}
           mode="outlined"
-          value={`${values.menuId}`}
+          value={`${parseInt(menuId) !== -1 ? menuId : undefined}`}
           options={menuItems(menu || [])}
           onSelect={(value) =>
             setFieldValue("menuId", value ? parseInt(value) : 0)
@@ -101,7 +102,7 @@ const AddQuiz = () => {
           CustomMenuHeader={(props) => <></>}
         />
         <Button mode="contained-tonal" onPress={() => handleSubmit()}>
-          {isConnectingQuizToMenu || isCreatingQuiz ? (
+          {isCreatingQuiz ? (
             <ActivityIndicator animating={true} color={"#7c8ebf"} />
           ) : (
             "Submit"
@@ -115,7 +116,6 @@ const AddQuiz = () => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingVertical: 10,
   },
 });
 
