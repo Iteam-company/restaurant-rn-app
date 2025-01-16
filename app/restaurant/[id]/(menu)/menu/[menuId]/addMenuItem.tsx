@@ -5,7 +5,7 @@ import { Title } from "react-native-paper";
 
 const AddMenuItemPage = () => {
   return (
-    <Wrapper centered>
+    <Wrapper centered paddingOff>
       <AddMenuItem />
     </Wrapper>
   );
