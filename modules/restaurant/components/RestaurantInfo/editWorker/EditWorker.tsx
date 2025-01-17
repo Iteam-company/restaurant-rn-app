@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import * as DocumentPicker from "expo-document-picker";
 import { StyleSheet, View, ScrollView, Platform } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
@@ -29,6 +28,10 @@ import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDial
 import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
+import {
+  handleFile,
+  pickImageFromGallery,
+} from "@/modules/common/utils/handleFile";
 
 interface WorkerFormData {
   firstName: string;
@@ -81,37 +84,26 @@ const EditWorker = () => {
   const router = useRouter();
   const { colors } = useTheme();
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
-  const { workerId, id: restaurantId } = useLocalSearchParams<{
+
+  const {
+    workerId: initialWorkerId,
+    userId,
+    id: restaurantId,
+  } = useLocalSearchParams<{
     workerId: string;
+    userId: string;
     id: string;
   }>();
+  const workerId = initialWorkerId || userId;
+
   const { data, isLoading: isLoadingUser } = useGetUserByIdQuery(workerId);
   const insets = useSafeAreaInsets();
 
   const [removeWorker] = useRemoveWorkerMutation();
-  const [updatePhoto] = useUpdateUserPhotoMutation();
+  const [updatePhoto, { isLoading: isLoadingImage }] =
+    useUpdateUserPhotoMutation();
   const [updateUser, { isLoading: isUpdating, error }] =
     useUpdateUserInfoMutation<RTKMutationPayloadType>();
-
-  const handleFile = async (fileData: DocumentPicker.DocumentPickerAsset) => {
-    const formData = new FormData();
-    const file = {
-      name: fileData.name.split(".")[0],
-      uri: fileData.uri,
-      type: fileData.mimeType,
-      size: fileData.size,
-    };
-
-    formData.append("file", file as any);
-    updatePhoto({
-      formData,
-      workerId,
-    });
-  };
-  const { handleFileSelect } = useFileSelect(handleFile, {
-    copyToCacheDirectory: true,
-    type: ["image/*"],
-  });
 
   const {
     values,
@@ -161,7 +153,10 @@ const EditWorker = () => {
 
   return (
     <ScrollView
-      style={getScrollViewUiSettings(insets, { default: { marginTop: 30 } })}
+      style={[
+        getScrollViewUiSettings(insets, { default: { marginTop: 30 } }),
+        { width: "100%" },
+      ]}
     >
       <FormWrapper>
         <Surface style={styles.surface}>
@@ -181,7 +176,14 @@ const EditWorker = () => {
               icon="camera"
               size={24}
               style={[styles.photoButton, { backgroundColor: colors.surface }]}
-              onPress={handleFileSelect}
+              onPress={async () => {
+                const formData = await handleFile();
+                if (!formData) return;
+                updatePhoto({
+                  formData: formData,
+                  workerId,
+                });
+              }}
             />
           </View>
 
@@ -302,12 +304,7 @@ const EditWorker = () => {
       <ConfirmationDialog
         action={() => {
           removeWorker({ userId: data?.id ?? "", restaurantId: restaurantId });
-          router.push({
-            pathname: "/restaurant/[id]/(workers)",
-            params: {
-              id: restaurantId,
-            },
-          });
+          router.push("/auth/(tabs)/signin");
         }}
         text={`Are you sure you want to delete ${data?.username} ? This action cannot be undone.`}
         close={() => {

@@ -95,6 +95,7 @@ export default function RestaurantPageLayout() {
             ),
           }}
         />
+        <Tabs.Screen name="edit" options={{ href: null }} />
       </Tabs>
     </>
   );

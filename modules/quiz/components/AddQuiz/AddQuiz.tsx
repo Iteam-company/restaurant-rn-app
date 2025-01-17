@@ -21,7 +21,6 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import { DifficultyLevelEnum } from "../../types";
 import { useGetAllMenuQuery } from "@/modules/menu/redux/slices/menu-api";
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -44,6 +43,7 @@ const AddQuiz = () => {
       validateOnChange: true,
       onSubmit: async (formData) => {
         try {
+          console.log(formData);
           await createQuiz(formData).unwrap();
           router.back();
         } catch {}
@@ -93,12 +93,14 @@ const AddQuiz = () => {
         />
         <Dropdown
           label={"Menu"}
+          disabled={parseInt(menuId) !== -1}
           mode="outlined"
-          value={`${parseInt(menuId) !== -1 ? menuId : undefined}`}
+          value={`${parseInt(menuId) !== -1 ? menuId : values.menuId}`}
           options={menuItems(menu || [])}
           onSelect={(value) =>
             setFieldValue("menuId", value ? parseInt(value) : 0)
           }
+          error={touched.menuId && !!errors.menuId}
           CustomMenuHeader={(props) => <></>}
         />
         <Button mode="contained-tonal" onPress={() => handleSubmit()}>
