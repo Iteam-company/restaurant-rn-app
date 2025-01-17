@@ -21,7 +21,7 @@ const UpwardDropDown = ({ menuId, restaurantId }: Props) => {
     <FAB.Group
       visible={true}
       open={open}
-      style={[styles.container, getFabUiSettings(insets)]}
+      style={[styles.container, getFabUiSettings(insets, { isFABGroup: true })]}
       icon={open ? "minus" : "plus"}
       actions={[
         {
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     right: 0,
-    padding: 16,
+    margin: 0,
   },
 });
 

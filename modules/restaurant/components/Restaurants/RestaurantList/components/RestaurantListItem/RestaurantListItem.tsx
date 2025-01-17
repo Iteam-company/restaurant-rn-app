@@ -51,6 +51,14 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
     setShowDeleteDialog(false);
   };
 
+  const handleEdit = () => {
+    closeMenu();
+    router.push({
+      pathname: "/restaurant/[id]/edit",
+      params: { id },
+    });
+  };
+
   return (
     <>
       <Card style={styles.card}>
@@ -103,7 +111,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
               }
             >
               <Menu.Item
-                onPress={() => {}}
+                onPress={handleEdit}
                 title="Edit"
                 leadingIcon="pencil-outline"
               />

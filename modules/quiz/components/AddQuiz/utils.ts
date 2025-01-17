@@ -31,6 +31,7 @@ export const validationSchema = yup.object().shape({
     .string()
     .required("Status is required")
     .oneOf(Object.values(StatusEnum), "Invalid status selected"),
+  menuId: yup.string().required("Menu is required").min(1, "Menu is required"),
 });
 
 export const difficultyLevelItem = Object.entries(DifficultyLevelEnum).map(
