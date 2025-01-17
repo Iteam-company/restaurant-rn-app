@@ -39,7 +39,31 @@ export const restaurantApi = workerApi
           })) ?? []), //NOTE: maybe replace just id to restaurant-${restaurantId}
         ],
       }),
-
+      updateRestaurant: builder.mutation<
+        RestaurantInfo,
+        { values: Partial<RestaurantInfo>; id: string }
+      >({
+        query: (restaurantInfo) => ({
+          url: `/restaurant/${restaurantInfo.id}`,
+          method: "PATCH",
+          body: restaurantInfo,
+        }),
+        invalidatesTags: (result, error, { id }) => [
+          { type: TagTypes.RESTAURANT, id },
+          { type: TagTypes.RESTAURANT, id: "LIST" },
+        ],
+      }),
+      uplaodRestaurantImage: builder.mutation({
+        query: ({ formData, restaurantId }) => ({
+          url: `/restaurant/${restaurantId}/image`,
+          method: "PATCH",
+          body: formData,
+        }),
+        invalidatesTags: (result, error, { restaurantId }) => [
+          { type: TagTypes.RESTAURANT, id: restaurantId },
+          { type: TagTypes.RESTAURANT, id: "LIST" },
+        ],
+      }),
       createRestaurant: builder.mutation<
         CreateRestaurantResponse,
         CreateRestaurantRequest
@@ -101,6 +125,8 @@ export const {
   useCreateRestaurantMutation,
   useGetRestaurantsQuery,
   useGetRestaurantQuery,
+  useUpdateRestaurantMutation,
+  useUplaodRestaurantImageMutation,
   useRemoveWorkerMutation,
   useDeleteRestaurantMutation,
   useAddWorkerMutation,
