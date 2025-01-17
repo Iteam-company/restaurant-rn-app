@@ -1,7 +1,7 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import {
   ActivityIndicator,
@@ -34,17 +34,22 @@ const EditRestaurant = () => {
 
   const [uploadImage] = useUplaodRestaurantImageMutation();
 
+  const formik = useFormik({
+    initialValues: { name: "", address: "" },
+    validationSchema,
+    onSubmit: (values) => {
+      updateRestaurant({ values, id: restaurantId });
+      router.back();
+    },
+  });
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
-    useFormik({
-      initialValues: initialValues
-        ? initialValues
-        : { name: undefined, address: undefined },
-      validationSchema,
-      onSubmit: (values) => {
-        updateRestaurant({ values, id: restaurantId });
-        router.back();
-      },
-    });
+    formik;
+
+  useEffect(() => {
+    if (initialValues) {
+      formik.setValues(initialValues);
+    }
+  }, [initialValues]);
 
   if (!initialValues) return <ActivityIndicator size="large" />;
 
