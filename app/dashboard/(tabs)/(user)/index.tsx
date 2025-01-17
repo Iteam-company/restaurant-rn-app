@@ -22,8 +22,8 @@ export default function User() {
           style={[styles.fab, getFabUiSettings(insets)]}
           onPress={() => {
             router.push({
-              pathname: "/restaurant/[id]/(workers)/worker/edit/[workerId]",
-              params: { id: 0, workerId: currentUser?.id },
+              pathname: "/dashboard/(tabs)/(user)/[userId]/edit",
+              params: { userId: currentUser?.id },
             });
           }}
         />
