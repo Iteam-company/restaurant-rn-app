@@ -80,6 +80,10 @@ const QuizItem = ({ quiz }: Params) => {
               title="Edit"
               leadingIcon="pencil-outline"
               onPress={() => {
+                router.push({
+                  pathname: `/restaurant/[id]/(quiz)/[quizId]/editQuiz`,
+                  params: { id: restaurantId, quizId: quiz.id },
+                });
                 closeMenu();
               }}
             />
