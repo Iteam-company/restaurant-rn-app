@@ -9,8 +9,11 @@ import { ActivityIndicator } from "react-native-paper";
 
 const QuestionList = () => {
   const insets = useSafeAreaInsets();
-  const { id: restaurantId, quizId } = useGlobalSearchParams();
-  const { data, isLoading, error } = useGetQuestionsQuery(quizId.toString());
+  const { id: restaurantId, quizId } = useGlobalSearchParams<{
+    id: string;
+    quizId: string;
+  }>();
+  const { data, isLoading, error } = useGetQuestionsQuery(quizId);
 
   return (
     <ScrollView style={[{ width: "100%" }, getScrollViewUiSettings(insets)]}>

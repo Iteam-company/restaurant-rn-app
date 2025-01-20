@@ -8,11 +8,19 @@ import { IQuestionInfo } from "@/modules/questions/types";
 type VariantType = { text: string; isCorrect: boolean };
 
 type Props = {
-  value?: string;
+  value?: { variants: string[]; corrects: number[] };
   onChange?: (params: { variants: string[]; correct: number[] }) => void;
   errorVariants?: string | string[] | undefined;
   touchedVariants?: boolean | undefined;
   errorCorrects?: string | string[] | undefined;
+};
+
+const parseValues = (value: { variants: string[]; corrects: number[] }) => {
+  if (value)
+    return value.variants.map((elem, id) => {
+      return { text: elem, isCorrect: value.corrects.includes(id) };
+    });
+  return [];
 };
 
 const VariantsCreator = ({
@@ -23,7 +31,9 @@ const VariantsCreator = ({
   errorCorrects,
 }: Props) => {
   const [text, setText] = useState("");
-  const [checkedItems, setCheckedItems] = useState<VariantType[]>([]);
+  const [checkedItems, setCheckedItems] = useState<VariantType[]>(() =>
+    value ? parseValues(value) : []
+  );
   const { colors } = useTheme();
 
   const handleCheckboxChange = (text: string) => {
@@ -59,7 +69,7 @@ const VariantsCreator = ({
   };
 
   const handleRemoveChecked = (text: string) => {
-    setCheckedItems((prev) => prev.filter((elem) => elem.text === text));
+    setCheckedItems((prev) => prev.filter((elem) => elem.text !== text));
   };
 
   useEffect(() => {
@@ -83,7 +93,7 @@ const VariantsCreator = ({
       </Button>
 
       <View>
-        {checkedItems.map((elem) => (
+        {checkedItems.map((elem, index) => (
           <View
             key={elem.text}
             style={{
