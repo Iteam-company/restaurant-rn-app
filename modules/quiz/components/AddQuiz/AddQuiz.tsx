@@ -43,7 +43,6 @@ const AddQuiz = () => {
       validateOnChange: true,
       onSubmit: async (formData) => {
         try {
-          console.log(formData);
           await createQuiz(formData).unwrap();
           router.back();
         } catch {}
