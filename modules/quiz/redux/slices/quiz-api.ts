@@ -61,6 +61,19 @@ export const quizApi = workerApi
           method: "PATCH",
         }),
       }),
+      updateQuiz: builder.mutation<
+        IQuizInfo,
+        Partial<IQuizInfo & { menuId: undefined }>
+      >({
+        query: (body) => ({
+          url: `/quiz/${body.id}`,
+          method: "PATCH",
+          body,
+        }),
+        invalidatesTags: (result: any, error: any, body: any) => [
+          { type: TagTypes.QUIZ, id: body.id },
+        ],
+      }),
       deleteQuiz: builder.mutation<void, string>({
         query: (id: string) => ({
           url: `/quiz/${id}`,
@@ -80,5 +93,6 @@ export const {
   useGetQuizesQuery,
   useCreateQuizMutation,
   useConnectQuizToMenuMutation,
+  useUpdateQuizMutation,
   useDeleteQuizMutation,
 } = quizApi;
