@@ -10,6 +10,8 @@ import {
   useTheme,
 } from "react-native-paper";
 import { router, useGlobalSearchParams } from "expo-router";
+import { isLoading } from "expo-font";
+import { useDeleteQuestionMutation } from "../../redux/slices/question-api";
 
 type Props = {
   question: IQuestionInfo;
@@ -22,6 +24,8 @@ const QuestionItem = ({ question }: Props) => {
   }>();
   const [menuVisible, setMenuVisible] = useState(false);
   const { colors } = useTheme();
+
+  const [removeQuestion, { isLoading }] = useDeleteQuestionMutation();
 
   const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);
@@ -60,8 +64,8 @@ const QuestionItem = ({ question }: Props) => {
                   onSurfaceVariant: colors.error,
                 },
               }}
-              onPress={() => {
-                console.log("ToDo");
+              onPress={async () => {
+                await removeQuestion(question.id);
                 closeMenu();
               }}
             />
