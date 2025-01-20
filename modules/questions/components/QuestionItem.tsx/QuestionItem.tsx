@@ -9,12 +9,17 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
+import { router, useGlobalSearchParams } from "expo-router";
 
 type Props = {
   question: IQuestionInfo;
 };
 
 const QuestionItem = ({ question }: Props) => {
+  const { id: restaurantId, quizId } = useGlobalSearchParams<{
+    id: string;
+    quizId: string;
+  }>();
   const [menuVisible, setMenuVisible] = useState(false);
   const { colors } = useTheme();
 
@@ -38,7 +43,11 @@ const QuestionItem = ({ question }: Props) => {
               title="Edit"
               leadingIcon="pencil-outline"
               onPress={() => {
-                console.log("ToDo");
+                router.push({
+                  pathname:
+                    "/restaurant/[id]/(quiz)/[quizId]/(questions)/[questionId]/editQuestion",
+                  params: { id: restaurantId, quizId, questionId: question.id },
+                });
                 closeMenu();
               }}
             />

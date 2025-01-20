@@ -17,6 +17,14 @@ const questionApi = workerApi
           ...(result?.map(({ id }) => ({ type: TagTypes.QUESTION, id })) ?? []),
         ],
       }),
+      getOneQuestion: builder.query<IQuestionInfo, string>({
+        query: (questionId) => ({
+          url: `/question/${questionId}`,
+        }),
+        providesTags: (result, error, id) => [
+          { type: TagTypes.QUESTION, id: id },
+        ],
+      }),
       createQuestion: builder.mutation<IQuestionInfo, ICreateQuestionDTO>({
         query: (body) => ({
           url: "/question",
@@ -25,7 +33,23 @@ const questionApi = workerApi
         }),
         invalidatesTags: [{ type: TagTypes.QUESTION, id: "LIST" }],
       }),
+      updateQuestion: builder.mutation<
+        IQuestionInfo,
+        { body: Partial<ICreateQuestionDTO>; questionId: number }
+      >({
+        query: ({ body, questionId }) => ({
+          url: `/question/${questionId}`,
+          method: "PATCH",
+          body,
+        }),
+        invalidatesTags: [{ type: TagTypes.QUESTION, id: "LIST" }],
+      }),
     }),
   });
 
-export const { useGetQuestionsQuery, useCreateQuestionMutation } = questionApi;
+export const {
+  useGetQuestionsQuery,
+  useGetOneQuestionQuery,
+  useCreateQuestionMutation,
+  useUpdateQuestionMutation,
+} = questionApi;
