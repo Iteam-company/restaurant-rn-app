@@ -44,6 +44,13 @@ const questionApi = workerApi
         }),
         invalidatesTags: [{ type: TagTypes.QUESTION, id: "LIST" }],
       }),
+      deleteQuestion: builder.mutation<IQuestionInfo, number>({
+        query: (questionId) => ({
+          url: `/question/${questionId}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: [{ type: TagTypes.QUESTION, id: "LIST" }],
+      }),
     }),
   });
 
@@ -52,4 +59,5 @@ export const {
   useGetOneQuestionQuery,
   useCreateQuestionMutation,
   useUpdateQuestionMutation,
+  useDeleteQuestionMutation,
 } = questionApi;
