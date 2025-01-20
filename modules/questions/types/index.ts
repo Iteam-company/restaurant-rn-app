@@ -8,3 +8,11 @@ export interface IQuestionInfo {
   multipleCorrect: boolean;
   quiz: IQuizInfo;
 }
+
+export interface ICreateQuestionDTO {
+  text: string;
+  variants: string[];
+  correct: number[];
+  multipleCorrect: boolean;
+  quizId: number;
+}

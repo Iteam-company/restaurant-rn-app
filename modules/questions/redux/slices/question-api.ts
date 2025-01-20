@@ -1,6 +1,6 @@
 import { workerApi } from "@/modules/common/redux/slices/worker-api";
 import { TagTypes } from "@/modules/common/redux/utils/api-config";
-import { IQuestionInfo } from "../../types";
+import { ICreateQuestionDTO, IQuestionInfo } from "../../types";
 
 const questionApi = workerApi
   .enhanceEndpoints({ addTagTypes: [TagTypes.QUESTION] })
@@ -17,7 +17,15 @@ const questionApi = workerApi
           ...(result?.map(({ id }) => ({ type: TagTypes.QUESTION, id })) ?? []),
         ],
       }),
+      createQuestion: builder.mutation<IQuestionInfo, ICreateQuestionDTO>({
+        query: (body) => ({
+          url: "/question",
+          method: "POST",
+          body,
+        }),
+        invalidatesTags: [{ type: TagTypes.QUESTION, id: "LIST" }],
+      }),
     }),
   });
 
-export const { useGetQuestionsQuery } = questionApi;
+export const { useGetQuestionsQuery, useCreateQuestionMutation } = questionApi;

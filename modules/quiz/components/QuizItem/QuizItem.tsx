@@ -59,7 +59,7 @@ const QuizItem = ({ quiz }: Params) => {
       style={styles.container}
       onPress={() =>
         router.push({
-          pathname: `/restaurant/[id]/(quiz)/[quizId]/questions`,
+          pathname: `/restaurant/[id]/(quiz)/[quizId]/(questions)`,
           params: { id: restaurantId, quizId: quiz.id },
         })
       }
