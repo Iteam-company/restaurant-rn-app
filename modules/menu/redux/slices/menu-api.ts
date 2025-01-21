@@ -11,7 +11,7 @@ export const menuApi = createApi({
     baseUrl: `${API_URL}`,
     prepareHeaders: prepareHeadersWithAuth,
   }),
-  tagTypes: ["MENU"],
+  tagTypes: ["MENU", "MENUITEM"],
   endpoints: (builder) => ({
     getAllMenu: builder.query<IMenu[], string>({
       query: (restaurandId) => ({
@@ -91,6 +91,9 @@ export const menuApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: (result) => [
+        { type: "MENUITEM" as const, id: result?.id },
+      ],
     }),
     connectItemToMenu: builder.mutation<
       void,
@@ -102,7 +105,7 @@ export const menuApi = createApi({
         body: {},
       }),
       invalidatesTags: (result, error, arg) => [
-        { type: "MENU" as const, id: arg.menuId },
+        { type: "MENU", id: arg.menuId },
       ],
     }),
     deleteMenuItem: builder.mutation<void, { menuId: string; itemId: number }>({
@@ -112,7 +115,7 @@ export const menuApi = createApi({
         body: {},
       }),
       invalidatesTags: (result, error, args) => [
-        { type: "MENU" as const, id: args.menuId },
+        { type: "MENUITEM", id: args.menuId },
       ],
     }),
     getMenuItem: builder.query<IMenuItem, string>({
@@ -120,6 +123,7 @@ export const menuApi = createApi({
         url: `/menu/item/${itemId}`,
         method: "GET",
       }),
+      providesTags: (result, error, arg) => [{ type: "MENUITEM", id: arg }],
     }),
     getMenuItemsBySearch: builder.query<IMenuItem[], IMenuItemsSearchRequst>({
       query: (params) => ({
@@ -128,7 +132,22 @@ export const menuApi = createApi({
         params,
       }),
       providesTags: (result, error, arg) => [
-        { type: "MENU" as const, id: arg.menuId },
+        { type: "MENUITEM", id: arg.menuId },
+        { type: "MENU", id: "LIST" },
+      ],
+    }),
+    updateMenuItem: builder.mutation<
+      IMenuItem,
+      { body: Partial<IMenuItem>; itemId: string }
+    >({
+      query: ({ body, itemId }) => ({
+        url: `/menu/item/${itemId}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: (result, error, { itemId }) => [
+        { type: "MENUITEM", id: itemId },
+        { type: "MENU", id: "LIST" },
       ],
     }),
   }),
@@ -147,4 +166,5 @@ export const {
   useDeleteMenuItemMutation,
   useGetMenuItemQuery,
   useGetMenuItemsBySearchQuery,
+  useUpdateMenuItemMutation,
 } = menuApi;
