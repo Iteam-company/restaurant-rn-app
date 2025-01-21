@@ -33,6 +33,31 @@ const questionApi = workerApi
         }),
         invalidatesTags: [{ type: TagTypes.QUESTION, id: "LIST" }],
       }),
+      createManyQuestions: builder.mutation<
+        IQuestionInfo[],
+        ICreateQuestionDTO[]
+      >({
+        query: (body) => ({
+          url: "/question/create-many",
+          method: "POST",
+          body,
+        }),
+        invalidatesTags: (result) => [
+          { type: TagTypes.QUESTION, id: "LIST" },
+          ...(result?.map(({ id }) => ({ type: TagTypes.QUESTION, id })) ?? []),
+        ],
+        // invalidatesTags: [{ type: TagTypes.QUESTION, id: "LIST" }],
+      }),
+      generateQuestions: builder.mutation<
+        ICreateQuestionDTO[],
+        { menuId: number; count: number }
+      >({
+        query: ({ menuId, count }) => ({
+          url: `/quiz/generate/questions/${menuId}`,
+          method: "GET",
+          params: { count },
+        }),
+      }),
       updateQuestion: builder.mutation<
         IQuestionInfo,
         { body: Partial<ICreateQuestionDTO>; questionId: number }
@@ -60,6 +85,8 @@ export const {
   useGetQuestionsQuery,
   useGetOneQuestionQuery,
   useCreateQuestionMutation,
+  useCreateManyQuestionsMutation,
+  useGenerateQuestionsMutation,
   useUpdateQuestionMutation,
   useDeleteQuestionMutation,
 } = questionApi;
