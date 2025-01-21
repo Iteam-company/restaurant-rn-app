@@ -50,8 +50,6 @@ const GenerateQuestion = () => {
     );
   };
 
-  console.log(data);
-
   if (isLoadingQuiz || !quiz)
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
 

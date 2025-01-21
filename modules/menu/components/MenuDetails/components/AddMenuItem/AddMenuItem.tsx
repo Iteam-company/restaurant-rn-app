@@ -1,48 +1,58 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Avatar,
   Button,
   Headline,
+  IconButton,
   TextInput,
+  useTheme,
 } from "react-native-paper";
 import { initialValues, validationSchema } from "./utils";
 import { router, useLocalSearchParams } from "expo-router";
 import {
   useConnectItemToMenuMutation,
   useCreateMenuItemMutation,
+  useUploadImageMutation,
 } from "@/modules/menu/redux/slices/menu-api";
 import { RTKMutationPayloadType } from "@/modules/common/types";
-import { ScrollView } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { handleFile } from "@/modules/common/utils/handleFile";
+import { Image } from "react-native";
 
 export const AddMenuItem = () => {
   const { menuId } = useLocalSearchParams<{ menuId: string }>();
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  const [formData, setFormData] = useState<FormData | null>(null);
 
   const [createMenu, { isLoading: isCreating }] =
     useCreateMenuItemMutation<RTKMutationPayloadType>();
   const [connectItemToMenu, { isLoading: isConnecting }] =
     useConnectItemToMenuMutation<RTKMutationPayloadType>();
+  const [uploadImage] = useUploadImageMutation();
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
       initialValues,
       validationSchema,
       validateOnChange: true,
-      onSubmit: async (formData) => {
+      onSubmit: async (values) => {
         try {
           const body = {
-            ...formData,
-            price: parseFloat(formData.price),
-            weight: parseFloat(formData.weight),
+            ...values,
+            price: parseFloat(values.price),
+            weight: parseFloat(values.weight),
           };
           const res = await createMenu(body).unwrap();
           if (res.id) {
             await connectItemToMenu({ menuId, itemId: res.id });
-            router.back();
+            await uploadImage({ body: formData, itemId: res.id });
+            await router.back();
           }
         } catch {
           console.error("error");
@@ -58,7 +68,30 @@ export const AddMenuItem = () => {
       ]}
     >
       <FormWrapper>
-        <Headline>Add New Menu Item</Headline>
+        <View style={styles.header}>
+          <Headline>Add New Menu Item</Headline>
+          {formData ? (
+            <Image
+              style={styles.image}
+              source={formData.getAll("file")[0] as any}
+            />
+          ) : (
+            <Image
+              style={styles.image}
+              source={require("@/assets/images/mock/dish-mock.jpg")}
+            />
+          )}
+          <IconButton
+            icon="camera"
+            size={24}
+            style={[styles.photoButton, { backgroundColor: colors.surface }]}
+            onPress={async () => {
+              const formData = await handleFile();
+              if (!formData) return;
+              setFormData(formData);
+            }}
+          />
+        </View>
         <TextInput
           mode="outlined"
           label="Menu item"
@@ -141,3 +174,23 @@ export const AddMenuItem = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    position: "relative",
+    alignItems: "center",
+    marginBottom: 24,
+    gap: 10,
+  },
+  image: {
+    width: 250,
+    height: 220,
+    borderRadius: 24,
+  },
+  photoButton: {
+    position: "absolute",
+    bottom: -20,
+    right: 60,
+    borderWidth: 2,
+  },
+});
