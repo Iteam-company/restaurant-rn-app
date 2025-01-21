@@ -43,6 +43,7 @@ export const MenuItemCard: FC<MenuItemCardProps> = ({
   const handleDeleteMenuItem = () => {
     deleteMenuItem({ menuId, itemId: id });
   };
+
   return (
     <Card
       style={styles.card}

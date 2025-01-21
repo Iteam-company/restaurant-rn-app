@@ -1,0 +1,73 @@
+import Wrapper from "@/modules/common/components/Wrapper";
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
+import QuestionList from "@/modules/questions/components/QuestionList";
+import { router, useGlobalSearchParams } from "expo-router";
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { FAB, Text } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+const Question = () => {
+  const [open, setOpen] = useState(false);
+  const { id: restaurantId, quizId } = useGlobalSearchParams<{
+    id: string;
+    quizId: string;
+  }>();
+  const insets = useSafeAreaInsets();
+
+  const onStateChange = ({ open }: { open: boolean }) => setOpen(open);
+
+  return (
+    <Wrapper centered paddingOff>
+      <QuestionList />
+      <FAB.Group
+        visible={true}
+        open={open}
+        style={[
+          styles.container,
+          getFabUiSettings(insets, { isFABGroup: true }),
+        ]}
+        icon={open ? "minus" : "plus"}
+        actions={[
+          {
+            icon: "plus",
+            label: "Add Question",
+            onPress: () =>
+              router.push({
+                pathname:
+                  "/restaurant/[id]/(quiz)/[quizId]/(questions)/addQuestion",
+                params: { id: restaurantId, quizId },
+              }),
+          },
+          {
+            icon: "lightbulb-outline",
+            label: "Generate Question",
+            onPress: () =>
+              router.push({
+                pathname:
+                  "/restaurant/[id]/(quiz)/[quizId]/(questions)/generateQuestions",
+                params: { id: restaurantId, quizId },
+              }),
+          },
+        ]}
+        onStateChange={onStateChange}
+        onPress={() => {
+          if (open) {
+            // Do something if the speed dial is open
+          }
+        }}
+      />
+    </Wrapper>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    margin: 0,
+  },
+});
+
+export default Question;
