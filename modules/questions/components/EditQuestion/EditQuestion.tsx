@@ -51,7 +51,6 @@ const EditQuestion = () => {
     validationSchema,
     validateOnChange: true,
     onSubmit: async (formData) => {
-      console.log(formData);
       await editQuestion({
         body: {
           ...formData,
@@ -120,7 +119,7 @@ const EditQuestion = () => {
           error={touched.quizId && !!errors.quizId}
         />
         <Button mode="contained-tonal" onPress={() => handleSubmit()}>
-          {isLoading || isEditing ? (
+          {isEditing ? (
             <ActivityIndicator animating={true} color={"#7c8ebf"} />
           ) : (
             "Submit"
