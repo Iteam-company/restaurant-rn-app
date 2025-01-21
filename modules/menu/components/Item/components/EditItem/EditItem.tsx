@@ -4,28 +4,36 @@ import {
   useGetMenuItemQuery,
   useUpdateMenuItemMutation,
   useUpdateMenuMutation,
+  useUploadImageMutation,
 } from "@/modules/menu/redux/slices/menu-api";
 import { router, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
   Headline,
+  IconButton,
   TextInput,
+  useTheme,
 } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   validationSchema,
   initialValues as startInitialValues,
 } from "../../../MenuDetails/components/AddMenuItem/utils";
+import { handleFile } from "@/modules/common/utils/handleFile";
+import { Image } from "react-native";
 
 const EditItem = () => {
   const { itemId } = useLocalSearchParams<{ itemId: string }>();
   const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+  const [formData, setFormData] = useState<FormData | null>(null);
 
   const { data, isLoading } = useGetMenuItemQuery(itemId);
+  const [uploadImage] = useUploadImageMutation();
 
   const formik = useFormik({
     initialValues: data
@@ -77,7 +85,31 @@ const EditItem = () => {
       ]}
     >
       <FormWrapper>
-        <Headline>Edit Menu Item</Headline>
+        <View style={styles.header}>
+          <Headline>Edit Menu Item</Headline>
+          {formData ? (
+            <Image
+              style={styles.image}
+              source={formData.getAll("file")[0] as any}
+            />
+          ) : (
+            <Image
+              style={styles.image}
+              source={require("@/assets/images/mock/dish-mock.jpg")}
+            />
+          )}
+          <IconButton
+            icon="camera"
+            size={24}
+            style={[styles.photoButton, { backgroundColor: colors.surface }]}
+            onPress={async () => {
+              const formData = await handleFile();
+              if (!formData) return;
+              await uploadImage({ body: formData, itemId });
+              setFormData(formData);
+            }}
+          />
+        </View>
         <TextInput
           mode="outlined"
           label="Menu item"
@@ -162,7 +194,23 @@ const EditItem = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  header: {
+    position: "relative",
+    alignItems: "center",
+    marginBottom: 24,
+    gap: 10,
+  },
+  image: {
+    width: 250,
+    height: 220,
+    borderRadius: 24,
+  },
+  photoButton: {
+    position: "absolute",
+    bottom: -20,
+    right: 60,
+    borderWidth: 2,
+  },
 });
 
 export default EditItem;

@@ -150,6 +150,17 @@ export const menuApi = createApi({
         { type: "MENU", id: "LIST" },
       ],
     }),
+    uploadImage: builder.mutation({
+      query: ({ body, itemId }) => ({
+        url: `/menu/item/${itemId}/image`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: (result, error, { itemId }) => [
+        { type: "MENUITEM", id: itemId },
+        { type: "MENU", id: "LIST" },
+      ],
+    }),
   }),
 });
 
@@ -167,4 +178,5 @@ export const {
   useGetMenuItemQuery,
   useGetMenuItemsBySearchQuery,
   useUpdateMenuItemMutation,
+  useUploadImageMutation,
 } = menuApi;
