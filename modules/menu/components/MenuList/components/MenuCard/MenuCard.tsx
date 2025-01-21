@@ -75,6 +75,11 @@ export const MenuCard: FC<MenuCardProps> = ({
                   title="Edit"
                   leadingIcon="pencil-outline"
                   onPress={() => {
+                    router.push({
+                      pathname:
+                        "/restaurant/[id]/(menu)/menu/[menuId]/editMenu",
+                      params: { id: restaurantId, menuId: id },
+                    });
                     closeMenu();
                   }}
                 />

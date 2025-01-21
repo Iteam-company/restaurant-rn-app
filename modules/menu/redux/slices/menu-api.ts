@@ -42,6 +42,19 @@ export const menuApi = createApi({
         body,
       }),
     }),
+    updateMenu: builder.mutation<IMenu, { body: MenuFormData; menuId: string }>(
+      {
+        query: ({ body, menuId }) => ({
+          url: `/menu/${menuId}`,
+          method: "PATCH",
+          body,
+        }),
+        invalidatesTags: (result, error, arg) => [
+          { type: "MENU", id: "LIST" },
+          { type: "MENU", id: arg.menuId },
+        ],
+      }
+    ),
     connectMenuToRestaurant: builder.mutation<
       void,
       { restaurantId: number | string; menuId: number }
@@ -112,7 +125,7 @@ export const menuApi = createApi({
       query: (params) => ({
         url: `/menu/item/search`,
         method: "GET",
-        params
+        params,
       }),
       providesTags: (result, error, arg) => [
         { type: "MENU" as const, id: arg.menuId },
@@ -125,6 +138,7 @@ export const {
   useGetAllMenuQuery,
   useGetMenuQuery,
   useCreateMenuMutation,
+  useUpdateMenuMutation,
   useConnectMenuToRestaurantMutation,
   useDeleteMenuConnectionMutation,
   useDeleteMenuMutation,
