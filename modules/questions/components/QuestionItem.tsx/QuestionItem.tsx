@@ -12,6 +12,7 @@ import {
 import { router, useGlobalSearchParams } from "expo-router";
 import { isLoading } from "expo-font";
 import { useDeleteQuestionMutation } from "../../redux/slices/question-api";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 
 type Props = {
   question: IQuestionInfo;
@@ -22,6 +23,7 @@ const QuestionItem = ({ question }: Props) => {
     id: string;
     quizId: string;
   }>();
+  const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const { colors } = useTheme();
 
@@ -31,7 +33,16 @@ const QuestionItem = ({ question }: Props) => {
   const closeMenu = () => setMenuVisible(false);
 
   return (
-    <Card style={styles.container}>
+    <Card
+      style={styles.container}
+      onPress={() =>
+        router.push({
+          pathname:
+            "/restaurant/[id]/(quiz)/[quizId]/(questions)/[questionId]/questionItemInfo",
+          params: { id: restaurantId, quizId, questionId: question.id },
+        })
+      }
+    >
       <Card.Content>
         <View style={styles.headerContainer}>
           <Title style={{ width: "90%" }}>{question.text}</Title>
@@ -65,7 +76,7 @@ const QuestionItem = ({ question }: Props) => {
                 },
               }}
               onPress={async () => {
-                await removeQuestion(question.id);
+                setIsOpenDialog(true);
                 closeMenu();
               }}
             />
@@ -79,6 +90,17 @@ const QuestionItem = ({ question }: Props) => {
             {question.multipleCorrect ? "Multiple" : "Single"}
           </Chip>
         </View>
+        <ConfirmationDialog
+          title="Delete Question?"
+          text={`Are you sure you want to delete "${question.text}"? This action cannot be undone.`}
+          action={async () => {
+            await removeQuestion(question.id);
+          }}
+          close={() => {
+            setIsOpenDialog(false);
+          }}
+          isOpen={isOpenDialg}
+        />
       </Card.Content>
     </Card>
   );

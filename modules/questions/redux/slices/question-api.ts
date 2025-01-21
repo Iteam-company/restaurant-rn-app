@@ -42,7 +42,9 @@ const questionApi = workerApi
           method: "PATCH",
           body,
         }),
-        invalidatesTags: [{ type: TagTypes.QUESTION, id: "LIST" }],
+        invalidatesTags: (result, error, arg) => [
+          { type: TagTypes.QUESTION, id: arg.questionId },
+        ],
       }),
       deleteQuestion: builder.mutation<IQuestionInfo, number>({
         query: (questionId) => ({
