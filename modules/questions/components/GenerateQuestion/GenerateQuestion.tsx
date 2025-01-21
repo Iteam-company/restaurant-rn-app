@@ -44,6 +44,13 @@ const GenerateQuestion = () => {
       return newData;
     });
   };
+  const handleOnDelete = (elem: ICreateQuestionDTO) => {
+    setData((prev) =>
+      prev ? prev.filter((item) => item.text !== elem.text) : prev
+    );
+  };
+
+  console.log(data);
 
   if (isLoadingQuiz || !quiz)
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
@@ -100,6 +107,7 @@ const GenerateQuestion = () => {
                 key={index}
                 question={elem}
                 onChange={(value) => handleOnChange(value, index)}
+                onDelete={() => handleOnDelete(elem)}
               />
             ))}
             <Button

@@ -15,9 +15,10 @@ import { IQuizInfo } from "@/modules/quiz/types";
 interface Props {
   question: ICreateQuestionDTO;
   onChange?: (params: ICreateQuestionDTO) => void;
+  onDelete?: () => void;
 }
 
-const QuestionElement = ({ question, onChange }: Props) => {
+const QuestionElement = ({ question, onChange, onDelete }: Props) => {
   const { colors } = useTheme();
   const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -90,7 +91,7 @@ const QuestionElement = ({ question, onChange }: Props) => {
         title="Delete Question?"
         text={`Are you sure you want to delete "${question.text}"? This action cannot be undone.`}
         action={async () => {
-          console.log("remove");
+          onDelete && onDelete();
         }}
         close={() => {
           setIsOpenDialog(false);
