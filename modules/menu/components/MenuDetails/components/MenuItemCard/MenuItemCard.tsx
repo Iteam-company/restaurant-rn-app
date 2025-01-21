@@ -85,7 +85,12 @@ export const MenuItemCard: FC<MenuItemCardProps> = ({
             <Menu.Item
               title="Edit"
               leadingIcon="pencil-outline"
-              onPress={() => {}}
+              onPress={() => {
+                router.push({
+                  pathname: "/restaurant/[id]/(menu)/item/[itemId]/editItem",
+                  params: { id: restaurantId, itemId: id },
+                });
+              }}
             />
             <Menu.Item
               title="Delete"
