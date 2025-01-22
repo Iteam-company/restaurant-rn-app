@@ -7,6 +7,7 @@ import {
   DeleteWorker,
   RestaurantInfo,
 } from "@/modules/common/types/restaurant.types";
+import { UserInfo } from "@/modules/common/types/user.types";
 
 export const restaurantApi = workerApi
   .enhanceEndpoints({
@@ -24,6 +25,9 @@ export const restaurantApi = workerApi
           { type: TagTypes.RESTAURANT, id },
           { type: TagTypes.RESTAURANT, id: "LIST" },
         ],
+      }),
+      getOwners: builder.query<UserInfo[], void>({
+        query: () => ({ url: "/user/owners/", method: "GET" }),
       }),
 
       getRestaurants: builder.query<RestaurantInfo[], void>({
@@ -125,6 +129,7 @@ export const {
   useCreateRestaurantMutation,
   useGetRestaurantsQuery,
   useGetRestaurantQuery,
+  useGetOwnersQuery,
   useUpdateRestaurantMutation,
   useUplaodRestaurantImageMutation,
   useRemoveWorkerMutation,
