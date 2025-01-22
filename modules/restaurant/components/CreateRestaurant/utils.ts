@@ -1,3 +1,5 @@
+import { UserInfo } from "@/modules/common/types/user.types";
+import { Option } from "react-native-paper-dropdown";
 import * as Yup from "yup";
 
 export const validationSchema = Yup.object().shape({
@@ -9,4 +11,11 @@ export const initialValues = {
   restaurantName: "",
   address: "",
   image: undefined,
+};
+
+export const getOptions = (owners: UserInfo[]): Option[] => {
+  return owners.map((elem) => ({
+    label: `${elem.firstName} ${elem.lastName}`,
+    value: `${elem.id}`,
+  }));
 };

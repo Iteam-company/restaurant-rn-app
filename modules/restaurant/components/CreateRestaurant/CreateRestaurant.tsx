@@ -13,15 +13,17 @@ import {
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import {
   useCreateRestaurantMutation,
+  useGetOwnersQuery,
   useUplaodRestaurantImageMutation,
 } from "../../redux/slices/restaurant-api";
-import { initialValues, validationSchema } from "./utils";
+import { getOptions, initialValues, validationSchema } from "./utils";
 import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
 import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { handleFile } from "@/modules/common/utils/handleFile";
+import { Dropdown } from "react-native-paper-dropdown";
 
 export default function CreateRestaurant() {
   const { colors } = useTheme();
@@ -29,6 +31,9 @@ export default function CreateRestaurant() {
   const { data: currentUser } = useValidateTokenQuery();
   const insets = useSafeAreaInsets();
   const [formData, setFormData] = useState<FormData | null>(null);
+  const [selectedOwner, setSelectedOwner] = useState<string>("");
+
+  const { data: owners, isLoading: isLoadingOwners } = useGetOwnersQuery();
 
   const [createRestaurant, { isLoading, isError, error, isSuccess, data }] =
     useCreateRestaurantMutation();
@@ -55,9 +60,11 @@ export default function CreateRestaurant() {
         if (currentUser) {
           const restaurant = await createRestaurant({
             ...values,
-            ownerId: currentUser?.id,
+            ownerId:
+              currentUser.role === "owner"
+                ? currentUser?.id
+                : parseInt(selectedOwner),
           });
-          console.log(restaurant);
           if (restaurant && formData)
             await uploadImage({
               formData: formData,
@@ -116,7 +123,24 @@ export default function CreateRestaurant() {
           error={touched.address && !!errors.address}
           left={<TextInput.Icon icon="map-marker" />}
         />
-        <Button mode="contained-tonal" onPress={() => handleSubmit()}>
+        {currentUser?.role === "admin" && !isLoadingOwners ? (
+          <Dropdown
+            value={selectedOwner}
+            error={touched.address && selectedOwner.trim() === ""}
+            onSelect={(value) => setSelectedOwner(value || "")}
+            options={getOptions(owners || [])}
+          />
+        ) : (
+          <></>
+        )}
+        <Button
+          mode="contained-tonal"
+          onPress={() => {
+            if (selectedOwner.trim() === "" && currentUser?.role === "admin")
+              return;
+            handleSubmit();
+          }}
+        >
           Submit
         </Button>
         <Button mode="elevated" onPress={() => router.back()}>
