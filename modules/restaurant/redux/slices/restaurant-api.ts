@@ -28,7 +28,7 @@ export const restaurantApi = workerApi
 
       getRestaurants: builder.query<RestaurantInfo[], void>({
         query: () => ({
-          url: "/restaurant/owner-by",
+          url: "/restaurant/for-owner-admin",
           method: "GET",
         }),
         providesTags: (result) => [
