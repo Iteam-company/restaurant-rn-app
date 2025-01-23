@@ -17,9 +17,13 @@ import {
 } from "react-native-paper";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import {
+  useGetCurrentUserQuery,
   useGetUserByIdQuery,
+  useRemoveCurrentUserMutation,
+  useUpdateCurrentUserInfoMutation,
   useUpdateUserInfoMutation,
   useUpdateUserPhotoMutation,
+  useUploadCurrentUserPhotoMutation,
 } from "@/modules/common/redux/slices/user-api";
 import { RTKMutationPayloadType } from "@/modules/common/types";
 import { UserROLES } from "@/modules/common/types/user.types";
@@ -32,6 +36,8 @@ import {
   handleFile,
   pickImageFromGallery,
 } from "@/modules/common/utils/handleFile";
+import * as SecureStore from "expo-secure-store";
+import { USER_ROLE } from "@/modules/common/constants/api";
 
 interface WorkerFormData {
   firstName: string;
@@ -96,14 +102,24 @@ const EditWorker = () => {
   }>();
   const workerId = initialWorkerId || userId;
 
-  const { data, isLoading: isLoadingUser } = useGetUserByIdQuery(workerId);
+  const { data, isLoading: isLoadingUser } =
+    SecureStore.getItem(USER_ROLE) === "waiter"
+      ? useGetCurrentUserQuery()
+      : useGetUserByIdQuery(workerId);
+
   const insets = useSafeAreaInsets();
 
   const [removeWorker] = useRemoveWorkerMutation();
+  const [removeCurrentUser] = useRemoveCurrentUserMutation();
+
   const [updatePhoto, { isLoading: isLoadingImage }] =
-    useUpdateUserPhotoMutation();
+    SecureStore.getItem(USER_ROLE) === "waiter"
+      ? useUploadCurrentUserPhotoMutation()
+      : useUpdateUserPhotoMutation();
   const [updateUser, { isLoading: isUpdating, error }] =
-    useUpdateUserInfoMutation<RTKMutationPayloadType>();
+    SecureStore.getItem(USER_ROLE) === "waiter"
+      ? useUpdateCurrentUserInfoMutation()
+      : useUpdateUserInfoMutation<RTKMutationPayloadType>();
 
   const {
     values,
@@ -255,14 +271,18 @@ const EditWorker = () => {
             {touched.phoneNumber && errors.phoneNumber && (
               <Text style={styles.errorText}>{errors.phoneNumber}</Text>
             )}
-            <Dropdown
-              label="Role"
-              mode="outlined"
-              value={values.role}
-              options={OPTIONS}
-              onSelect={(value) => setFieldValue("role", value)}
-              CustomMenuHeader={(props) => <></>}
-            />
+            {SecureStore.getItem(USER_ROLE) === "waiter" ? (
+              <></>
+            ) : (
+              <Dropdown
+                label="Role"
+                mode="outlined"
+                value={values.role}
+                options={OPTIONS}
+                onSelect={(value) => setFieldValue("role", value)}
+                CustomMenuHeader={(props) => <></>}
+              />
+            )}
 
             {touched.role && errors.role && (
               <Text style={styles.errorText}>{errors.role}</Text>
@@ -303,7 +323,12 @@ const EditWorker = () => {
       </FormWrapper>
       <ConfirmationDialog
         action={() => {
-          removeWorker({ userId: data?.id ?? "", restaurantId: restaurantId });
+          if (SecureStore.getItem(USER_ROLE) === "waiter") removeCurrentUser();
+          else
+            removeWorker({
+              userId: data?.id ?? "",
+              restaurantId: restaurantId,
+            });
           router.push("/auth/(tabs)/signin");
         }}
         text={`Are you sure you want to delete ${data?.username} ? This action cannot be undone.`}

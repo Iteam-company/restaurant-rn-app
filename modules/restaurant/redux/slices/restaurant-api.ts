@@ -32,7 +32,7 @@ export const restaurantApi = workerApi
 
       getRestaurants: builder.query<RestaurantInfo[], void>({
         query: () => ({
-          url: "/restaurant/for-owner-admin",
+          url: "/restaurant/parse-owner-admin-waiter",
           method: "GET",
         }),
         providesTags: (result) => [
@@ -105,6 +105,20 @@ export const restaurantApi = workerApi
           { type: TagTypes.USER, id: `restaurant-${restaurantId}` },
         ],
       }),
+      removeCurrentWorker: builder.mutation<RestaurantInfo, DeleteWorker>({
+        query: ({ userId, restaurantId }) => ({
+          url: `/restaurant/workers/${restaurantId}/${userId}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: (result, error, { restaurantId, userId }) => [
+          { type: TagTypes.RESTAURANT, id: restaurantId },
+          { type: TagTypes.RESTAURANT, id: "LIST" },
+          { type: TagTypes.USER, id: "LIST" },
+          { type: TagTypes.USER, id: userId },
+          { type: TagTypes.USER, id: `restaurant-${restaurantId}` },
+        ],
+      }),
+
       addWorker: builder.mutation<
         void,
         { userId: number; restaurantId: number }
