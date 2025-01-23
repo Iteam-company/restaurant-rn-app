@@ -1,6 +1,9 @@
 import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
-import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
+import {
+  useGetCurrentUserQuery,
+  useGetUserByIdQuery,
+} from "@/modules/common/redux/slices/user-api";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
@@ -22,7 +25,7 @@ const CurrentUserInfo = () => {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const { data: currentUser } = useValidateTokenQuery();
-  const { data } = useGetUserByIdQuery(`${currentUser?.id}` || "0");
+  const { data } = useGetCurrentUserQuery();
 
   if (!data) return null;
 
