@@ -5,7 +5,7 @@ import { View, Text, StyleSheet } from "react-native";
 
 const RestaurantQuiz = () => {
   return (
-    <Wrapper paddingOff>
+    <Wrapper paddingOff marginTop>
       <QuizList />
     </Wrapper>
   );

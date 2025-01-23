@@ -16,14 +16,6 @@ export default function RestaurantLayout() {
           headerShown: false,
         }}
       />
-      <Appbar.Header
-        style={{
-          backgroundColor: colors.background,
-          height: 0,
-        }}
-      >
-        <></>
-      </Appbar.Header>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: colors.primary,
@@ -42,7 +34,7 @@ export default function RestaurantLayout() {
         }}
       >
         <Tabs.Screen
-          name="(menu)/index"
+          name="(menu)"
           options={{
             title: "Menu",
             tabBarIcon: ({ color }) => (
@@ -51,7 +43,7 @@ export default function RestaurantLayout() {
           }}
         />
         <Tabs.Screen
-          name="(quiz)/index"
+          name="(quiz)"
           options={{
             title: "Quiz",
             tabBarIcon: ({ color }) => (
