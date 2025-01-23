@@ -9,6 +9,7 @@ import { ActivityIndicator, FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
 import { USER_ROLE } from "@/modules/common/constants/api";
+import { ref } from "yup";
 
 export default function Restaurants() {
   const insets = useSafeAreaInsets();
