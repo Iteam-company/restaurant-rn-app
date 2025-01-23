@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useGetQuizByRestaurantQuery } from "../redux/slices/quiz-api";
 import QuizItem from "./QuizItem/QuizItem";
 import { useGlobalSearchParams } from "expo-router";
-import { ActivityIndicator, Chip, useTheme } from "react-native-paper";
+import { ActivityIndicator, Chip, Title, useTheme } from "react-native-paper";
 import { DifficultyLevelEnum, StatusEnum } from "../types";
 import { statusIcons } from "@/modules/menu/components/MenuList/utils";
 import { useMemo, useState } from "react";
@@ -98,8 +98,10 @@ const QuizList = () => {
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={colors.primary} />
           </View>
-        ) : (
+        ) : filteredData.length !== 0 ? (
           filteredData?.map((elem) => <QuizItem key={elem.id} quiz={elem} />)
+        ) : (
+          <Title>Here is no Quizes</Title>
         )}
       </View>
     </ScrollView>

@@ -13,6 +13,10 @@ import {
   useTheme,
   Divider,
 } from "react-native-paper";
+import * as SecureStore from "expo-secure-store";
+import { USER_ROLE } from "@/modules/common/constants/api";
+import { Use } from "react-native-svg";
+import React from "react";
 
 interface MenuItemCardProps {
   id: number;
@@ -49,7 +53,10 @@ export const MenuItemCard: FC<MenuItemCardProps> = ({
       style={styles.card}
       onPress={() => {
         router.push({
-          pathname: "/restaurant/[id]/(menu)/item/[itemId]",
+          pathname:
+            SecureStore.getItem(USER_ROLE) === "waiter"
+              ? "/user-dashboard/[id]/(menu)/item/[itemId]"
+              : "/restaurant/[id]/(menu)/item/[itemId]",
           params: { id: restaurantId, itemId: id },
         });
       }}
@@ -69,43 +76,47 @@ export const MenuItemCard: FC<MenuItemCardProps> = ({
           </Text>
         </View>
         <View style={styles.rightContainer}>
-          <Menu
-            visible={menuVisible}
-            onDismiss={closeMenu}
-            anchor={
-              <IconButton
-                icon="dots-vertical"
-                onPress={openMenu}
-                size={20}
-                style={styles.iconButton}
+          {SecureStore.getItem(USER_ROLE) === "waiter" ? (
+            <></>
+          ) : (
+            <Menu
+              visible={menuVisible}
+              onDismiss={closeMenu}
+              anchor={
+                <IconButton
+                  icon="dots-vertical"
+                  onPress={openMenu}
+                  size={20}
+                  style={styles.iconButton}
+                />
+              }
+              anchorPosition="bottom"
+            >
+              <Menu.Item
+                title="Edit"
+                leadingIcon="pencil-outline"
+                onPress={() => {
+                  router.push({
+                    pathname: "/restaurant/[id]/(menu)/item/[itemId]/editItem",
+                    params: { id: restaurantId, itemId: id },
+                  });
+                }}
               />
-            }
-            anchorPosition="bottom"
-          >
-            <Menu.Item
-              title="Edit"
-              leadingIcon="pencil-outline"
-              onPress={() => {
-                router.push({
-                  pathname: "/restaurant/[id]/(menu)/item/[itemId]/editItem",
-                  params: { id: restaurantId, itemId: id },
-                });
-              }}
-            />
-            <Menu.Item
-              title="Delete"
-              leadingIcon="trash-can-outline"
-              titleStyle={{ color: colors.error }}
-              theme={{
-                colors: {
-                  onSurfaceVariant: colors.error,
-                },
-              }}
-              onPress={() => {
-                setIsOpenDialog(true);
-              }}
-            />
-          </Menu>
+              <Menu.Item
+                title="Delete"
+                leadingIcon="trash-can-outline"
+                titleStyle={{ color: colors.error }}
+                theme={{
+                  colors: {
+                    onSurfaceVariant: colors.error,
+                  },
+                }}
+                onPress={() => {
+                  setIsOpenDialog(true);
+                }}
+              />
+            </Menu>
+          )}
           <Text variant="titleMedium" style={styles.price}>
             ${price.toFixed(2)}
           </Text>
