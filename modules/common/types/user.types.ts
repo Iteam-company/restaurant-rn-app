@@ -7,6 +7,8 @@ export type UserType = {
   phoneNumber: "";
   password: "";
   role: UserROLES;
+  icon: "";
+  restaurantId: number;
 };
 
 export enum UserROLES {
