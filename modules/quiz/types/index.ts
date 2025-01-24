@@ -1,3 +1,4 @@
+import { UserInfo } from "@/modules/common/types/user.types";
 import { IMenu } from "@/modules/menu/types";
 
 export enum StatusEnum {
@@ -22,4 +23,22 @@ export interface IQuizInfo {
   status: StatusEnum;
   menu: IMenu;
   //  quizResults: QuizResult[];
+}
+
+export interface IQuizResultInfo {
+  id: number;
+  score: string;
+  raitingDate: Date;
+  user: UserInfo;
+  quiz: IQuizInfo;
+}
+
+export interface IQuizResultDto {
+  answers: IResultAnswersDto[];
+  quizId: number;
+}
+
+export interface IResultAnswersDto {
+  questionId: number;
+  answers: number[];
 }
