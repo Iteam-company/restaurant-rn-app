@@ -5,9 +5,15 @@ import { ActivityIndicator } from "react-native-paper";
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import QuizResultItem from "./QuizResultItem/QuizResultItem";
+import { useGlobalSearchParams } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import { USER_ROLE } from "@/modules/common/constants/api";
 
 const QuizResultList = () => {
-  const { data: quizResults, isLoading } = useGetQuizResultListQuery();
+  const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
+  const { data: quizResults, isLoading } = useGetQuizResultListQuery(
+    Number(restaurantId)
+  );
   const insets = useSafeAreaInsets();
 
   if (isLoading)
@@ -16,14 +22,17 @@ const QuizResultList = () => {
   return (
     <ScrollView
       style={getScrollViewUiSettings(insets, {
-        botttomOffset: 130,
+        botttomOffset: SecureStore.getItem(USER_ROLE) === "waiter" ? 130 : 10,
         default: { marginBottom: 85 },
       })}
     >
       <View style={styles.container}>
-        {quizResults?.map((elem) => (
-          <QuizResultItem key={elem.id} quizResult={elem} />
-        ))}
+        {quizResults
+          ?.slice()
+          .reverse()
+          .map((elem) => (
+            <QuizResultItem key={elem.id} quizResult={elem} />
+          ))}
       </View>
     </ScrollView>
   );

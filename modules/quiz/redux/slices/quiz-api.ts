@@ -105,8 +105,11 @@ export const quizApi = workerApi
           { type: TagTypes.QUIZ_RESULT, id: id },
         ],
       }),
-      getQuizResultList: builder.query<IQuizResultInfo[], void>({
-        query: () => ({ url: "/quiz-results/", method: "GET" }),
+      getQuizResultList: builder.query<IQuizResultInfo[], number>({
+        query: (restaurantId) => ({
+          url: `/quiz-results/get-by-restaurant/${restaurantId}`,
+          method: "GET",
+        }),
         providesTags: (result, error) => {
           return [
             { type: TagTypes.QUIZ_RESULT, id: "LIST" },

@@ -8,6 +8,8 @@ import { router, useGlobalSearchParams } from "expo-router";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Card, Chip, Title } from "react-native-paper";
+import * as SecureStore from "expo-secure-store";
+import { USER_ROLE } from "@/modules/common/constants/api";
 
 interface Props {
   quizResult: IQuizResultInfo;
@@ -66,6 +68,14 @@ export const QuizResultItem = ({ quizResult }: Props) => {
           >
             {quizResult?.quiz.status || "Active"}
           </Chip>
+          {SecureStore.getItem(USER_ROLE) === "waiter" ? (
+            <> </>
+          ) : (
+            <Chip
+              icon="account"
+              mode="outlined"
+            >{`${quizResult.user.firstName} ${quizResult.user.lastName}`}</Chip>
+          )}
         </View>
       </Card.Content>
     </Card>
@@ -76,6 +86,7 @@ const styles = StyleSheet.create({
   container: {},
   tagsContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: 12,
     gap: 8,
   },
