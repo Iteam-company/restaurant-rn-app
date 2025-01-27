@@ -83,7 +83,12 @@ const EditQuestion = () => {
     return <ActivityIndicator size="large" />;
 
   return (
-    <ScrollView style={[{ width: "100%" }, getScrollViewUiSettings(insets)]}>
+    <ScrollView
+      style={[
+        { width: "100%" },
+        getScrollViewUiSettings(insets, { botttomOffset: 16 }),
+      ]}
+    >
       <FormWrapper>
         <Headline>Add New Question</Headline>
         <TextInput

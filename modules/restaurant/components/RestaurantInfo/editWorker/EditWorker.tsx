@@ -170,7 +170,9 @@ const EditWorker = () => {
   return (
     <ScrollView
       style={[
-        getScrollViewUiSettings(insets, { default: { marginTop: 30 } }),
+        getScrollViewUiSettings(insets, {
+          botttomOffset: 130,
+        }),
         { width: "100%" },
       ]}
     >
@@ -296,7 +298,7 @@ const EditWorker = () => {
 
             <View>
               <Button
-                mode="contained"
+                mode="contained-tonal"
                 onPress={() => handleSubmit()}
                 style={styles.submitButton}
                 disabled={isUpdating}
@@ -308,7 +310,7 @@ const EditWorker = () => {
                 )}
               </Button>
               <Button
-                mode="contained"
+                mode="contained-tonal"
                 onPress={() => {
                   setIsOpenDialog(true);
                 }}
@@ -349,7 +351,7 @@ const styles = StyleSheet.create({
   },
   surface: {
     height: "auto",
-    margin: 10,
+    marginVertical: 10,
     padding: 20,
     borderRadius: 8,
     elevation: 4,

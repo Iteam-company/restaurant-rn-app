@@ -94,6 +94,7 @@ const TakeQuiz = () => {
             <View style={{ flexDirection: "column", alignItems: "center" }}>
               {currentQuestion?.variants.map((elem, i) => (
                 <RadioButton.Item
+                  key={i}
                   label={elem}
                   value={`${i}`}
                   style={{ width: "100%" }}
