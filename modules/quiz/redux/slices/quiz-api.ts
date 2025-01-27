@@ -1,9 +1,9 @@
 import { workerApi } from "@/modules/common/redux/slices/worker-api";
-import { IQuizInfo } from "../../types";
+import { IQuizInfo, IQuizResultDto, IQuizResultInfo } from "../../types";
 import { TagTypes } from "@/modules/common/redux/utils/api-config";
 
 export const quizApi = workerApi
-  .enhanceEndpoints({ addTagTypes: [TagTypes.QUIZ] })
+  .enhanceEndpoints({ addTagTypes: [TagTypes.QUIZ, TagTypes.QUIZ_RESULT] })
   .injectEndpoints({
     overrideExisting: true,
     endpoints: (builder) => ({
@@ -84,6 +84,39 @@ export const quizApi = workerApi
           { type: TagTypes.QUIZ, id: id },
         ],
       }),
+
+      createQuizResult: builder.mutation<IQuizResultInfo, IQuizResultDto>({
+        query: (body) => ({
+          url: "/quiz-results",
+          method: "POST",
+          body,
+        }),
+        invalidatesTags: (result) => [
+          { type: TagTypes.QUIZ_RESULT, id: "LIST" },
+          { type: TagTypes.QUIZ_RESULT, id: result?.id },
+        ],
+      }),
+      getQuizResult: builder.query<IQuizResultInfo, string>({
+        query: (id) => ({
+          url: `/quiz-results/${id}`,
+          method: "GET",
+        }),
+        providesTags: (result, error, id) => [
+          { type: TagTypes.QUIZ_RESULT, id: id },
+        ],
+      }),
+      getQuizResultList: builder.query<IQuizResultInfo[], void>({
+        query: () => ({ url: "/quiz-results/", method: "GET" }),
+        providesTags: (result, error) => {
+          return [
+            { type: TagTypes.QUIZ_RESULT, id: "LIST" },
+            ...(result?.map(({ id }) => ({
+              type: TagTypes.QUIZ_RESULT,
+              id,
+            })) ?? []),
+          ];
+        },
+      }),
     }),
   });
 
@@ -95,4 +128,7 @@ export const {
   useConnectQuizToMenuMutation,
   useUpdateQuizMutation,
   useDeleteQuizMutation,
+  useCreateQuizResultMutation,
+  useGetQuizResultQuery,
+  useGetQuizResultListQuery,
 } = quizApi;

@@ -1,17 +1,27 @@
-import { Platform } from "react-native";
+import { Platform, ViewStyle } from "react-native";
 import { EdgeInsets } from "react-native-safe-area-context";
 
 type Options = {
-  isFABGroup: boolean;
+  isFABGroup?: boolean;
+  bottomOffset?: number;
+  defaultStyle?: ViewStyle;
 };
 
 const getFabUiSettings = (insets: EdgeInsets, options?: Options) => {
-  const { isFABGroup = false } = options || {};
+  const {
+    isFABGroup = false,
+    bottomOffset = 0,
+    defaultStyle = { bottom: 0 },
+  } = options || {};
   return Platform.select({
     ios: {
-      bottom: insets.bottom + 49 + (isFABGroup && insets.top !== 20 ? -34 : 0),
+      bottom:
+        insets.bottom +
+        49 +
+        bottomOffset +
+        (isFABGroup && insets.top !== 20 ? -34 : 0),
     },
-    default: { bottom: 0 },
+    default: defaultStyle,
   });
 };
 
