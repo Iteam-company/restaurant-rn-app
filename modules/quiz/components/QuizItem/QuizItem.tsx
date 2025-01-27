@@ -19,6 +19,9 @@ import { useState } from "react";
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { useDeleteQuizMutation } from "../../redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import { USER_ROLE } from "@/modules/common/constants/api";
+import React from "react";
 
 type Params = {
   quiz: IQuizInfo;
@@ -59,7 +62,10 @@ const QuizItem = ({ quiz }: Params) => {
       style={styles.container}
       onPress={() =>
         router.push({
-          pathname: `/restaurant/[id]/(quiz)/[quizId]/(questions)`,
+          pathname:
+            SecureStore.getItem(USER_ROLE) === "waiter"
+              ? "/user-dashboard/[id]/(quiz)/[quizId]/(take-quiz)"
+              : `/restaurant/[id]/(quiz)/[quizId]/(questions)`,
           params: { id: restaurantId, quizId: quiz.id },
         })
       }
@@ -67,41 +73,44 @@ const QuizItem = ({ quiz }: Params) => {
       <Card.Content>
         <View style={styles.headerContainer}>
           <Title>{quiz.title}</Title>
-
-          <Menu
-            visible={menuVisible}
-            onDismiss={closeMenu}
-            anchor={
-              <IconButton icon="dots-vertical" onPress={openMenu} size={20} />
-            }
-            anchorPosition="bottom"
-          >
-            <Menu.Item
-              title="Edit"
-              leadingIcon="pencil-outline"
-              onPress={() => {
-                router.push({
-                  pathname: `/restaurant/[id]/(quiz)/[quizId]/editQuiz`,
-                  params: { id: restaurantId, quizId: quiz.id },
-                });
-                closeMenu();
-              }}
-            />
-            <Menu.Item
-              title="Delete"
-              leadingIcon="trash-can-outline"
-              titleStyle={{ color: colors.error }}
-              theme={{
-                colors: {
-                  onSurfaceVariant: colors.error,
-                },
-              }}
-              onPress={() => {
-                closeMenu();
-                setIsOpenDialog(true);
-              }}
-            />
-          </Menu>
+          {SecureStore.getItem(USER_ROLE) === "waiter" ? (
+            <></>
+          ) : (
+            <Menu
+              visible={menuVisible}
+              onDismiss={closeMenu}
+              anchor={
+                <IconButton icon="dots-vertical" onPress={openMenu} size={20} />
+              }
+              anchorPosition="bottom"
+            >
+              <Menu.Item
+                title="Edit"
+                leadingIcon="pencil-outline"
+                onPress={() => {
+                  router.push({
+                    pathname: `/restaurant/[id]/(quiz)/[quizId]/editQuiz`,
+                    params: { id: restaurantId, quizId: quiz.id },
+                  });
+                  closeMenu();
+                }}
+              />
+              <Menu.Item
+                title="Delete"
+                leadingIcon="trash-can-outline"
+                titleStyle={{ color: colors.error }}
+                theme={{
+                  colors: {
+                    onSurfaceVariant: colors.error,
+                  },
+                }}
+                onPress={() => {
+                  closeMenu();
+                  setIsOpenDialog(true);
+                }}
+              />
+            </Menu>
+          )}
         </View>
         <View style={styles.tagsContainer}>
           <Chip
