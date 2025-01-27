@@ -1,0 +1,103 @@
+import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
+import { statusIcons } from "@/modules/menu/components/MenuList/utils";
+import { useGetQuizResultQuery } from "@/modules/quiz/redux/slices/quiz-api";
+import { DifficultyLevelEnum, StatusEnum } from "@/modules/quiz/types";
+import { router, useGlobalSearchParams } from "expo-router";
+import React from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  Chip,
+  Title,
+  useTheme,
+} from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+interface QuizResultDetailsProps {
+  // Add your props here
+}
+
+export const QuizResultDetails: React.FC<QuizResultDetailsProps> = () => {
+  const { id: restaurantId, quizResultId } = useGlobalSearchParams<{
+    id: string;
+    quizResultId: string;
+  }>();
+  const insets = useSafeAreaInsets();
+  const { colors } = useTheme();
+
+  const getColorForDifficulty = (level: DifficultyLevelEnum): string => {
+    switch (level) {
+      case DifficultyLevelEnum.EASY:
+        return "green";
+      case DifficultyLevelEnum.MEDIUM:
+        return "orange";
+      case DifficultyLevelEnum.HARD:
+        return "red";
+      default:
+        return "gray";
+    }
+  };
+
+  const { data: quizResult, isLoading } = useGetQuizResultQuery(quizResultId);
+
+  if (isLoading)
+    return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
+
+  return (
+    <ScrollView style={getScrollViewUiSettings(insets)}>
+      <View style={[styles.container, { backgroundColor: colors.surface }]}>
+        <Title>{quizResult?.quiz.title}</Title>
+        <View style={styles.detailsContainer}>
+          <Chip icon="trophy" mode="outlined">
+            {quizResult?.score}
+          </Chip>
+          <Chip
+            mode="outlined"
+            style={[
+              styles.chip,
+              {
+                borderColor: getColorForDifficulty(
+                  quizResult?.quiz.difficultyLevel || DifficultyLevelEnum.EASY
+                ),
+              },
+            ]}
+          >
+            {quizResult?.quiz.difficultyLevel}
+          </Chip>
+          <Chip
+            icon={
+              statusIcons[quizResult?.quiz.status || StatusEnum.NOT_STARTED]
+            }
+            mode="outlined"
+            style={styles.chip}
+          >
+            {quizResult?.quiz.status || "Active"}
+          </Chip>
+        </View>
+        <Button mode="outlined" onPress={() => router.back()}>
+          Back
+        </Button>
+      </View>
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 16,
+    padding: 16,
+    borderRadius: 24,
+    gap: 10,
+  },
+  detailsContainer: {
+    gap: 7,
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  chip: {
+    marginRight: 8,
+  },
+});
+
+export default QuizResultDetails;

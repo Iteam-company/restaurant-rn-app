@@ -49,7 +49,8 @@ const TakeQuiz = () => {
         .unwrap()
         .then((quizResult) => {
           router.push({
-            pathname: "/user-dashboard/[id]/(quiz)/[quizResultId]",
+            pathname:
+              "/user-dashboard/[id]/(quiz)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
             params: { id: restaurantId, quizResultId: quizResult.id },
           });
         })
@@ -110,7 +111,7 @@ const TakeQuiz = () => {
               ...prev,
               {
                 questionId: currentQuestion ? currentQuestion.id : 0,
-                answers: [Number(value)],
+                answers: value,
               },
             ]);
             setValue([]);
