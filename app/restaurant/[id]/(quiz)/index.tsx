@@ -10,11 +10,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const Quiz = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
+  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <Wrapper centered paddingOff>
       <QuizList />
-      <FAB
+      {/* <FAB
         icon="plus"
         style={[styles.fab, getFabUiSettings(insets)]}
         onPress={() => {
@@ -22,19 +23,36 @@ const Quiz = () => {
             pathname: "/restaurant/[id]/(quiz)/[menuId]/addQuiz/addQuiz",
             params: { id: restaurantId, menuId: -1 },
           });
-        }}
+        }*/}
+      <FAB.Group
+        open={isOpen}
+        visible
+        onStateChange={({ open }) => setIsOpen(open)}
+        icon="plus"
+        actions={[
+          {
+            icon: "format-list-bulleted",
+            label: "Quiz Results",
+            onPress: () =>
+              router.push({
+                pathname: "/restaurant/[id]/(quiz)/quizResult",
+                params: { id: restaurantId },
+              }),
+          },
+          {
+            icon: "plus",
+            label: "Add Quiz",
+            onPress: () =>
+              router.push({
+                pathname: "/restaurant/[id]/(quiz)/[menuId]/addQuiz/addQuiz",
+                params: { id: restaurantId, menuId: -1 },
+              }),
+          },
+        ]}
+        style={[getFabUiSettings(insets, { isFABGroup: true })]}
       />
     </Wrapper>
   );
 };
-
-const styles = StyleSheet.create({
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
-});
 
 export default Quiz;
