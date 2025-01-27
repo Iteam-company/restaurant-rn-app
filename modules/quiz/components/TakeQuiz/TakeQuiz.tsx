@@ -50,7 +50,7 @@ const TakeQuiz = () => {
         .then((quizResult) => {
           router.push({
             pathname:
-              "/user-dashboard/[id]/(quiz)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
+              "/user-dashboard/[id]/(quiz)/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
             params: { id: restaurantId, quizResultId: quizResult.id },
           });
         })
