@@ -91,7 +91,10 @@ export const quizApi = workerApi
           method: "POST",
           body,
         }),
-        invalidatesTags: () => [{ type: TagTypes.QUIZ, id: "LIST" }],
+        invalidatesTags: (result) => [
+          { type: TagTypes.QUIZ_RESULT, id: "LIST" },
+          { type: TagTypes.QUIZ_RESULT, id: result?.id },
+        ],
       }),
       getQuizResult: builder.query<IQuizResultInfo, string>({
         query: (id) => ({
@@ -101,6 +104,18 @@ export const quizApi = workerApi
         providesTags: (result, error, id) => [
           { type: TagTypes.QUIZ_RESULT, id: id },
         ],
+      }),
+      getQuizResultList: builder.query<IQuizResultInfo[], void>({
+        query: () => ({ url: "/quiz-results/", method: "GET" }),
+        providesTags: (result, error) => {
+          return [
+            { type: TagTypes.QUIZ_RESULT, id: "LIST" },
+            ...(result?.map(({ id }) => ({
+              type: TagTypes.QUIZ_RESULT,
+              id,
+            })) ?? []),
+          ];
+        },
       }),
     }),
   });
@@ -115,4 +130,5 @@ export const {
   useDeleteQuizMutation,
   useCreateQuizResultMutation,
   useGetQuizResultQuery,
+  useGetQuizResultListQuery,
 } = quizApi;
