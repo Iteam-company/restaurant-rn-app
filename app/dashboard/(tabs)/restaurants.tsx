@@ -22,8 +22,9 @@ export default function Restaurants() {
         pathname: "/user-dashboard/[id]/(menu)",
         params: { id: user.restaurantId },
       });
-      SecureStore.setItem(USER_ROLE, user.role);
     }
+
+    if (user) SecureStore.setItem(USER_ROLE, user.role);
   }, [user]);
 
   if (isLoading)
