@@ -7,7 +7,15 @@ import {
 import { router, useGlobalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Card, Chip, IconButton, Menu, Title } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Card,
+  Chip,
+  IconButton,
+  Menu,
+  Title,
+  useTheme,
+} from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import { USER_ROLE } from "@/modules/common/constants/api";
 import { useDeleteQuizResultMutation } from "@/modules/quiz/redux/slices/quiz-api";
@@ -21,6 +29,7 @@ export const QuizResultItem = ({ quizResult }: Props) => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
+  const { colors } = useTheme();
 
   const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);
@@ -54,74 +63,93 @@ export const QuizResultItem = ({ quizResult }: Props) => {
       }
     >
       <Card.Content>
-        <View
-          style={[
-            styles.headerContainer,
-            {
-              height: SecureStore.getItem(USER_ROLE) === "waiter" ? "auto" : 40,
-            },
-          ]}
-        >
-          <Title>{quizResult.quiz.title}</Title>
-          {SecureStore.getItem(USER_ROLE) === "waiter" ? (
-            <></>
-          ) : (
-            <Menu
-              visible={menuVisible}
-              onDismiss={closeMenu}
-              anchor={
-                <IconButton icon="dots-vertical" onPress={openMenu} size={20} />
-              }
-              anchorPosition="bottom"
+        {!isLoading ? (
+          <>
+            <View
+              style={[
+                styles.headerContainer,
+                {
+                  height:
+                    SecureStore.getItem(USER_ROLE) === "waiter" ? "auto" : 40,
+                },
+              ]}
             >
-              <Menu.Item
-                leadingIcon="delete"
-                onPress={() => setIsOpenDialog(true)}
-                title="Remove"
-              />
-            </Menu>
-          )}
-        </View>
-        <View
-          style={[
-            styles.tagsContainer,
-            {
-              height: SecureStore.getItem(USER_ROLE) === "waiter" ? 50 : 100,
-            },
-          ]}
-        >
-          <Chip icon="trophy" mode="outlined">
-            {quizResult?.score}
-          </Chip>
-          <Chip
-            mode="outlined"
-            style={[
-              {
-                borderColor: getColorForDifficulty(
-                  quizResult?.quiz.difficultyLevel || DifficultyLevelEnum.EASY
-                ),
-              },
-            ]}
-          >
-            {quizResult?.quiz.difficultyLevel}
-          </Chip>
-          <Chip
-            icon={
-              statusIcons[quizResult?.quiz.status || StatusEnum.NOT_STARTED]
-            }
-            mode="outlined"
-          >
-            {quizResult?.quiz.status || "Active"}
-          </Chip>
-          {SecureStore.getItem(USER_ROLE) === "waiter" ? (
-            <></>
-          ) : (
-            <Chip
-              icon="account"
-              mode="outlined"
-            >{`${quizResult.user.firstName} ${quizResult.user.lastName}`}</Chip>
-          )}
-        </View>
+              <Title>{quizResult.quiz.title}</Title>
+              {SecureStore.getItem(USER_ROLE) === "waiter" ? (
+                <></>
+              ) : (
+                <Menu
+                  visible={menuVisible}
+                  onDismiss={closeMenu}
+                  anchor={
+                    <IconButton
+                      icon="dots-vertical"
+                      onPress={openMenu}
+                      size={20}
+                    />
+                  }
+                  anchorPosition="bottom"
+                >
+                  <Menu.Item
+                    theme={{
+                      colors: {
+                        onSurfaceVariant: colors.error,
+                      },
+                    }}
+                    titleStyle={{ color: colors.error }}
+                    leadingIcon="trash-can-outline"
+                    onPress={() => setIsOpenDialog(true)}
+                    title="Remove"
+                  />
+                </Menu>
+              )}
+            </View>
+            <View
+              style={[
+                styles.tagsContainer,
+                {
+                  height:
+                    SecureStore.getItem(USER_ROLE) === "waiter" ? 50 : 100,
+                },
+              ]}
+            >
+              <Chip icon="trophy" mode="outlined">
+                {quizResult?.score}
+              </Chip>
+              <Chip
+                mode="outlined"
+                style={[
+                  {
+                    borderColor: getColorForDifficulty(
+                      quizResult?.quiz.difficultyLevel ||
+                        DifficultyLevelEnum.EASY
+                    ),
+                  },
+                ]}
+              >
+                {quizResult?.quiz.difficultyLevel}
+              </Chip>
+              <Chip
+                icon={
+                  statusIcons[quizResult?.quiz.status || StatusEnum.NOT_STARTED]
+                }
+                mode="outlined"
+              >
+                {quizResult?.quiz.status || "Active"}
+              </Chip>
+              {SecureStore.getItem(USER_ROLE) === "waiter" ? (
+                <></>
+              ) : (
+                <Chip
+                  icon="account"
+                  mode="outlined"
+                >{`${quizResult.user.firstName} ${quizResult.user.lastName}`}</Chip>
+              )}
+            </View>
+          </>
+        ) : (
+          <ActivityIndicator animating={true} color={"#7c8ebf"} />
+        )}
       </Card.Content>
       <ConfirmationDialog
         title="Remove Quiz Result?"
