@@ -102,6 +102,7 @@ export const quizApi = workerApi
           method: "GET",
         }),
         providesTags: (result, error, id) => [
+          { type: TagTypes.QUIZ_RESULT, id: "LIST" },
           { type: TagTypes.QUIZ_RESULT, id: id },
         ],
       }),
@@ -125,6 +126,10 @@ export const quizApi = workerApi
           url: `/quiz-results/${id}`,
           method: "DELETE",
         }),
+        invalidatesTags: (result, error, id) => [
+          { type: TagTypes.QUIZ_RESULT, id: "LIST" },
+          { type: TagTypes.QUIZ_RESULT, id },
+        ],
       }),
     }),
   });
