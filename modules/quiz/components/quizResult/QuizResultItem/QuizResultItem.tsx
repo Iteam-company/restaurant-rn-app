@@ -5,11 +5,13 @@ import {
   StatusEnum,
 } from "@/modules/quiz/types";
 import { router, useGlobalSearchParams } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Card, Chip, Title } from "react-native-paper";
+import { Card, Chip, IconButton, Menu, Title } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import { USER_ROLE } from "@/modules/common/constants/api";
+import { useDeleteQuizResultMutation } from "@/modules/quiz/redux/slices/quiz-api";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 
 interface Props {
   quizResult: IQuizResultInfo;
@@ -17,6 +19,11 @@ interface Props {
 
 export const QuizResultItem = ({ quizResult }: Props) => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const openMenu = () => setMenuVisible(true);
+  const closeMenu = () => setMenuVisible(false);
 
   const getColorForDifficulty = (level: DifficultyLevelEnum): string => {
     switch (level) {
@@ -31,20 +38,58 @@ export const QuizResultItem = ({ quizResult }: Props) => {
     }
   };
 
+  const [removeQuizResult, { isLoading }] = useDeleteQuizResultMutation();
+
   return (
     <Card
       style={styles.container}
       onPress={() =>
         router.push({
           pathname:
-            "/user-dashboard/[id]/(quiz)/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
+            SecureStore.getItem(USER_ROLE) === "waiter"
+              ? "/user-dashboard/[id]/(quiz)/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails"
+              : "/restaurant/[id]/(quiz)/(quizResult)/[quizResultId]/quizResultDetailsPage",
           params: { id: restaurantId, quizResultId: quizResult.id },
         })
       }
     >
       <Card.Content>
-        <Title>{quizResult.quiz.title}</Title>
-        <View style={styles.tagsContainer}>
+        <View
+          style={[
+            styles.headerContainer,
+            {
+              height: SecureStore.getItem(USER_ROLE) === "waiter" ? "auto" : 40,
+            },
+          ]}
+        >
+          <Title>{quizResult.quiz.title}</Title>
+          {SecureStore.getItem(USER_ROLE) === "waiter" ? (
+            <></>
+          ) : (
+            <Menu
+              visible={menuVisible}
+              onDismiss={closeMenu}
+              anchor={
+                <IconButton icon="dots-vertical" onPress={openMenu} size={20} />
+              }
+              anchorPosition="bottom"
+            >
+              <Menu.Item
+                leadingIcon="delete"
+                onPress={() => setIsOpenDialog(true)}
+                title="Remove"
+              />
+            </Menu>
+          )}
+        </View>
+        <View
+          style={[
+            styles.tagsContainer,
+            {
+              height: SecureStore.getItem(USER_ROLE) === "waiter" ? 50 : 100,
+            },
+          ]}
+        >
           <Chip icon="trophy" mode="outlined">
             {quizResult?.score}
           </Chip>
@@ -69,7 +114,7 @@ export const QuizResultItem = ({ quizResult }: Props) => {
             {quizResult?.quiz.status || "Active"}
           </Chip>
           {SecureStore.getItem(USER_ROLE) === "waiter" ? (
-            <> </>
+            <></>
           ) : (
             <Chip
               icon="account"
@@ -78,12 +123,27 @@ export const QuizResultItem = ({ quizResult }: Props) => {
           )}
         </View>
       </Card.Content>
+      <ConfirmationDialog
+        title="Remove Quiz Result?"
+        text="Are you sure?"
+        action={() => removeQuizResult(quizResult.id)}
+        close={() => setIsOpenDialog(false)}
+        isOpen={isOpenDialog}
+      />
     </Card>
   );
 };
 
 const styles = StyleSheet.create({
   container: {},
+
+  headerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    height: 50,
+  },
   tagsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",

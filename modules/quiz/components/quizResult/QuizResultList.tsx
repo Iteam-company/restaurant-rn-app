@@ -23,7 +23,7 @@ const QuizResultList = () => {
     <ScrollView
       style={getScrollViewUiSettings(insets, {
         botttomOffset: SecureStore.getItem(USER_ROLE) === "waiter" ? 130 : 10,
-        default: { marginBottom: 85 },
+        default: {},
       })}
     >
       <View style={styles.container}>
