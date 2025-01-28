@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   useCreateQuizResultMutation,
@@ -17,15 +17,24 @@ import {
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { setIn } from "formik";
+import { useTimer } from "react-timer-hook";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
+import InformationDialog from "@/modules/common/components/InformationDialog";
 
 const TakeQuiz = () => {
-  const { id: restaurantId, quizId } = useGlobalSearchParams<{
+  const {
+    id: restaurantId,
+    quizId,
+    timer,
+  } = useGlobalSearchParams<{
     id: string;
     quizId: string;
+    timer: string;
   }>();
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
 
+  const [isDialog, setIsDialog] = useState(false);
   const [index, setIndex] = useState(0);
   const [result, setResult] = useState<
     {
@@ -34,6 +43,17 @@ const TakeQuiz = () => {
     }[]
   >([]);
   const [value, setValue] = useState<number[]>([]);
+
+  const addMintes = (date: Date, minutes: number) => {
+    const result = new Date(date);
+    result.setMinutes(result.getMinutes() + minutes);
+    return result;
+  };
+
+  const { minutes, seconds } = useTimer({
+    expiryTimestamp: addMintes(new Date(), Number(1)),
+    onExpire: () => setIsDialog(true),
+  });
 
   const { data: questions, isLoading: isLoadingQuestions } =
     useGetQuestionsQuery(quizId);
@@ -65,6 +85,17 @@ const TakeQuiz = () => {
 
   return (
     <ScrollView style={getScrollViewUiSettings(insets)}>
+      <View style={[styles.timerContainer]}>
+        <Text
+          style={[
+            styles.timerText,
+            {
+              color:
+                minutes === 0 && seconds < 30 ? colors.error : colors.secondary,
+            },
+          ]}
+        >{`${minutes}:${seconds}`}</Text>
+      </View>
       <View style={[styles.container, { backgroundColor: colors.surface }]}>
         <Title>{currentQuestion?.text}</Title>
 
@@ -121,6 +152,14 @@ const TakeQuiz = () => {
           {questions && index === questions.length - 1 ? "Finish" : "Next"}
         </Button>
       </View>
+      <InformationDialog
+        title="Time is Out"
+        message="You'll be redirected to the quiz page."
+        onClose={() => {
+          router.back();
+        }}
+        visible={isDialog}
+      />
     </ScrollView>
   );
 };
@@ -131,6 +170,15 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 24,
     gap: 10,
+  },
+
+  timerContainer: {
+    marginTop: 16,
+    marginRight: 30,
+  },
+  timerText: {
+    textAlign: "right",
+    fontSize: 24,
   },
 });
 
