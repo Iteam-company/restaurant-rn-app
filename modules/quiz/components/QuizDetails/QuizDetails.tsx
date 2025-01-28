@@ -88,8 +88,8 @@ export const QuizDetails = () => {
           onPress={() =>
             router.push({
               pathname:
-                "/user-dashboard/[id]/(quiz)/[quizId]/(take-quiz)/(takeQuiz)/takeQuiz",
-              params: { id: restaurantId, quizId },
+                "/user-dashboard/[id]/(quiz)/[quizId]/(take-quiz)/(takeQuiz)/[timer]/takeQuiz",
+              params: { id: restaurantId, quizId, timer: `${quiz?.timeLimit}` },
             })
           }
         >
