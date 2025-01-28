@@ -51,7 +51,7 @@ const TakeQuiz = () => {
   };
 
   const { minutes, seconds } = useTimer({
-    expiryTimestamp: addMintes(new Date(), Number(1)),
+    expiryTimestamp: addMintes(new Date(), Number(timer)),
     onExpire: () => setIsDialog(true),
   });
 
