@@ -120,6 +120,12 @@ export const quizApi = workerApi
           ];
         },
       }),
+      deleteQuizResult: builder.mutation<IQuizResultInfo, number>({
+        query: (id) => ({
+          url: `/quiz-results/${id}`,
+          method: "DELETE",
+        }),
+      }),
     }),
   });
 
@@ -134,4 +140,5 @@ export const {
   useCreateQuizResultMutation,
   useGetQuizResultQuery,
   useGetQuizResultListQuery,
+  useDeleteQuizResultMutation,
 } = quizApi;

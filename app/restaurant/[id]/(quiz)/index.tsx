@@ -15,27 +15,18 @@ const Quiz = () => {
   return (
     <Wrapper centered paddingOff>
       <QuizList />
-      {/* <FAB
-        icon="plus"
-        style={[styles.fab, getFabUiSettings(insets)]}
-        onPress={() => {
-          router.push({
-            pathname: "/restaurant/[id]/(quiz)/[menuId]/addQuiz/addQuiz",
-            params: { id: restaurantId, menuId: -1 },
-          });
-        }*/}
       <FAB.Group
         open={isOpen}
         visible
         onStateChange={({ open }) => setIsOpen(open)}
-        icon="plus"
+        icon={isOpen ? "minus" : "plus"}
         actions={[
           {
             icon: "format-list-bulleted",
             label: "Quiz Results",
             onPress: () =>
               router.push({
-                pathname: "/restaurant/[id]/(quiz)/quizResult",
+                pathname: "/restaurant/[id]/(quiz)/(quizResult)/quizResult",
                 params: { id: restaurantId },
               }),
           },
