@@ -106,15 +106,7 @@ export const QuizResultItem = ({ quizResult }: Props) => {
                 </Menu>
               )}
             </View>
-            <View
-              style={[
-                styles.tagsContainer,
-                {
-                  height:
-                    SecureStore.getItem(USER_ROLE) === "waiter" ? 50 : 100,
-                },
-              ]}
-            >
+            <View style={[styles.tagsContainer]}>
               <Chip icon="trophy" mode="outlined">
                 {quizResult?.score}
               </Chip>
@@ -168,7 +160,7 @@ export const QuizResultItem = ({ quizResult }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: { paddingBottom: 16 },
 
   headerContainer: {
     display: "flex",
