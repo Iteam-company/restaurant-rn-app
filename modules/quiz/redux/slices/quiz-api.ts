@@ -121,6 +121,22 @@ export const quizApi = workerApi
           ];
         },
       }),
+      searchQuizResult: builder.query<IQuizResultInfo[], string>({
+        query: (query) => ({
+          url: "/quiz-results/search/",
+          params: { search: query, limit: 0 },
+          method: "GET",
+        }),
+        providesTags: (result, error) => {
+          return [
+            { type: TagTypes.QUIZ_RESULT, id: "LIST" },
+            ...(result?.map(({ id }) => ({
+              type: TagTypes.QUIZ_RESULT,
+              id,
+            })) ?? []),
+          ];
+        },
+      }),
       deleteQuizResult: builder.mutation<IQuizResultInfo, number>({
         query: (id) => ({
           url: `/quiz-results/${id}`,
@@ -145,5 +161,6 @@ export const {
   useCreateQuizResultMutation,
   useGetQuizResultQuery,
   useGetQuizResultListQuery,
+  useSearchQuizResultQuery,
   useDeleteQuizResultMutation,
 } = quizApi;

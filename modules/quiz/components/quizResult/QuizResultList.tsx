@@ -1,38 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { useGetQuizResultListQuery } from "../../redux/slices/quiz-api";
-import { ActivityIndicator } from "react-native-paper";
+import {
+  useGetQuizResultListQuery,
+  useSearchQuizResultQuery,
+} from "../../redux/slices/quiz-api";
+import { ActivityIndicator, Searchbar } from "react-native-paper";
 import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import QuizResultItem from "./QuizResultItem/QuizResultItem";
 import { useGlobalSearchParams } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { USER_ROLE } from "@/modules/common/constants/api";
+import useDebounce from "@/modules/common/hooks/useDebounce";
 
 const QuizResultList = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
-  const { data: quizResults, isLoading } = useGetQuizResultListQuery(
-    Number(restaurantId)
-  );
   const insets = useSafeAreaInsets();
 
-  if (isLoading)
-    return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(searchQuery, 500);
+
+  const { data: quizResults, isLoading } =
+    useSearchQuizResultQuery(debouncedSearchTerm);
 
   return (
     <ScrollView
-      style={getScrollViewUiSettings(insets, {
-        botttomOffset: SecureStore.getItem(USER_ROLE) === "waiter" ? 130 : 10,
-        default: {},
-      })}
+      style={[
+        getScrollViewUiSettings(insets, {
+          botttomOffset: SecureStore.getItem(USER_ROLE) === "waiter" ? 130 : 10,
+          default: {},
+        }),
+        { width: "100%" },
+      ]}
     >
       <View style={styles.container}>
-        {quizResults
-          ?.slice()
-          .reverse()
-          .map((elem) => (
-            <QuizResultItem key={elem.id} quizResult={elem} />
-          ))}
+        <Searchbar
+          placeholder="Search"
+          onChangeText={(value) => setSearchQuery(value)}
+          value={searchQuery}
+          style={{
+            marginTop: 10,
+          }}
+        />
+        {isLoading ? (
+          <ActivityIndicator animating={true} color={"#7c8ebf"} />
+        ) : (
+          quizResults
+            ?.slice()
+            .reverse()
+            .map((elem) => <QuizResultItem key={elem.id} quizResult={elem} />)
+        )}
       </View>
     </ScrollView>
   );
