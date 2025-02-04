@@ -49,6 +49,8 @@ export const QuizResultItem = ({ quizResult }: Props) => {
 
   const [removeQuizResult, { isLoading }] = useDeleteQuizResultMutation();
 
+  const date = new Date(quizResult.raitingDate);
+
   return (
     <Card
       style={styles.container}
@@ -145,6 +147,9 @@ export const QuizResultItem = ({ quizResult }: Props) => {
                   mode="outlined"
                 >{`${quizResult.user.firstName} ${quizResult.user.lastName}`}</Chip>
               )}
+              <Chip icon="calendar" mode="outlined">{`${date.getDate()}.${
+                date.getMonth() + 1
+              }.${date.getFullYear()}`}</Chip>
             </View>
           </>
         ) : (
