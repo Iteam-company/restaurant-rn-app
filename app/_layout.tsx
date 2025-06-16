@@ -3,6 +3,7 @@ import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
+  NavigationIndependentTree,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
@@ -39,30 +40,32 @@ export default function RootLayout() {
   }
 
   return (
-    <NavigationContainer>
-      <Provider store={store}>
-        <PaperProvider theme={theme}>
-          <SafeAreaProvider>
-            <Stack>
-              <Stack.Screen
-                name="auth/(tabs)"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="dashboard/(tabs)"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="restaurant/create"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-            <StatusBar style="light" />
-            {/* </ThemeProvider> */}
-          </SafeAreaProvider>
-        </PaperProvider>
-      </Provider>
-    </NavigationContainer>
+    <NavigationIndependentTree>
+      <NavigationContainer>
+        <Provider store={store}>
+          <PaperProvider theme={theme}>
+            <SafeAreaProvider>
+              <Stack>
+                <Stack.Screen
+                  name="auth/(tabs)"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="dashboard/(tabs)"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="restaurant/create"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+              <StatusBar style="light" />
+              {/* </ThemeProvider> */}
+            </SafeAreaProvider>
+          </PaperProvider>
+        </Provider>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   );
 }
