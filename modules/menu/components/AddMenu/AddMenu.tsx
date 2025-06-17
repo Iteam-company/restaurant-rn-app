@@ -22,7 +22,6 @@ import {
 import { RTKMutationPayloadType } from "@/modules/common/types";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 
 export const AddMenu = () => {
   const { id: restaurantId } = useLocalSearchParams<{
@@ -30,8 +29,6 @@ export const AddMenu = () => {
   }>();
   const [createMenu, { isLoading: isCreatingMenu }] =
     useCreateMenuMutation<RTKMutationPayloadType>();
-
-  const insets = useSafeAreaInsets();
 
   const [connectMenuToRestaurant, { isLoading: isConnecting }] =
     useConnectMenuToRestaurantMutation<RTKMutationPayloadType>();
@@ -53,7 +50,7 @@ export const AddMenu = () => {
     });
 
   return (
-    <ScrollView style={[{ width: "100%" }, getScrollViewUiSettings(insets)]}>
+    <ScrollView style={[{ width: "100%" }]}>
       <FormWrapper>
         <Headline>Add New Menu</Headline>
         <TextInput

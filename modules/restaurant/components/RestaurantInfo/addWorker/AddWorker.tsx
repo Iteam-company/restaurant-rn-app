@@ -12,7 +12,6 @@ import {
 } from "@/modules/common/utils/createUserSchema";
 import { useSignupMutation } from "@/modules/auth/redux/slices/auth-api";
 import { useAddWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function AddWorker() {
@@ -52,7 +51,7 @@ export default function AddWorker() {
       },
     });
   return (
-    <ScrollView style={getScrollViewUiSettings(insets)}>
+    <ScrollView>
       <FormWrapper>
         <Title>Create and add new User</Title>
         <TextInput

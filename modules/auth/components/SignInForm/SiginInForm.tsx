@@ -118,7 +118,8 @@ export default function SiginInForm() {
         onPress={() => {
           handleSubmit();
         }}
-        style={styles.button}>
+        style={styles.button}
+      >
         {isLoading ? (
           <ActivityIndicator animating={true} color={'#7c8ebf'} />
         ) : (

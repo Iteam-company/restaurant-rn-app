@@ -1,5 +1,4 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import { ScrollView } from "react-native";
@@ -46,7 +45,7 @@ const AddQuestion = () => {
     });
 
   return (
-    <ScrollView style={[{ width: "100%" }, getScrollViewUiSettings(insets)]}>
+    <ScrollView style={[{ width: "100%" }]}>
       <FormWrapper>
         <Headline>Add New Question</Headline>
         <TextInput

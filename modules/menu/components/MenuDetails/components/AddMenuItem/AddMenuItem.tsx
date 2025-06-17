@@ -19,8 +19,6 @@ import {
 } from "@/modules/menu/redux/slices/menu-api";
 import { RTKMutationPayloadType } from "@/modules/common/types";
 import { ScrollView, StyleSheet, View } from "react-native";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { handleFile } from "@/modules/common/utils/handleFile";
 import { Image } from "react-native";
 
@@ -61,12 +59,7 @@ export const AddMenuItem = () => {
     });
 
   return (
-    <ScrollView
-      style={[
-        { width: "100%" },
-        getScrollViewUiSettings(insets, { botttomOffset: 10 }),
-      ]}
-    >
+    <ScrollView style={[{ width: "100%" }]}>
       <FormWrapper>
         <View style={styles.header}>
           <Headline>Add New Menu Item</Headline>

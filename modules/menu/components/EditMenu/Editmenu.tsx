@@ -1,5 +1,4 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { router, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
@@ -25,7 +24,6 @@ export const EditMenu = () => {
     id: string;
     menuId: string;
   }>();
-  const insets = useSafeAreaInsets();
 
   const { data: initialValues, isLoading: isLoadingInitialValues } =
     useGetMenuQuery(menuId);
@@ -65,7 +63,7 @@ export const EditMenu = () => {
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
 
   return (
-    <ScrollView style={[getScrollViewUiSettings(insets), styles.container]}>
+    <ScrollView style={[styles.container]}>
       <FormWrapper>
         <Headline>Add New Menu</Headline>
         <TextInput

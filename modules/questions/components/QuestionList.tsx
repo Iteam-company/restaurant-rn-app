@@ -1,4 +1,3 @@
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import React from "react";
 import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -16,7 +15,7 @@ const QuestionList = () => {
   const { data, isLoading, error } = useGetQuestionsQuery(quizId);
 
   return (
-    <ScrollView style={[{ width: "100%" }, getScrollViewUiSettings(insets)]}>
+    <ScrollView style={[{ width: "100%" }]}>
       <View style={styles.container}>
         {isLoading ? (
           <ActivityIndicator size="large" />

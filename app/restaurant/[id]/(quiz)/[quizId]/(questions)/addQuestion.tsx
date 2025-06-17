@@ -1,5 +1,4 @@
 import Wrapper from "@/modules/common/components/Wrapper";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import AddQuestion from "@/modules/questions/components/AddQuestion/AddQuestion";
 import React from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";

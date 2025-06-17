@@ -1,4 +1,3 @@
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useGetMenuItemQuery } from "@/modules/menu/redux/slices/menu-api";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
@@ -17,12 +16,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export const Item = () => {
   const { colors } = useTheme();
   const { itemId } = useLocalSearchParams<{ itemId: string }>();
-  const insets = useSafeAreaInsets();
 
   const { data } = useGetMenuItemQuery(itemId);
 
   return (
-    <ScrollView style={[getScrollViewUiSettings(insets)]}>
+    <ScrollView>
       <View style={styles.container}>
         <Card style={styles.card}>
           <Card.Cover

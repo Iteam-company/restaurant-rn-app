@@ -14,7 +14,6 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { setIn } from "formik";
 import { useTimer } from "react-timer-hook";
@@ -84,7 +83,7 @@ const TakeQuiz = () => {
   const currentQuestion = questions?.find((_, i) => i === index);
 
   return (
-    <ScrollView style={getScrollViewUiSettings(insets)}>
+    <ScrollView>
       <View style={[styles.timerContainer]}>
         <Text
           style={[

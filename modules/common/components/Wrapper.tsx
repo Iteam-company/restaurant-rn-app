@@ -1,7 +1,7 @@
-import { View, StyleSheet, ViewStyle } from "react-native";
-import React, { PropsWithChildren } from "react";
-import { useTheme } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { View, StyleSheet, ViewStyle } from 'react-native';
+import React, { PropsWithChildren } from 'react';
+import { useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type WrapperProps = PropsWithChildren & {
   centered?: boolean;
@@ -31,13 +31,13 @@ export default function Wrapper({
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    minHeight: "100%",
-    display: "flex",
-    flexDirection: "column",
+    width: '100%',
+    minHeight: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   centered: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

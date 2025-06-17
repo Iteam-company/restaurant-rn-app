@@ -21,7 +21,6 @@ import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
 import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { handleFile } from "@/modules/common/utils/handleFile";
 import { Dropdown } from "react-native-paper-dropdown";
 
@@ -79,7 +78,7 @@ export default function CreateRestaurant() {
   if (isLoading || isLoadingImage) return <ActivityIndicator size="large" />;
 
   return (
-    <ScrollView style={[styles.container, getScrollViewUiSettings(insets)]}>
+    <ScrollView style={[styles.container]}>
       <FormWrapper>
         <View style={styles.header}>
           <Headline>Create Restaurant</Headline>

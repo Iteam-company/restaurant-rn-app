@@ -1,4 +1,3 @@
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { statusIcons } from "@/modules/menu/components/MenuList/utils";
 import { useGetQuizResultQuery } from "@/modules/quiz/redux/slices/quiz-api";
 import { DifficultyLevelEnum, StatusEnum } from "@/modules/quiz/types";
@@ -45,7 +44,7 @@ export const QuizResultDetails: React.FC<QuizResultDetailsProps> = () => {
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
 
   return (
-    <ScrollView style={getScrollViewUiSettings(insets)}>
+    <ScrollView>
       <View style={[styles.container, { backgroundColor: colors.surface }]}>
         <Title>{quizResult?.quiz.title}</Title>
         <View style={styles.detailsContainer}>

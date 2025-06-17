@@ -13,7 +13,6 @@ import React, { useState, useMemo } from "react";
 import { CategoriesEnum, SeasonsEnum } from "../../types";
 import { categoryIcons, seasonIcons } from "./utils";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 
 export const MenuList = () => {
   const { id } = useGlobalSearchParams<{ id: string }>();
@@ -56,7 +55,7 @@ export const MenuList = () => {
     );
   };
   return (
-    <ScrollView style={getScrollViewUiSettings(insets)}>
+    <ScrollView>
       <View style={styles.container}>
         {isLoading ? (
           <View style={styles.loadingContainer}>
