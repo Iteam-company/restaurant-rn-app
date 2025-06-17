@@ -5,7 +5,6 @@ import {
   useSearchQuizResultQuery,
 } from "../../redux/slices/quiz-api";
 import { ActivityIndicator, Searchbar } from "react-native-paper";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import QuizResultItem from "./QuizResultItem/QuizResultItem";
 import { useGlobalSearchParams } from "expo-router";
@@ -24,15 +23,7 @@ const QuizResultList = () => {
     useSearchQuizResultQuery(debouncedSearchTerm);
 
   return (
-    <ScrollView
-      style={[
-        getScrollViewUiSettings(insets, {
-          botttomOffset: SecureStore.getItem(USER_ROLE) === "waiter" ? 130 : 10,
-          default: {},
-        }),
-        { width: "100%" },
-      ]}
-    >
+    <ScrollView style={[{ width: "100%" }]}>
       <View style={styles.container}>
         <Searchbar
           placeholder="Search"

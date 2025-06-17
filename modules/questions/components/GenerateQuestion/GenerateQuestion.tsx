@@ -1,4 +1,3 @@
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import {
@@ -54,12 +53,7 @@ const GenerateQuestion = () => {
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
 
   return (
-    <ScrollView
-      style={[
-        { width: "100%", paddingHorizontal: 10 },
-        getScrollViewUiSettings(insets),
-      ]}
-    >
+    <ScrollView style={[{ width: "100%", paddingHorizontal: 10 }]}>
       <View
         style={[
           styles.container,

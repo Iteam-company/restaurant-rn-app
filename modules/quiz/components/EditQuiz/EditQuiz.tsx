@@ -1,4 +1,3 @@
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
@@ -77,7 +76,7 @@ const EditQuiz = () => {
   if (!initialValues) return <ActivityIndicator size="large" />;
 
   return (
-    <ScrollView style={[styles.container, getScrollViewUiSettings(insets)]}>
+    <ScrollView style={[styles.container]}>
       <FormWrapper>
         <Headline>Edit New Quiz</Headline>
         <TextInput

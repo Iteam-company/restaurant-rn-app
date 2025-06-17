@@ -1,4 +1,3 @@
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useGetQuizByRestaurantQuery } from "../redux/slices/quiz-api";
@@ -59,7 +58,7 @@ const QuizList = () => {
   };
 
   return (
-    <ScrollView style={[getScrollViewUiSettings(insets), { width: "100%" }]}>
+    <ScrollView style={[{ width: "100%" }]}>
       <View style={styles.container}>
         <View style={styles.tagsContainer}>
           {Object.values(StatusEnum).map((status) => (

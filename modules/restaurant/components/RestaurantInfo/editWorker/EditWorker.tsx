@@ -31,7 +31,6 @@ import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import {
   handleFile,
   pickImageFromGallery,
@@ -168,14 +167,7 @@ const EditWorker = () => {
   }
 
   return (
-    <ScrollView
-      style={[
-        getScrollViewUiSettings(insets, {
-          botttomOffset: 130,
-        }),
-        { width: "100%" },
-      ]}
-    >
+    <ScrollView style={[{ width: "100%" }]}>
       <FormWrapper>
         <Surface style={styles.surface}>
           <View style={styles.header}>

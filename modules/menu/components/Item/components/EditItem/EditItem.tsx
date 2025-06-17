@@ -1,5 +1,4 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import {
   useGetMenuItemQuery,
   useUpdateMenuItemMutation,
@@ -28,7 +27,6 @@ import { Image } from "react-native";
 
 const EditItem = () => {
   const { itemId } = useLocalSearchParams<{ itemId: string }>();
-  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [formData, setFormData] = useState<FormData | null>(null);
 
@@ -78,7 +76,6 @@ const EditItem = () => {
   return (
     <ScrollView
       style={[
-        getScrollViewUiSettings(insets),
         {
           width: "100%",
         },

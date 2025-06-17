@@ -1,4 +1,3 @@
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
@@ -53,7 +52,7 @@ const UserInfo = () => {
   );
 
   return (
-    <ScrollView style={getScrollViewUiSettings(insets)}>
+    <ScrollView>
       <View style={styles.container}>
         <Surface style={styles.headerSurface}>
           <View style={styles.header}>

@@ -1,4 +1,3 @@
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useGetQuestionsQuery } from "@/modules/questions/redux/slices/question-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import React from "react";
@@ -43,7 +42,7 @@ export const QuizDetails = () => {
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
 
   return (
-    <ScrollView style={getScrollViewUiSettings(insets)}>
+    <ScrollView>
       <View style={styles.container}>
         <Card>
           <Card.Content>

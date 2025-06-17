@@ -1,4 +1,3 @@
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { router, useGlobalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
@@ -38,7 +37,7 @@ const QuestionItemInfo = () => {
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
 
   return (
-    <ScrollView style={[{ width: "100%" }, getScrollViewUiSettings(insets)]}>
+    <ScrollView style={[{ width: "100%" }]}>
       <View style={styles.scrollContainer}>
         <View style={[styles.container, { backgroundColor: colors.surface }]}>
           <Title>{data?.text}</Title>

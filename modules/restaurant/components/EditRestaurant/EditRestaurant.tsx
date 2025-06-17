@@ -1,5 +1,4 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
@@ -54,7 +53,7 @@ const EditRestaurant = () => {
   if (!initialValues) return <ActivityIndicator size="large" />;
 
   return (
-    <ScrollView style={[styles.container, getScrollViewUiSettings(insets)]}>
+    <ScrollView style={[styles.container]}>
       <FormWrapper>
         <View style={styles.header}>
           <Headline>Edit Restaurant</Headline>

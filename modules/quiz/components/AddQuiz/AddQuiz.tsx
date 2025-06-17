@@ -22,7 +22,6 @@ import {
 } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { useGetAllMenuQuery } from "@/modules/menu/redux/slices/menu-api";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const AddQuiz = () => {
@@ -50,7 +49,7 @@ const AddQuiz = () => {
     });
 
   return (
-    <ScrollView style={[getScrollViewUiSettings(insets), { width: "100%" }]}>
+    <ScrollView style={[{ width: "100%" }]}>
       <FormWrapper>
         <Headline>Add New Quiz</Headline>
         <TextInput

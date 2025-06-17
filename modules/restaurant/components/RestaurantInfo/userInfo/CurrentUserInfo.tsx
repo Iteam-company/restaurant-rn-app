@@ -1,5 +1,4 @@
 import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
-import getScrollViewUiSettings from "@/modules/common/constants/getScrollViewUiSettings.ios";
 import {
   useGetCurrentUserQuery,
   useGetUserByIdQuery,
@@ -66,15 +65,7 @@ const CurrentUserInfo = () => {
   }
 
   return (
-    <ScrollView
-      style={[
-        getScrollViewUiSettings(insets, {
-          isTopMargin: true,
-          default: { paddingVertical: 16 },
-        }),
-        { width: "100%" },
-      ]}
-    >
+    <ScrollView style={[{ width: "100%" }]}>
       <View style={styles.container}>
         <Surface style={styles.headerSurface}>
           <View style={styles.header}>
