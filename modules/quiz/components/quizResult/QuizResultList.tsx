@@ -11,6 +11,7 @@ import { useGlobalSearchParams } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { USER_ROLE } from "@/modules/common/constants/api";
 import useDebounce from "@/modules/common/hooks/useDebounce";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 const QuizResultList = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
@@ -42,6 +43,7 @@ const QuizResultList = () => {
             .map((elem) => <QuizResultItem key={elem.id} quizResult={elem} />)
         )}
       </View>
+      <TabBarOffset />
     </ScrollView>
   );
 };
