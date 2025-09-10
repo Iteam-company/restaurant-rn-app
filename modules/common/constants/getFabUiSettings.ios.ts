@@ -17,7 +17,7 @@ const getFabUiSettings = (insets: EdgeInsets, options?: Options) => {
     ios: {
       bottom:
         insets.bottom +
-        49 +
+        20 +
         bottomOffset +
         (isFABGroup && insets.top !== 20 ? -34 : 0),
     },

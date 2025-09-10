@@ -1,3 +1,4 @@
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
@@ -97,6 +98,7 @@ const UserInfo = () => {
           />
         </View>
       </View>
+      <TabBarOffset />
     </ScrollView>
   );
 };
