@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import Entypo from "@expo/vector-icons/Entypo";
 import { RestaurantListItem } from "./components/RestaurantListItem";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 const RestaurantList = () => {
   const { colors } = useTheme();
@@ -54,6 +55,7 @@ const RestaurantList = () => {
         >
           Add new Restaurant
         </Button>
+        <TabBarOffset />
       </ScrollView>
     </View>
   );
