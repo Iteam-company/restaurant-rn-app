@@ -13,6 +13,7 @@ import React, { useState, useMemo } from "react";
 import { CategoriesEnum, SeasonsEnum } from "../../types";
 import { categoryIcons, seasonIcons } from "./utils";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 export const MenuList = () => {
   const { id } = useGlobalSearchParams<{ id: string }>();
@@ -113,6 +114,7 @@ export const MenuList = () => {
           <Title style={styles.notFound}>Not found any menu</Title>
         )}
       </View>
+      <TabBarOffset />
     </ScrollView>
   );
 };
