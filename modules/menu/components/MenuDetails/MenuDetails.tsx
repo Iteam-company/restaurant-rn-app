@@ -15,6 +15,7 @@ import {
 import { MenuItemCard } from "./components/MenuItemCard";
 import useDebounce from "@/modules/common/hooks/useDebounce";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 export const MenuDetails = () => {
   const { colors } = useTheme();
@@ -61,6 +62,7 @@ export const MenuDetails = () => {
         )}
         {!data?.length && !isLoading && <Title>Not found any menu</Title>}
       </View>
+      <TabBarOffset />
     </ScrollView>
   );
 };
