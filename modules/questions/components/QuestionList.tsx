@@ -5,6 +5,7 @@ import { useGetQuestionsQuery } from "../redux/slices/question-api";
 import { useGlobalSearchParams } from "expo-router";
 import QuestionItem from "./QuestionItem.tsx/QuestionItem";
 import { ActivityIndicator } from "react-native-paper";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 const QuestionList = () => {
   const insets = useSafeAreaInsets();
@@ -23,6 +24,7 @@ const QuestionList = () => {
           data?.map((elem) => <QuestionItem key={elem.id} question={elem} />)
         )}
       </View>
+      <TabBarOffset />
     </ScrollView>
   );
 };
