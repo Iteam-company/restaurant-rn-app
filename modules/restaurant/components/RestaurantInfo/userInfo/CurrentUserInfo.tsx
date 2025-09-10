@@ -19,6 +19,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
 import { AUTH_TOKEN_KEY } from "@/modules/common/constants/api";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 const CurrentUserInfo = () => {
   const { colors } = useTheme();
@@ -118,6 +119,7 @@ const CurrentUserInfo = () => {
           Log out
         </Button>
       </View>
+      <TabBarOffset />
     </ScrollView>
   );
 };
