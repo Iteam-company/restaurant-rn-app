@@ -7,6 +7,7 @@ import { ActivityIndicator, Chip, Title, useTheme } from "react-native-paper";
 import { DifficultyLevelEnum, StatusEnum } from "../types";
 import { statusIcons } from "@/modules/menu/components/MenuList/utils";
 import { useMemo, useState } from "react";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 const QuizList = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
@@ -103,6 +104,7 @@ const QuizList = () => {
           <Title>Here is no Quizes</Title>
         )}
       </View>
+      <TabBarOffset />
     </ScrollView>
   );
 };
