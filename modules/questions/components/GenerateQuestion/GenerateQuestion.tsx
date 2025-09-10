@@ -17,6 +17,7 @@ import { router, useGlobalSearchParams } from "expo-router";
 import QuestionItem from "../QuestionItem.tsx/QuestionItem";
 import QuestionElement from "./QuestionElement";
 import { ICreateQuestionDTO, IQuestionInfo } from "../../types";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 const GenerateQuestion = () => {
   const { id: restaurantId, quizId } = useGlobalSearchParams<{
@@ -124,6 +125,7 @@ const GenerateQuestion = () => {
       ) : (
         <></>
       )}
+      <TabBarOffset />
     </ScrollView>
   );
 };

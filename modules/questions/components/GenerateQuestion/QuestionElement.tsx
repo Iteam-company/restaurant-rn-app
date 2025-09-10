@@ -45,13 +45,13 @@ const QuestionElement = ({ question, onChange, onDelete }: Props) => {
           }
           anchorPosition="bottom"
         >
-          <Menu.Item
+          {/* <Menu.Item
             title="Edit"
             leadingIcon="pencil-outline"
             onPress={() => {
               closeMenu();
             }}
-          />
+          /> */}
           <Menu.Item
             title="Delete"
             leadingIcon="trash-can-outline"
