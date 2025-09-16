@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView, Platform } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -14,6 +20,7 @@ import {
   ActivityIndicator,
   IconButton,
   useTheme,
+  Icon,
 } from "react-native-paper";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import {
@@ -37,6 +44,7 @@ import {
 } from "@/modules/common/utils/handleFile";
 import * as SecureStore from "expo-secure-store";
 import { USER_ROLE } from "@/modules/common/constants/api";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 interface WorkerFormData {
   firstName: string;
@@ -106,8 +114,6 @@ const EditWorker = () => {
       ? useGetCurrentUserQuery()
       : useGetUserByIdQuery(workerId);
 
-  const insets = useSafeAreaInsets();
-
   const [removeWorker] = useRemoveWorkerMutation();
   const [removeCurrentUser] = useRemoveCurrentUserMutation();
 
@@ -167,9 +173,16 @@ const EditWorker = () => {
   }
 
   return (
-    <ScrollView style={[{ width: "100%" }]}>
-      <FormWrapper>
-        <Surface style={styles.surface}>
+    <>
+      <ScrollView style={[{ width: "100%", paddingHorizontal: 8 }]}>
+        <TouchableOpacity
+          style={[styles.goBackButton]}
+          onPress={() => router.back()}
+        >
+          <Icon source="arrow-left" size={24} />
+        </TouchableOpacity>
+
+        <FormWrapper>
           <View style={styles.header}>
             <Title>Edit Worker Profile</Title>
             {data?.icon ? (
@@ -313,8 +326,9 @@ const EditWorker = () => {
               </Button>
             </View>
           </View>
-        </Surface>
-      </FormWrapper>
+          <TabBarOffset />
+        </FormWrapper>
+      </ScrollView>
       <ConfirmationDialog
         action={() => {
           if (SecureStore.getItem(USER_ROLE) === "waiter") removeCurrentUser();
@@ -331,11 +345,16 @@ const EditWorker = () => {
         }}
         isOpen={isOpenDialog}
       />
-    </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  goBackButton: {
+    position: "absolute",
+    left: 0,
+    paddingVertical: 16,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
