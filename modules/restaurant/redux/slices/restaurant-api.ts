@@ -30,17 +30,24 @@ export const restaurantApi = workerApi
         query: () => ({ url: "/user/owners/", method: "GET" }),
       }),
 
-      getRestaurants: builder.query<RestaurantInfo[], void>({
+      getRestaurants: builder.query<RestaurantInfo[] | RestaurantInfo, void>({
         query: () => ({
           url: "/restaurant/parse-owner-admin-waiter",
           method: "GET",
         }),
         providesTags: (result) => [
           { type: TagTypes.RESTAURANT, id: "LIST" },
-          ...(result?.map(({ id }) => ({
-            type: TagTypes.RESTAURANT,
-            id,
-          })) ?? []), //NOTE: maybe replace just id to restaurant-${restaurantId}
+          ...(Array.isArray(result)
+            ? result?.map(({ id }) => ({
+                type: TagTypes.RESTAURANT,
+                id,
+              })) ?? []
+            : [
+                {
+                  type: TagTypes.RESTAURANT,
+                  id: result?.id,
+                },
+              ]),
         ],
       }),
       updateRestaurant: builder.mutation<

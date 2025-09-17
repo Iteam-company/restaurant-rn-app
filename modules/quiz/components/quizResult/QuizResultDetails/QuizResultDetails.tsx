@@ -84,7 +84,7 @@ export const QuizResultDetails: React.FC<QuizResultDetailsProps> = () => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 16,
+    marginVertical: 16,
     padding: 16,
     borderRadius: 24,
     gap: 10,

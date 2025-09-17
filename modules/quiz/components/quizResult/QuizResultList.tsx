@@ -51,7 +51,7 @@ const QuizResultList = () => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginVertical: 16,
+    marginBottom: 16,
     gap: 16,
   },
 });

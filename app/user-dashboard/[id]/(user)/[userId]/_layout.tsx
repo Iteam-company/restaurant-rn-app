@@ -11,9 +11,6 @@ export default function QuizLayout() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <Appbar.Header>
-        <Appbar.BackAction iconColor="white" onPress={() => router.back()} />
-      </Appbar.Header>
       <Slot />
     </>
   );

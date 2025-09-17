@@ -12,14 +12,13 @@ const RestaurantQuiz = () => {
   const insets = useSafeAreaInsets();
 
   return (
-    <Wrapper paddingOff marginTop>
+    <Wrapper paddingOff>
       <QuizList />
       <FAB
         icon="format-list-checks"
         style={[
           styles.fab,
           getFabUiSettings(insets, {
-            bottomOffset: 59,
             defaultStyle: { bottom: 24 },
           }),
         ]}
