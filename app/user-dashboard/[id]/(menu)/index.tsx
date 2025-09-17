@@ -5,7 +5,7 @@ import { MenuList } from "@/modules/menu/components/MenuList";
 
 const MenuScreen = () => {
   return (
-    <Wrapper paddingOff marginTop>
+    <Wrapper paddingOff>
       <MenuList />
     </Wrapper>
   );
