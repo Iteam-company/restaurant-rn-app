@@ -1,9 +1,7 @@
 import { useGetRestaurantsQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
 import React from "react";
-import { StyleSheet, View, Dimensions, Platform } from "react-native";
-import { ScrollView } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
-import { Button, Card, Title, Paragraph } from "react-native-paper";
+import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
+import { Button, ActivityIndicator } from "react-native-paper";
 import { router } from "expo-router";
 import { RestaurantListItem } from "./components/RestaurantListItem";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";

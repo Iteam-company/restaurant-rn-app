@@ -1,6 +1,5 @@
-import { UserInfo } from "../../types/user.types";
+import { UserInfo, SearchUser } from "../../types/user.types";
 import { UpdateUserInfoI } from "../../types/restaurant.types";
-import { SearchUser } from "../../types/user.types";
 import { TagTypes } from "../utils/api-config";
 import { workerApi } from "./worker-api";
 

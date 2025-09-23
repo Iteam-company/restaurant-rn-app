@@ -30,8 +30,15 @@ export const authApi = createApi({
         body,
       }),
     }),
-    validateToken: builder.query<UserType, void>({
-      query: () => "/auth/me",
+    validateToken: builder.query<UserType, void | { token: string }>({
+      query: (props) => ({
+        url: "/auth/me",
+        headers: props?.token
+          ? {
+              Authorization: `Bearer ${props.token}`,
+            }
+          : undefined,
+      }),
       providesTags: ["Auth"],
     }),
     updateCurrentUserInfo: builder.mutation<void, UpdateUserInfoI>({
