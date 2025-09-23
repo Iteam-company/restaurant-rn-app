@@ -28,30 +28,33 @@ export default function RestaurantPageLayout() {
     <>
       <Stack.Screen
         options={{
-          header: () => (
-            <Appbar.Header
-              statusBarHeight={0}
-              style={{ backgroundColor: colors.background }}
-            >
-              <Appbar.BackAction
-                iconColor="white"
-                onPress={() =>
-                  /^\/restaurant\/\d+$/.test(pathname)
-                    ? router.push({
-                        pathname: "/dashboard/(tabs)/restaurants",
-                      })
-                    : router.back()
-                }
-              />
-              <Appbar.Content
-                title={restaurantData?.name ? restaurantData?.name : ""}
-                titleStyle={{ color: "white" }}
-              />
-            </Appbar.Header>
-          ),
           headerShown: false,
         }}
       />
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{ backgroundColor: colors.background }}
+      >
+        <Appbar.BackAction
+          iconColor="white"
+          onPress={() =>
+            /^\/restaurant\/\d+$/.test(pathname)
+              ? router.push({
+                  pathname: "/dashboard/(tabs)/restaurants",
+                })
+              : /^\/restaurant\/\d+\/\d+\/addQuiz\/addQuiz$/.test(pathname)
+              ? router.push({
+                  pathname: "/restaurant/[id]/(quiz)",
+                  params: { id },
+                })
+              : router.back()
+          }
+        />
+        <Appbar.Content
+          title={restaurantData?.name ? restaurantData?.name : ""}
+          titleStyle={{ color: "white" }}
+        />
+      </Appbar.Header>
 
       <Tabs
         screenOptions={{
