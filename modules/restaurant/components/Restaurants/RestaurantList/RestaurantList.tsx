@@ -1,30 +1,15 @@
-import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { useGetRestaurantsQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, View, Dimensions, Platform } from "react-native";
 import { ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Divider,
-  Menu,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { Button, Card, Title, Paragraph } from "react-native-paper";
 import { router } from "expo-router";
-import Entypo from "@expo/vector-icons/Entypo";
 import { RestaurantListItem } from "./components/RestaurantListItem";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 const RestaurantList = () => {
-  const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
-  const { data, isLoading, isError } = useGetRestaurantsQuery();
-  const [visible, setVisible] = React.useState(false);
-
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
+  const { data, isLoading } = useGetRestaurantsQuery();
 
   if (isLoading) {
     return (
@@ -39,16 +24,17 @@ const RestaurantList = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {data?.map((restaurant) => (
-          <RestaurantListItem
-            id={restaurant.id}
-            key={restaurant.id}
-            address={restaurant.address}
-            name={restaurant.name}
-            workersCount={restaurant.workers.length}
-            image={restaurant.image}
-          />
-        ))}
+        {Array.isArray(data) &&
+          data?.map((restaurant) => (
+            <RestaurantListItem
+              id={restaurant.id}
+              key={restaurant.id}
+              address={restaurant.address}
+              name={restaurant.name}
+              workersCount={restaurant.workers.length}
+              image={restaurant.image}
+            />
+          ))}
         <Button
           style={styles.addButton}
           onPress={() => router.push("/restaurant/create")}
