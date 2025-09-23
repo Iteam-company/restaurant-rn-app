@@ -1,7 +1,7 @@
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React from "react";
+import { ScrollView } from "react-native";
 import {
   difficultyLevelItem,
   initialValues,
@@ -9,10 +9,7 @@ import {
   statusItem,
   validationSchema,
 } from "./utils";
-import {
-  useConnectQuizToMenuMutation,
-  useCreateQuizMutation,
-} from "../../redux/slices/quiz-api";
+import { useCreateQuizMutation } from "../../redux/slices/quiz-api";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import {
   Headline,
@@ -22,14 +19,12 @@ import {
 } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { useGetAllMenuQuery } from "@/modules/menu/redux/slices/menu-api";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const AddQuiz = () => {
   const { id: restaurantId, menuId } = useGlobalSearchParams<{
     id: string;
     menuId: string;
   }>();
-  const insets = useSafeAreaInsets();
 
   const { data: menu } = useGetAllMenuQuery(restaurantId);
 
@@ -112,11 +107,5 @@ const AddQuiz = () => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-  },
-});
 
 export default AddQuiz;
