@@ -1,9 +1,9 @@
 import React from "react";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import { router, Stack, Tabs } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 import { Platform } from "react-native";
-import { Appbar, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 
 export default function RestaurantLayout() {

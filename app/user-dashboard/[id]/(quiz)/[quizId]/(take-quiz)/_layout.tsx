@@ -1,7 +1,4 @@
-import { Slot, Stack } from "expo-router";
-import { TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { Slot, Stack, useRouter } from "expo-router";
 import { Appbar, useTheme } from "react-native-paper";
 import React from "react";
 

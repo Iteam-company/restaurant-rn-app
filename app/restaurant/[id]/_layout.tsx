@@ -8,7 +8,7 @@ import {
   usePathname,
 } from "expo-router";
 import React from "react";
-import { Platform, StyleSheet } from "react-native";
+import { Platform } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -107,5 +107,3 @@ export default function RestaurantPageLayout() {
     </>
   );
 }
-
-const styles = StyleSheet.create({});

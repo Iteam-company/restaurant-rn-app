@@ -1,12 +1,7 @@
-import { Slot, Stack } from "expo-router";
-import { TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import { Appbar } from "react-native-paper";
+import { Slot } from "expo-router";
 import React from "react";
-export default function MenuLayout() {
-  const router = useRouter();
 
+export default function MenuLayout() {
   return (
     <>
       <Slot />

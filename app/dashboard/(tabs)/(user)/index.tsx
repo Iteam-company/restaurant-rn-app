@@ -1,6 +1,6 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import { useRouter } from "expo-router";
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";

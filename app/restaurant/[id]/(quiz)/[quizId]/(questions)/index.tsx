@@ -4,7 +4,7 @@ import QuestionList from "@/modules/questions/components/QuestionList";
 import { router, useGlobalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import { FAB, Text } from "react-native-paper";
+import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Question = () => {

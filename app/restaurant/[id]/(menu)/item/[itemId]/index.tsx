@@ -3,8 +3,7 @@ import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { Item } from "@/modules/menu/components/Item/components/Item";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
-import { FAB, Title } from "react-native-paper";
+import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ItemPage() {
