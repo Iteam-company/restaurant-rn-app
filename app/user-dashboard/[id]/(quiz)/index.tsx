@@ -3,7 +3,7 @@ import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import QuizList from "@/modules/quiz/components/QuizList";
 import { router, useGlobalSearchParams } from "expo-router";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 

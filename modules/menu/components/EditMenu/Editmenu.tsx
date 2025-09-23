@@ -2,7 +2,7 @@ import FormWrapper from "@/modules/common/components/FormWrapper";
 import { router, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -10,17 +10,15 @@ import {
   TextInput,
 } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useGetMenuQuery,
   useUpdateMenuMutation,
 } from "../../redux/slices/menu-api";
 import { categoryItems, seasonItem, validationSchema } from "../AddMenu/utils";
-import { categoryIcons } from "../MenuList/utils";
 import { CategoriesEnum, SeasonsEnum } from "../../types";
 
 export const EditMenu = () => {
-  const { id: restaurantId, menuId } = useLocalSearchParams<{
+  const { menuId } = useLocalSearchParams<{
     id: string;
     menuId: string;
   }>();
@@ -57,7 +55,7 @@ export const EditMenu = () => {
         season: initialValues.season,
         categories: initialValues.categories,
       });
-  }, [initialValues]);
+  }, [initialValues, formik]);
 
   if (isLoadingInitialValues)
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;

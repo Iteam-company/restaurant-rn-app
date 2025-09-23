@@ -1,4 +1,3 @@
-import { View, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 
 import Wrapper from "@/modules/common/components/Wrapper";
@@ -16,5 +15,3 @@ export default function Signin() {
     </Wrapper>
   );
 }
-
-const styles = StyleSheet.create({});

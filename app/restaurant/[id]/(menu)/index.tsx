@@ -2,7 +2,6 @@ import Wrapper from "@/modules/common/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { MenuList } from "@/modules/menu/components/MenuList";
 import { router } from "expo-router";
-import { Platform } from "react-native";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 

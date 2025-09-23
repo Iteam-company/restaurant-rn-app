@@ -1,8 +1,8 @@
 import Wrapper from "@/modules/common/components/Wrapper";
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { FAB, Title } from "react-native-paper";
+import { FAB } from "react-native-paper";
 import WorkerInfo from "@/modules/restaurant/components/RestaurantInfo/workerInfo/WorkerInfo";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
