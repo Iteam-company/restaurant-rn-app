@@ -1,31 +1,25 @@
-import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
-import {
-  useGetCurrentUserQuery,
-  useGetUserByIdQuery,
-} from "@/modules/common/redux/slices/user-api";
-import { router, useLocalSearchParams } from "expo-router";
-import React, { useEffect } from "react";
+import { useGetCurrentUserQuery } from "@/modules/common/redux/slices/user-api";
+import { router } from "expo-router";
+import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import {
   Surface,
   Text,
   Title,
   Avatar,
-  Divider,
   Icon,
   useTheme,
   Button,
 } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
-import { AUTH_TOKEN_KEY } from "@/modules/common/constants/api";
+import { USER_ROLE } from "@/modules/common/constants/api";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
 
 const CurrentUserInfo = () => {
   const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
-  const { data: currentUser } = useValidateTokenQuery();
   const { data } = useGetCurrentUserQuery();
+  const { setToken } = useAuthToken();
 
   if (!data) return null;
 
@@ -59,8 +53,9 @@ const CurrentUserInfo = () => {
     </Surface>
   );
 
-  function handleLogOut() {
-    SecureStore.deleteItemAsync(AUTH_TOKEN_KEY);
+  async function handleLogOut() {
+    setToken(null);
+    await SecureStore.deleteItemAsync(USER_ROLE);
 
     router.push("/auth/(tabs)/signin");
   }

@@ -11,6 +11,7 @@ import "react-native-reanimated";
 import { Provider } from "react-redux";
 import { store } from "@/modules/common/redux/store/store";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
 
 SplashScreen.preventAutoHideAsync();
 export const navigationRef = createNavigationContainerRef();
@@ -33,15 +34,17 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <SafeAreaProvider>
-          <SafeAreaView
-            style={{ flex: 1, backgroundColor: theme.colors.background }}
-          >
-            <Stack screenOptions={{ headerShown: false }} />
-            <StatusBar style="light" />
-            {/* </ThemeProvider> */}
-          </SafeAreaView>
-        </SafeAreaProvider>
+        <AuthTokenProvider>
+          <SafeAreaProvider>
+            <SafeAreaView
+              style={{ flex: 1, backgroundColor: theme.colors.background }}
+            >
+              <Stack screenOptions={{ headerShown: false }} />
+              <StatusBar style="light" />
+              {/* </ThemeProvider> */}
+            </SafeAreaView>
+          </SafeAreaProvider>
+        </AuthTokenProvider>
       </PaperProvider>
     </Provider>
   );

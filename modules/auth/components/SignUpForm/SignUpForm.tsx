@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as SecureStore from "expo-secure-store";
 import { ActivityIndicator, StyleSheet } from "react-native";
-import { initialValues, validationSchema } from "@/modules/common/utils/createUserSchema";
+import {
+  initialValues,
+  validationSchema,
+} from "@/modules/common/utils/createUserSchema";
 import { Button, TextInput, Text } from "react-native-paper";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import { Logo } from "@/modules/common/components/ui/Logo";
-import { AUTH_TOKEN_KEY } from "@/modules/common/constants/api";
-import { useRouter } from "expo-router";
 import { UserROLES } from "@/modules/common/types/user.types";
 import { RTKMutationPayloadType } from "@/modules/common/types";
 import { useSignupMutation } from "../../redux/slices/auth-api";
+import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
 
 export default function SignUpForm() {
-  const router = useRouter();
-
   const [signUp, { isLoading, error }] =
     useSignupMutation<RTKMutationPayloadType>();
 
   const [showPassword, setShowPassword] = useState(false);
+  const { setToken } = useAuthToken();
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
@@ -31,10 +31,9 @@ export default function SignUpForm() {
             role: UserROLES.OWNER,
           }).unwrap();
           if (res.access_token) {
-            SecureStore.setItem(AUTH_TOKEN_KEY, res.access_token);
+            setToken(res.access_token);
           }
-          router.push("/dashboard/restaurants");
-        } catch (e) {}
+        } catch {}
       },
     });
   return (
