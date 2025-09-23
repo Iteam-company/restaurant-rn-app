@@ -21,7 +21,6 @@ export default function AuthTabsLayout() {
   );
 
   useEffect(() => {
-    console.log(token, user);
     if (token) {
       switch (user?.role) {
         case UserROLES.WAITER:
