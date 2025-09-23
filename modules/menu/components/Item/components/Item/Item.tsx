@@ -1,3 +1,4 @@
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { useGetMenuItemQuery } from "@/modules/menu/redux/slices/menu-api";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
@@ -60,6 +61,7 @@ export const Item = () => {
           </Card.Content>
         </Card>
       </View>
+      <TabBarOffset />
     </ScrollView>
   );
 };

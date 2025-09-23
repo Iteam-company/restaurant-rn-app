@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
-  Avatar,
   Button,
   Headline,
   IconButton,
@@ -21,10 +20,10 @@ import { RTKMutationPayloadType } from "@/modules/common/types";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { handleFile } from "@/modules/common/utils/handleFile";
 import { Image } from "react-native";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 export const AddMenuItem = () => {
   const { menuId } = useLocalSearchParams<{ menuId: string }>();
-  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [formData, setFormData] = useState<FormData | null>(null);
 
@@ -164,6 +163,7 @@ export const AddMenuItem = () => {
           Back
         </Button>
       </FormWrapper>
+      <TabBarOffset />
     </ScrollView>
   );
 };

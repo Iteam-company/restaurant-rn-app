@@ -5,10 +5,9 @@ import {
   Stack,
   Tabs,
   useGlobalSearchParams,
-  useLocalSearchParams,
   usePathname,
 } from "expo-router";
-import React, { useEffect } from "react";
+import React from "react";
 import { Platform, StyleSheet } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -22,35 +21,38 @@ export default function RestaurantPageLayout() {
     workerId: string;
   }>();
 
-  const { data: restaurantData, isLoading } = useGetRestaurantQuery(id);
+  const { data: restaurantData } = useGetRestaurantQuery(id);
   const pathname = usePathname();
 
   return (
     <>
       <Stack.Screen
         options={{
+          header: () => (
+            <Appbar.Header
+              statusBarHeight={0}
+              style={{ backgroundColor: colors.background }}
+            >
+              <Appbar.BackAction
+                iconColor="white"
+                onPress={() =>
+                  /^\/restaurant\/\d+$/.test(pathname)
+                    ? router.push({
+                        pathname: "/dashboard/(tabs)/restaurants",
+                      })
+                    : router.back()
+                }
+              />
+              <Appbar.Content
+                title={restaurantData?.name ? restaurantData?.name : ""}
+                titleStyle={{ color: "white" }}
+              />
+            </Appbar.Header>
+          ),
           headerShown: false,
         }}
       />
-      <Appbar.Header
-        statusBarHeight={0}
-        style={{ backgroundColor: colors.background }}
-      >
-        <Appbar.BackAction
-          iconColor="white"
-          onPress={() =>
-            /^\/restaurant\/\d+$/.test(pathname)
-              ? router.push({
-                  pathname: "/dashboard/(tabs)/restaurants",
-                })
-              : router.back()
-          }
-        />
-        <Appbar.Content
-          title={restaurantData?.name ? restaurantData?.name : ""}
-          titleStyle={{ color: "white" }}
-        />
-      </Appbar.Header>
+
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: colors.primary,
