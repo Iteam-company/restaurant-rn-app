@@ -1,21 +1,19 @@
-import React, { FC, useState } from "react";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
-import { Dimensions, View, StyleSheet } from "react-native";
+import { useDeleteRestaurantMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
+import Entypo from "@expo/vector-icons/Entypo";
+import { router } from "expo-router";
+import { FC, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
 import {
   Button,
   Card,
-  Dialog,
   Divider,
   Menu,
   Paragraph,
-  Portal,
   Title,
   useTheme,
 } from "react-native-paper";
-import { router } from "expo-router";
-import Entypo from "@expo/vector-icons/Entypo";
-import { useDeleteRestaurantMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 
 interface RestaurantListItemProps {
   id: number;
@@ -90,11 +88,10 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
               style={styles.button}
               onPress={() => {
                 router.push({
-                  pathname: "/restaurant/[id]/(menu)",
+                  pathname: "/restaurant/[id]/(quiz)",
                   params: { id },
                 });
-              }}
-            >
+              }}>
               View Details
             </Button>
 
@@ -108,8 +105,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
                   color={colors.primary}
                   onPress={openMenu}
                 />
-              }
-            >
+              }>
               <Menu.Item
                 onPress={handleEdit}
                 title="Edit"

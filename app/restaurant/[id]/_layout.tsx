@@ -1,5 +1,7 @@
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
+import { useGetRestaurantQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import {
   router,
   Stack,
@@ -7,12 +9,8 @@ import {
   useGlobalSearchParams,
   usePathname,
 } from "expo-router";
-import React from "react";
 import { Platform } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useGetRestaurantQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
 
 export default function RestaurantPageLayout() {
   const { colors } = useTheme();
@@ -33,8 +31,7 @@ export default function RestaurantPageLayout() {
       />
       <Appbar.Header
         statusBarHeight={0}
-        style={{ backgroundColor: colors.background }}
-      >
+        style={{ backgroundColor: colors.background }}>
         <Appbar.BackAction
           iconColor="white"
           onPress={() =>
@@ -71,8 +68,7 @@ export default function RestaurantPageLayout() {
             default: {},
           }),
         }}
-        safeAreaInsets={{ bottom: 0, top: 0 }}
-      >
+        safeAreaInsets={{ bottom: 0, top: 0 }}>
         <Tabs.Screen
           name="(workers)"
           options={{
@@ -98,12 +94,13 @@ export default function RestaurantPageLayout() {
         />
         <Tabs.Screen
           name="(menu)"
-          options={{
-            title: "Menu",
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name="restaurant-menu" size={25} color={color} />
-            ),
-          }}
+          options={{ href: null }}
+          // options={{
+          //   title: "Menu",
+          //   tabBarIcon: ({ color }) => (
+          //     <MaterialIcons name="restaurant-menu" size={25} color={color} />
+          //   ),
+          // }}
         />
         <Tabs.Screen name="edit" options={{ href: null }} />
       </Tabs>
