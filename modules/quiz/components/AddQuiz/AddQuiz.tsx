@@ -1,33 +1,23 @@
-import { router, useGlobalSearchParams } from "expo-router";
+import FormWrapper from "@/modules/common/components/FormWrapper";
+import { router } from "expo-router";
 import { useFormik } from "formik";
-import React from "react";
 import { ScrollView } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  Headline,
+  TextInput,
+} from "react-native-paper";
+import { Dropdown } from "react-native-paper-dropdown";
+import { useCreateQuizMutation } from "../../redux/slices/quiz-api";
 import {
   difficultyLevelItem,
   initialValues,
-  menuItems,
   statusItem,
   validationSchema,
 } from "./utils";
-import { useCreateQuizMutation } from "../../redux/slices/quiz-api";
-import FormWrapper from "@/modules/common/components/FormWrapper";
-import {
-  Headline,
-  TextInput,
-  Button,
-  ActivityIndicator,
-} from "react-native-paper";
-import { Dropdown } from "react-native-paper-dropdown";
-import { useGetAllMenuQuery } from "@/modules/menu/redux/slices/menu-api";
 
 const AddQuiz = () => {
-  const { id: restaurantId, menuId } = useGlobalSearchParams<{
-    id: string;
-    menuId: string;
-  }>();
-
-  const { data: menu } = useGetAllMenuQuery(restaurantId);
-
   const [createQuiz, { isLoading: isCreatingQuiz }] = useCreateQuizMutation();
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
@@ -83,18 +73,6 @@ const AddQuiz = () => {
           onBlur={handleBlur("timeLimit")}
           error={touched.timeLimit && !!errors.timeLimit}
           left={<TextInput.Icon icon="timer" />}
-        />
-        <Dropdown
-          label={"Menu"}
-          disabled={parseInt(menuId) !== -1}
-          mode="outlined"
-          value={`${parseInt(menuId) !== -1 ? menuId : values.menuId}`}
-          options={menuItems(menu || [])}
-          onSelect={(value) =>
-            setFieldValue("menuId", value ? parseInt(value) : 0)
-          }
-          error={touched.menuId && !!errors.menuId}
-          CustomMenuHeader={(props) => <></>}
         />
         <Button mode="contained-tonal" onPress={() => handleSubmit()}>
           {isCreatingQuiz ? (
