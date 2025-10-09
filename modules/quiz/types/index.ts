@@ -1,5 +1,5 @@
 import { UserInfo } from "@/modules/common/types/user.types";
-import { IMenu } from "@/modules/menu/types";
+// import { IMenu } from "@/modules/menu/types";
 
 export enum StatusEnum {
   IN_PROGRESS = "in-progress",
@@ -21,7 +21,6 @@ export interface IQuizInfo {
   difficultyLevel: DifficultyLevelEnum;
   timeLimit: number;
   status: StatusEnum;
-  menu: IMenu;
   //  quizResults: QuizResult[];
 }
 

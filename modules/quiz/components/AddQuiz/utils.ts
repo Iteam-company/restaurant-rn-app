@@ -1,6 +1,5 @@
 import * as yup from "yup";
 import { DifficultyLevelEnum, StatusEnum } from "../../types";
-import { IMenu } from "@/modules/menu/types";
 
 export const initialValues = {
   title: "",
@@ -45,10 +44,3 @@ export const statusItem = Object.entries(StatusEnum).map(([_, value]) => ({
   label: value.charAt(0).toUpperCase() + value.slice(1),
   value: value,
 }));
-
-export const menuItems = (menu: IMenu[]) => {
-  return menu.map((item) => ({
-    label: item.name,
-    value: `${item.id}`,
-  }));
-};
