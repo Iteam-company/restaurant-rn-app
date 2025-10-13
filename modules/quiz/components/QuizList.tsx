@@ -1,18 +1,16 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useGetQuizByRestaurantQuery } from "../redux/slices/quiz-api";
-import QuizItem from "./QuizItem/QuizItem";
-import { useGlobalSearchParams } from "expo-router";
-import { ActivityIndicator, Chip, Title, useTheme } from "react-native-paper";
-import { DifficultyLevelEnum, StatusEnum } from "../types";
-import { statusIcons } from "@/modules/menu/components/MenuList/utils";
-import { useMemo, useState } from "react";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import { statusIcons } from "@/modules/common/utils/menuUtils";
+import { useGlobalSearchParams } from "expo-router";
+import { useMemo, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Chip, Title, useTheme } from "react-native-paper";
+import { useGetQuizByRestaurantQuery } from "../redux/slices/quiz-api";
+import { DifficultyLevelEnum, StatusEnum } from "../types";
+import QuizItem from "./QuizItem/QuizItem";
 
 const QuizList = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
   const { data, isLoading } = useGetQuizByRestaurantQuery(restaurantId);
-  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
 
   const [selectedStatus, setSelectedStatus] = useState<StatusEnum[]>([]);
