@@ -1,14 +1,14 @@
 import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
+import { USER_ROLE } from "@/modules/common/constants/api";
+import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
+import { UserROLES } from "@/modules/common/types/user.types";
 import { Tabs, useRouter } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
-import * as SecureStore from "expo-secure-store";
-import { USER_ROLE } from "@/modules/common/constants/api";
-import { UserROLES } from "@/modules/common/types/user.types";
-import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
 
 export default function AuthTabsLayout() {
   const { colors } = useTheme();
@@ -25,7 +25,7 @@ export default function AuthTabsLayout() {
       switch (user?.role) {
         case UserROLES.WAITER:
           router.push({
-            pathname: "/user-dashboard/[id]/(menu)",
+            pathname: "/user-dashboard/[id]",
             params: { id: user.restaurantId },
           });
           break;
