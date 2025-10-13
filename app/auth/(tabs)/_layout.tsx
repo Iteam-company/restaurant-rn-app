@@ -25,7 +25,7 @@ export default function AuthTabsLayout() {
       switch (user?.role) {
         case UserROLES.WAITER:
           router.push({
-            pathname: "/user-dashboard/[id]",
+            pathname: "/user-dashboard/[id]/(quiz)",
             params: { id: user.restaurantId },
           });
           break;
