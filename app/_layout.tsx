@@ -3,15 +3,15 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
 
+import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
+import { store } from "@/modules/common/redux/store/store";
 import { theme } from "@/modules/common/theme/theme";
 import "react-native-reanimated";
-import { Provider } from "react-redux";
-import { store } from "@/modules/common/redux/store/store";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
+import { Provider } from "react-redux";
 
 SplashScreen.preventAutoHideAsync();
 export const navigationRef = createNavigationContainerRef();

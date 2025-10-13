@@ -92,16 +92,6 @@ export default function RestaurantPageLayout() {
             ),
           }}
         />
-        <Tabs.Screen
-          name="(menu)"
-          options={{ href: null }}
-          // options={{
-          //   title: "Menu",
-          //   tabBarIcon: ({ color }) => (
-          //     <MaterialIcons name="restaurant-menu" size={25} color={color} />
-          //   ),
-          // }}
-        />
         <Tabs.Screen name="edit" options={{ href: null }} />
       </Tabs>
     </>

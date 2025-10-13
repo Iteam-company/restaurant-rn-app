@@ -1,7 +1,7 @@
+import { statusIcons } from "@/modules/common/utils/menuUtils";
 import { useGetQuestionsQuery } from "@/modules/questions/redux/slices/question-api";
 import { router, useGlobalSearchParams } from "expo-router";
-import React from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -12,7 +12,6 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useGetQuizQuery } from "../../redux/slices/quiz-api";
 import { DifficultyLevelEnum, StatusEnum } from "../../types";
-import { statusIcons } from "@/modules/menu/components/MenuList/utils";
 
 export const QuizDetails = () => {
   const { id: restaurantId, quizId } = useGlobalSearchParams<{

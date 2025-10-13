@@ -1,5 +1,9 @@
-import { ScrollView } from "react-native-gesture-handler";
-import { DifficultyLevelEnum, IQuizInfo } from "../../types";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
+import { USER_ROLE } from "@/modules/common/constants/api";
+import { statusIcons } from "@/modules/common/utils/menuUtils";
+import { router, useGlobalSearchParams } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
   Card,
@@ -7,21 +11,11 @@ import {
   Icon,
   IconButton,
   Menu,
-  Text,
   Title,
   useTheme,
 } from "react-native-paper";
-import {
-  categoryIcons,
-  statusIcons,
-} from "@/modules/menu/components/MenuList/utils";
-import { useState } from "react";
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { useDeleteQuizMutation } from "../../redux/slices/quiz-api";
-import { router, useGlobalSearchParams } from "expo-router";
-import * as SecureStore from "expo-secure-store";
-import { USER_ROLE } from "@/modules/common/constants/api";
-import React from "react";
+import { DifficultyLevelEnum, IQuizInfo } from "../../types";
 
 type Params = {
   quiz: IQuizInfo;
@@ -33,7 +27,7 @@ const QuizItem = ({ quiz }: Params) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
 
-  const [deleteQuiz, { isLoading }] = useDeleteQuizMutation();
+  const [deleteQuiz] = useDeleteQuizMutation();
 
   const { colors } = useTheme();
 

@@ -1,9 +1,9 @@
-import { statusIcons } from "@/modules/menu/components/MenuList/utils";
+import { statusIcons } from "@/modules/common/utils/menuUtils";
 import { useGetQuizResultQuery } from "@/modules/quiz/redux/slices/quiz-api";
 import { DifficultyLevelEnum, StatusEnum } from "@/modules/quiz/types";
 import { router, useGlobalSearchParams } from "expo-router";
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
