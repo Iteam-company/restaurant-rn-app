@@ -1,5 +1,17 @@
 import { StatusEnum } from "@/modules/quiz/types";
-import { CategoriesEnum, SeasonsEnum } from "../../types";
+
+export enum SeasonsEnum {
+  SPRING = "spring",
+  SUMMER = "summer",
+  FALL = "fall",
+  WINTER = "winter",
+}
+
+export enum CategoriesEnum {
+  APPETIZERS = "appetizers",
+  MAIN_COURSES = "main courses",
+  DESSERTS = "desserts",
+}
 
 export const seasonIcons: Record<SeasonsEnum, string> = {
   [SeasonsEnum.WINTER]: "snowflake",

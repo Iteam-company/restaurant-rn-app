@@ -1,21 +1,9 @@
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
-import { ScrollView } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  useGetQuizQuery,
-  useUpdateQuizMutation,
-} from "../../redux/slices/quiz-api";
-import {
-  difficultyLevelItem,
-  menuItems,
-  initialValues as secondaryInitialValues,
-  statusItem,
-  validationSchema,
-} from "../AddQuiz/utils";
+import { ScrollView, StyleSheet } from "react-native";
+
 import FormWrapper from "@/modules/common/components/FormWrapper";
+import { useEffect } from "react";
 import {
   ActivityIndicator,
   Button,
@@ -23,7 +11,17 @@ import {
   TextInput,
 } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import { useGetAllMenuQuery } from "@/modules/menu/redux/slices/menu-api";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  useGetQuizQuery,
+  useUpdateQuizMutation,
+} from "../../redux/slices/quiz-api";
+import {
+  difficultyLevelItem,
+  initialValues as secondaryInitialValues,
+  statusItem,
+  validationSchema,
+} from "../AddQuiz/utils";
 
 const EditQuiz = () => {
   const insets = useSafeAreaInsets();
@@ -33,7 +31,6 @@ const EditQuiz = () => {
   }>();
 
   const { data: initialValues } = useGetQuizQuery(quizId);
-  const { data: menu } = useGetAllMenuQuery(restaurantId);
 
   const [updateQuiz, { isLoading: isUpdatingQuiz }] = useUpdateQuizMutation();
 
@@ -69,7 +66,6 @@ const EditQuiz = () => {
         timeLimit: initialValues.timeLimit,
         title: initialValues.title,
       });
-      formik.setFieldValue("menuId", initialValues?.menu.id);
     }
   }, [initialValues]);
 
@@ -115,17 +111,6 @@ const EditQuiz = () => {
           onBlur={handleBlur("timeLimit")}
           error={touched.timeLimit && !!errors.timeLimit}
           left={<TextInput.Icon icon="timer" />}
-        />
-        <Dropdown
-          label={"Menu"}
-          disabled={initialValues.menu.id !== -1}
-          mode="outlined"
-          value={`${initialValues.menu.id}`}
-          options={menuItems(menu || [])}
-          onSelect={(value) =>
-            setFieldValue("menuId", value ? parseInt(value) : 0)
-          }
-          CustomMenuHeader={(props) => <></>}
         />
         <Button mode="contained-tonal" onPress={() => handleSubmit()}>
           {isUpdatingQuiz ? (
