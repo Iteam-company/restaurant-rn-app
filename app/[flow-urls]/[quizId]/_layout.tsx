@@ -4,13 +4,13 @@ export default function QuizIdLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         title: "Quiz Management",
         headerBackTitle: "Back",
       }}
     >
-      <Stack.Screen name="edit.tsx" options={{ title: "Edit Quiz" }} />
-      <Stack.Screen name="create.tsx" options={{ title: "Create Quiz" }} />
+      <Stack.Screen name="edit" options={{ title: "Edit Quiz" }} />
+      <Stack.Screen name="create" options={{ title: "Create Quiz" }} />
     </Stack>
   );
 }

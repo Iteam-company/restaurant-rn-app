@@ -24,11 +24,7 @@ const Quiz = () => {
           {
             icon: "progress-question",
             label: "Generate Quiz",
-            onPress: () =>
-              router.push({
-                pathname: "/restaurant/[id]/(quiz)/[menuId]/addQuiz/addQuiz",
-                params: { id: restaurantId, menuId: -1 }, // TODO: get a valid menuId
-              }),
+            onPress: () => navigateToCreateQuiz(restaurantId),
           },
           {
             icon: "format-list-bulleted",
