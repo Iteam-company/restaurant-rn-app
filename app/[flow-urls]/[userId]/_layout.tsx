@@ -4,13 +4,13 @@ export default function UserIdLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         title: "User Management",
         headerBackTitle: "Back",
       }}
     >
-      <Stack.Screen name="edit.tsx" options={{ title: "Edit User" }} />
-      <Stack.Screen name="create.tsx" options={{ title: "Add User" }} />
+      <Stack.Screen name="edit" options={{ title: "Edit User" }} />
+      <Stack.Screen name="create" options={{ title: "Add User" }} />
     </Stack>
   );
 }

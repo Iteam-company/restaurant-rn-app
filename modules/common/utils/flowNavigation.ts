@@ -7,6 +7,7 @@ export interface FlowNavigationParams {
   restaurantId?: string;
   quizId?: string;
   questionId?: string;
+  menuId?: string;
   action?: "edit" | "create";
 }
 
@@ -64,6 +65,9 @@ export const navigateToFlow = (
     }
   });
 
+  console.log("url", url);
+  console.log("searchParams", searchParams);
+
   router.push({
     pathname: url as any,
     params: searchParams,
@@ -108,7 +112,11 @@ export const navigateToEditQuiz = (
 };
 
 export const navigateToCreateQuiz = (restaurantId?: string) => {
-  navigateToFlow("quiz", { restaurantId, action: "create" });
+  navigateToFlow("quiz", {
+    restaurantId,
+    menuId: restaurantId,
+    action: "create",
+  });
 };
 
 export const navigateToEditQuestion = (

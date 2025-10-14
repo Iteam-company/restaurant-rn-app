@@ -81,7 +81,7 @@ const Workers = () => {
                 />
               ))}
               {!findedUsers?.length && !isLoading && (
-                <Title>We don't have workers now 💔</Title>
+                <Title>We don&apos;t have workers now 💔</Title>
               )}
             </View>
           )}

@@ -4,16 +4,13 @@ export default function RestaurantIdLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         title: "Restaurant Management",
         headerBackTitle: "Back",
       }}
     >
-      <Stack.Screen name="edit.tsx" options={{ title: "Edit Restaurant" }} />
-      <Stack.Screen
-        name="create.tsx"
-        options={{ title: "Create Restaurant" }}
-      />
+      <Stack.Screen name="edit" options={{ title: "Edit Restaurant" }} />
+      <Stack.Screen name="create" options={{ title: "Create Restaurant" }} />
     </Stack>
   );
 }

@@ -2,12 +2,7 @@ import FormWrapper from "@/modules/common/components/FormWrapper";
 import { router } from "expo-router";
 import { useFormik } from "formik";
 import { ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Headline,
-  TextInput,
-} from "react-native-paper";
+import { Button, Headline, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { useCreateQuizMutation } from "../../redux/slices/quiz-api";
 import {
@@ -22,7 +17,9 @@ const AddQuiz = () => {
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
-      initialValues,
+      initialValues: {
+        ...initialValues,
+      },
       validationSchema,
       validateOnChange: true,
       onSubmit: async (formData) => {
@@ -74,12 +71,12 @@ const AddQuiz = () => {
           error={touched.timeLimit && !!errors.timeLimit}
           left={<TextInput.Icon icon="timer" />}
         />
-        <Button mode="contained-tonal" onPress={() => handleSubmit()}>
-          {isCreatingQuiz ? (
-            <ActivityIndicator animating={true} color={"#7c8ebf"} />
-          ) : (
-            "Submit"
-          )}
+        <Button
+          loading={isCreatingQuiz}
+          mode="contained-tonal"
+          onPress={() => handleSubmit()}
+        >
+          Submit
         </Button>
       </FormWrapper>
     </ScrollView>
