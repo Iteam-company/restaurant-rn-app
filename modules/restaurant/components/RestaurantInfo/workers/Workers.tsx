@@ -1,24 +1,23 @@
-import { router, useGlobalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Platform } from "react-native";
-import {
-  useTheme,
-  List,
-  Title,
-  FAB,
-  Searchbar,
-  Avatar,
-  ActivityIndicator,
-} from "react-native-paper";
-import { useLocalSearchParams } from "expo-router";
 import Wrapper from "@/modules/common/components/Wrapper";
-import Feather from "@expo/vector-icons/Feather";
-import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 import useDebounce from "@/modules/common/hooks/useDebounce";
+import { navigateToCreateUser } from "@/modules/common/utils/flowNavigation";
+import Feather from "@expo/vector-icons/Feather";
+import { router, useGlobalSearchParams } from "expo-router";
+import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Avatar,
+  FAB,
+  List,
+  Searchbar,
+  Title,
+  useTheme,
+} from "react-native-paper";
 
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 
 const Workers = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
@@ -92,10 +91,7 @@ const Workers = () => {
         icon="plus"
         style={[styles.fab, getFabUiSettings(insets)]}
         onPress={() => {
-          router.push({
-            pathname: "/restaurant/[id]/(workers)/addWorker",
-            params: { id: restaurantId },
-          });
+          navigateToCreateUser(restaurantId);
         }}
       />
     </Wrapper>

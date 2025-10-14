@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { IQuestionInfo } from "../../types";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
+import { navigateToEditQuestion } from "@/modules/common/utils/flowNavigation";
+import { router, useGlobalSearchParams } from "expo-router";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import {
   Card,
   Chip,
@@ -9,10 +11,8 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
-import { router, useGlobalSearchParams } from "expo-router";
-import { isLoading } from "expo-font";
 import { useDeleteQuestionMutation } from "../../redux/slices/question-api";
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
+import { IQuestionInfo } from "../../types";
 
 type Props = {
   question: IQuestionInfo;
@@ -58,11 +58,7 @@ const QuestionItem = ({ question }: Props) => {
               title="Edit"
               leadingIcon="pencil-outline"
               onPress={() => {
-                router.push({
-                  pathname:
-                    "/restaurant/[id]/(quiz)/[quizId]/(questions)/[questionId]/editQuestion",
-                  params: { id: restaurantId, quizId, questionId: question.id },
-                });
+                navigateToEditQuestion(question.id, quizId, restaurantId);
                 closeMenu();
               }}
             />

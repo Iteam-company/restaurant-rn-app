@@ -1,5 +1,6 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
+import { navigateToCreateQuiz } from "@/modules/common/utils/flowNavigation";
 import QuizList from "@/modules/quiz/components/QuizList";
 import { router, useGlobalSearchParams } from "expo-router";
 import React from "react";
@@ -41,11 +42,7 @@ const Quiz = () => {
           {
             icon: "plus",
             label: "Add Quiz",
-            onPress: () =>
-              router.push({
-                pathname: "/restaurant/[id]/(quiz)/[menuId]/addQuiz/addQuiz",
-                params: { id: restaurantId, menuId: -1 },
-              }),
+            onPress: () => navigateToCreateQuiz(restaurantId),
           },
         ]}
         style={[getFabUiSettings(insets, { isFABGroup: true })]}
