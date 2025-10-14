@@ -1,6 +1,16 @@
 import { router } from "expo-router";
 
-export type FlowType = "user" | "restaurant" | "quiz" | "question";
+export enum FlowType {
+  USER = "user",
+  RESTAURANT = "restaurant",
+  QUIZ = "quiz",
+  QUESTION = "question",
+}
+
+export enum ActionType {
+  EDIT = "edit",
+  CREATE = "create",
+}
 
 export interface FlowNavigationParams {
   userId?: string;
@@ -8,7 +18,7 @@ export interface FlowNavigationParams {
   quizId?: string;
   questionId?: string;
   menuId?: string;
-  action?: "edit" | "create";
+  action?: ActionType;
 }
 
 // Navigate to forms using the new flow-urls structure
@@ -16,26 +26,26 @@ export const navigateToFlow = (
   flowType: FlowType,
   params: FlowNavigationParams = {}
 ) => {
-  const { action = "edit" } = params;
+  const { action = ActionType.EDIT } = params;
 
   let baseUrl = "/[flow-urls]/";
   let idParam = "";
 
   switch (flowType) {
-    case "user":
-      baseUrl += "[userId]/";
+    case FlowType.USER:
+      baseUrl += "user/[userId]/";
       idParam = params.userId || "";
       break;
-    case "restaurant":
-      baseUrl += "[restaurantId]/";
+    case FlowType.RESTAURANT:
+      baseUrl += "restaurant/[restaurantId]/";
       idParam = params.restaurantId || "";
       break;
-    case "quiz":
-      baseUrl += "[quizId]/";
+    case FlowType.QUIZ:
+      baseUrl += "quiz/[quizId]/";
       idParam = params.quizId || "";
       break;
-    case "question":
-      baseUrl += "[questionId]/";
+    case FlowType.QUESTION:
+      baseUrl += "question/[questionId]/";
       idParam = params.questionId || "";
       break;
   }
@@ -45,16 +55,16 @@ export const navigateToFlow = (
   const searchParams: Record<string, string> = {};
 
   switch (flowType) {
-    case "user":
+    case FlowType.USER:
       searchParams.userId = idParam;
       break;
-    case "restaurant":
+    case FlowType.RESTAURANT:
       searchParams.restaurantId = idParam;
       break;
-    case "quiz":
+    case FlowType.QUIZ:
       searchParams.quizId = idParam;
       break;
-    case "question":
+    case FlowType.QUESTION:
       searchParams.questionId = idParam;
       break;
   }
@@ -65,8 +75,8 @@ export const navigateToFlow = (
     }
   });
 
-  console.log("url", url);
-  console.log("searchParams", searchParams);
+  console.info("FORM URL: ", url);
+  console.info("FORM SEARCH PARAMS: ", searchParams);
 
   router.push({
     pathname: url as any,
@@ -78,44 +88,43 @@ export const navigateToEditUser = (
   userId: string | number,
   restaurantId?: string
 ) => {
-  navigateToFlow("user", {
+  navigateToFlow(FlowType.USER, {
     userId: String(userId),
     restaurantId,
-    action: "edit",
+    action: ActionType.EDIT,
   });
 };
 
 export const navigateToCreateUser = (restaurantId?: string) => {
-  navigateToFlow("user", { restaurantId, action: "create" });
+  navigateToFlow(FlowType.USER, { restaurantId, action: ActionType.CREATE });
 };
 
 export const navigateToEditRestaurant = (restaurantId: string | number) => {
-  navigateToFlow("restaurant", {
+  navigateToFlow(FlowType.RESTAURANT, {
     restaurantId: String(restaurantId),
-    action: "edit",
+    action: ActionType.EDIT,
   });
 };
 
 export const navigateToCreateRestaurant = () => {
-  navigateToFlow("restaurant", { action: "create" });
+  navigateToFlow(FlowType.RESTAURANT, { action: ActionType.CREATE });
 };
 
 export const navigateToEditQuiz = (
   quizId: string | number,
   restaurantId?: string
 ) => {
-  navigateToFlow("quiz", {
+  navigateToFlow(FlowType.QUIZ, {
     quizId: String(quizId),
     restaurantId,
-    action: "edit",
+    action: ActionType.EDIT,
   });
 };
 
 export const navigateToCreateQuiz = (restaurantId?: string) => {
-  navigateToFlow("quiz", {
+  navigateToFlow(FlowType.QUIZ, {
     restaurantId,
-    menuId: restaurantId,
-    action: "create",
+    action: ActionType.CREATE,
   });
 };
 
@@ -124,11 +133,11 @@ export const navigateToEditQuestion = (
   quizId?: string,
   restaurantId?: string
 ) => {
-  navigateToFlow("question", {
+  navigateToFlow(FlowType.QUESTION, {
     questionId: String(questionId),
     quizId,
     restaurantId,
-    action: "edit",
+    action: ActionType.EDIT,
   });
 };
 
@@ -136,5 +145,9 @@ export const navigateToCreateQuestion = (
   quizId?: string,
   restaurantId?: string
 ) => {
-  navigateToFlow("question", { quizId, restaurantId, action: "create" });
+  navigateToFlow(FlowType.QUESTION, {
+    quizId,
+    restaurantId,
+    action: ActionType.CREATE,
+  });
 };

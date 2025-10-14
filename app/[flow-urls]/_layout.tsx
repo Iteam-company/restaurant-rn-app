@@ -9,10 +9,10 @@ export default function FlowUrlsLayout() {
         gestureEnabled: true,
       }}
     >
-      <Stack.Screen name="[userId]" />
-      <Stack.Screen name="[restaurantId]" />
-      <Stack.Screen name="[quizId]" />
-      <Stack.Screen name="[questionId]" />
+      <Stack.Screen name="user" />
+      <Stack.Screen name="restaurant" />
+      <Stack.Screen name="quiz" />
+      <Stack.Screen name="question" />
     </Stack>
   );
 }
