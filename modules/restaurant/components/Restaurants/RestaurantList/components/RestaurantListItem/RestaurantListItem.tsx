@@ -1,5 +1,6 @@
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
+import { navigateToEditRestaurant } from "@/modules/common/utils/flowNavigation";
 import { useDeleteRestaurantMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 import Entypo from "@expo/vector-icons/Entypo";
 import { router } from "expo-router";
@@ -51,10 +52,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
 
   const handleEdit = () => {
     closeMenu();
-    router.push({
-      pathname: "/restaurant/[id]/edit",
-      params: { id },
-    });
+    navigateToEditRestaurant(id);
   };
 
   return (

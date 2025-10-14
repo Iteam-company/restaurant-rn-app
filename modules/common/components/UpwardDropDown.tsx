@@ -1,17 +1,15 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { FAB, Provider } from "react-native-paper";
+import { useState } from "react";
+import { StyleSheet } from "react-native";
+import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import getFabUiSettings from "../constants/getFabUiSettings.ios";
-import { router, useLocalSearchParams } from "expo-router";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { navigateToCreateQuiz } from "../utils/flowNavigation";
 
 type Props = {
-  menuId: string;
   restaurantId: string;
 };
 
-const UpwardDropDown = ({ menuId, restaurantId }: Props) => {
+const UpwardDropDown = ({ restaurantId }: Props) => {
   const [open, setOpen] = useState(false);
   const insets = useSafeAreaInsets();
 
@@ -25,22 +23,9 @@ const UpwardDropDown = ({ menuId, restaurantId }: Props) => {
       icon={open ? "minus" : "plus"}
       actions={[
         {
-          icon: "hamburger-plus",
-          label: "Add Menu Item",
-          onPress: () =>
-            router.push({
-              pathname: "/restaurant/[id]/(menu)/menu/[menuId]/addMenuItem",
-              params: { id: restaurantId, menuId },
-            }),
-        },
-        {
           icon: "help-circle-outline",
           label: "Add Quiz",
-          onPress: () =>
-            router.push({
-              pathname: "/restaurant/[id]/(quiz)/[menuId]/addQuiz/addQuiz",
-              params: { id: restaurantId, menuId },
-            }),
+          onPress: () => navigateToCreateQuiz(restaurantId),
         },
       ]}
       onStateChange={onStateChange}

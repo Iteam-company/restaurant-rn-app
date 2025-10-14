@@ -1,11 +1,12 @@
+import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
 import Wrapper from "@/modules/common/components/Wrapper";
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
+import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
+import CurrentUserInfo from "@/modules/restaurant/components/RestaurantInfo/userInfo/CurrentUserInfo";
 import { useRouter } from "expo-router";
 import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
-import CurrentUserInfo from "@/modules/restaurant/components/RestaurantInfo/userInfo/CurrentUserInfo";
-import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 
 export default function User() {
   const router = useRouter();
@@ -21,10 +22,7 @@ export default function User() {
           icon="pencil"
           style={[styles.fab, getFabUiSettings(insets)]}
           onPress={() => {
-            router.push({
-              pathname: "./[userId]/edit",
-              params: { userId: currentUser?.id },
-            });
+            navigateToEditUser(currentUser?.id || 0);
           }}
         />
       )}

@@ -1,10 +1,9 @@
-import { useGetRestaurantsQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
-import React from "react";
-import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
-import { Button, ActivityIndicator } from "react-native-paper";
-import { router } from "expo-router";
-import { RestaurantListItem } from "./components/RestaurantListItem";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import { navigateToCreateRestaurant } from "@/modules/common/utils/flowNavigation";
+import { useGetRestaurantsQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Button } from "react-native-paper";
+import { RestaurantListItem } from "./components/RestaurantListItem";
 
 const RestaurantList = () => {
   const { data, isLoading } = useGetRestaurantsQuery();
@@ -35,7 +34,7 @@ const RestaurantList = () => {
           ))}
         <Button
           style={styles.addButton}
-          onPress={() => router.push("/restaurant/create")}
+          onPress={() => navigateToCreateRestaurant()}
         >
           Add new Restaurant
         </Button>
