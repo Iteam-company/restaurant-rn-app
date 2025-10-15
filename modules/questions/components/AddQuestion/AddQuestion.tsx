@@ -1,22 +1,14 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
+import VariantsCreator from "@/modules/common/components/VariantsCreator";
+import { useGetQuizByRestaurantQuery } from "@/modules/quiz/redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import { ScrollView } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { initialValues, quizItems, validationSchema } from "./utils";
-import {
-  ActivityIndicator,
-  Button,
-  Headline,
-  TextInput,
-} from "react-native-paper";
-import VariantsCreator from "@/modules/common/components/VariantsCreator";
+import { Button, Headline, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import {
-  useGetQuizByRestaurantQuery,
-  useGetQuizQuery,
-} from "@/modules/quiz/redux/slices/quiz-api";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCreateQuestionMutation } from "../../redux/slices/question-api";
+import { initialValues, quizItems, validationSchema } from "./utils";
 
 const AddQuestion = () => {
   const { id: restaurantId, quizId } = useGlobalSearchParams<{
@@ -76,12 +68,12 @@ const AddQuestion = () => {
           onSelect={(value) => setFieldValue("quizId", value ? parseInt : 0)}
           error={touched.quizId && !!errors.quizId}
         />
-        <Button mode="contained-tonal" onPress={() => handleSubmit()}>
-          {isLoading || isCreating ? (
-            <ActivityIndicator animating={true} color={"#7c8ebf"} />
-          ) : (
-            "Submit"
-          )}
+        <Button
+          loading={isLoading || isCreating}
+          mode="contained-tonal"
+          onPress={() => handleSubmit()}
+        >
+          Submit
         </Button>
       </FormWrapper>
     </ScrollView>

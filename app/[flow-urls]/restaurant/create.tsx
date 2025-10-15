@@ -1,10 +1,12 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import CreateRestaurant from "@/modules/restaurant/components/CreateRestaurant/CreateRestaurant";
 
-export default function Create() {
+const CreateRestaurantScreen = () => {
   return (
-    <Wrapper centered>
+    <Wrapper centered paddingOff>
       <CreateRestaurant />
     </Wrapper>
   );
-}
+};
+
+export default CreateRestaurantScreen;

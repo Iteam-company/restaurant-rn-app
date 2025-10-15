@@ -1,8 +1,7 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import EditQuiz from "@/modules/quiz/components/EditQuiz/EditQuiz";
-import React from "react";
 
-const EditQuizPage = () => {
+const EditQuizScreen = () => {
   return (
     <Wrapper centered paddingOff>
       <EditQuiz />
@@ -10,4 +9,4 @@ const EditQuizPage = () => {
   );
 };
 
-export default EditQuizPage;
+export default EditQuizScreen;

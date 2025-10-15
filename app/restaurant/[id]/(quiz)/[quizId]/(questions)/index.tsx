@@ -1,8 +1,9 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
+import { navigateToCreateQuestion } from "@/modules/common/utils/flowNavigation";
 import QuestionList from "@/modules/questions/components/QuestionList";
 import { router, useGlobalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -32,12 +33,7 @@ const Question = () => {
           {
             icon: "plus",
             label: "Add Question",
-            onPress: () =>
-              router.push({
-                pathname:
-                  "/restaurant/[id]/(quiz)/[quizId]/(questions)/addQuestion",
-                params: { id: restaurantId, quizId },
-              }),
+            onPress: () => navigateToCreateQuestion(quizId, restaurantId),
           },
           {
             icon: "lightbulb-outline",
