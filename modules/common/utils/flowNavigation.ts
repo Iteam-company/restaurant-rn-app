@@ -10,6 +10,7 @@ export enum FlowType {
 export enum ActionType {
   EDIT = "edit",
   CREATE = "create",
+  GENERATE = "generate",
 }
 
 export interface FlowNavigationParams {
@@ -74,9 +75,6 @@ export const navigateToFlow = (
       searchParams[key] = String(value);
     }
   });
-
-  console.info("FORM URL: ", url);
-  console.info("FORM SEARCH PARAMS: ", searchParams);
 
   router.push({
     pathname: url as any,
