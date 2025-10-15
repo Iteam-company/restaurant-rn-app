@@ -57,7 +57,7 @@ export default function AddWorker() {
     });
 
   return (
-    <ScrollView>
+    <ScrollView style={{ width: "100%" }}>
       <FormWrapper>
         <Title>Create and add new User</Title>
         <TextInput
@@ -128,7 +128,9 @@ export default function AddWorker() {
           mode="outlined"
           label="Role"
           value={values.role}
-          options={UserRolesArray.map((role) => ({
+          options={UserRolesArray.filter(
+            (role) => role !== UserROLES.OWNER
+          ).map((role) => ({
             label: capitalizeFirstLetter(role),
             value: role as UserROLES,
           }))}
