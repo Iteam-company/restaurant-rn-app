@@ -11,7 +11,7 @@ import { useAddWorkerMutation } from "@/modules/restaurant/redux/slices/restaura
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { Alert, ScrollView, StyleSheet } from "react-native";
 import { Button, Text, TextInput, Title } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 
@@ -31,6 +31,7 @@ export default function AddWorker() {
       validationSchema,
       onSubmit: async (values) => {
         try {
+          console.log(values);
           const res = await signUp({
             ...values,
           }).unwrap();
@@ -46,7 +47,13 @@ export default function AddWorker() {
               },
             });
           }
-        } catch {}
+        } catch (e: any) {
+          console.error("Failed to create user:", e);
+          Alert.alert(
+            "Failed to create user",
+            `${e.data.message}\n\nPlease try again later`
+          );
+        }
       },
     });
 
@@ -121,12 +128,12 @@ export default function AddWorker() {
         <Dropdown
           mode="outlined"
           label="Role"
-          value={values.role || UserROLES.WAITER}
+          value={values.role}
           options={UserRolesArray.map((role) => ({
             label: capitalizeFirstLetter(role),
-            value: role,
+            value: role as UserROLES,
           }))}
-          onSelect={(value) => setFieldValue("role", value as string)}
+          onSelect={(value) => setFieldValue("role", value as UserROLES)}
           error={touched.role && !!errors.role}
         />
 
