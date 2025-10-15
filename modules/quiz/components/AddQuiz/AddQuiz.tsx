@@ -2,7 +2,7 @@ import FormWrapper from "@/modules/common/components/FormWrapper";
 import { router } from "expo-router";
 import { useFormik } from "formik";
 import { ScrollView } from "react-native";
-import { Button, Headline, TextInput } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { useCreateQuizMutation } from "../../redux/slices/quiz-api";
 import {
@@ -33,7 +33,6 @@ const AddQuiz = () => {
   return (
     <ScrollView style={[{ width: "100%" }]}>
       <FormWrapper>
-        <Headline>Add New Quiz</Headline>
         <TextInput
           mode="outlined"
           label="Title"
