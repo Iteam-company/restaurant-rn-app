@@ -1,7 +1,7 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import AddQuiz from "@/modules/quiz/components/AddQuiz/AddQuiz";
 
-const AddQuizPage = () => {
+const CreateQuizScreen = () => {
   return (
     <Wrapper centered paddingOff>
       <AddQuiz />
@@ -9,4 +9,4 @@ const AddQuizPage = () => {
   );
 };
 
-export default AddQuizPage;
+export default CreateQuizScreen;

@@ -1,5 +1,6 @@
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { USER_ROLE } from "@/modules/common/constants/api";
+import { navigateToEditQuiz } from "@/modules/common/utils/flowNavigation";
 import { statusIcons } from "@/modules/common/utils/menuUtils";
 import { router, useGlobalSearchParams } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -82,10 +83,7 @@ const QuizItem = ({ quiz }: Params) => {
                 title="Edit"
                 leadingIcon="pencil-outline"
                 onPress={() => {
-                  router.push({
-                    pathname: `/restaurant/[id]/(quiz)/[quizId]/editQuiz`,
-                    params: { id: restaurantId, quizId: quiz.id },
-                  });
+                  navigateToEditQuiz(quiz.id, restaurantId);
                   closeMenu();
                 }}
               />

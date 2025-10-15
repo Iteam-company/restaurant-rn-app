@@ -1,8 +1,7 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import EditRestaurant from "@/modules/restaurant/components/EditRestaurant/EditRestaurant";
-import React from "react";
 
-const EditRestaurantPage = () => {
+const EditRestaurantScreen = () => {
   return (
     <Wrapper centered paddingOff>
       <EditRestaurant />
@@ -10,4 +9,4 @@ const EditRestaurantPage = () => {
   );
 };
 
-export default EditRestaurantPage;
+export default EditRestaurantScreen;

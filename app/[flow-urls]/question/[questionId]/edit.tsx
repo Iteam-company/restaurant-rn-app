@@ -1,8 +1,7 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import EditQuestion from "@/modules/questions/components/EditQuestion/EditQuestion";
-import React from "react";
 
-const EditQuestionPage = () => {
+const EditQuestionScreen = () => {
   return (
     <Wrapper centered paddingOff>
       <EditQuestion />
@@ -10,4 +9,4 @@ const EditQuestionPage = () => {
   );
 };
 
-export default EditQuestionPage;
+export default EditQuestionScreen;

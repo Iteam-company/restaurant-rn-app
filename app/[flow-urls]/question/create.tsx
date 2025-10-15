@@ -1,8 +1,7 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import AddQuestion from "@/modules/questions/components/AddQuestion/AddQuestion";
-import React from "react";
 
-const AddQuestionPage = () => {
+const CreateQuestionScreen = () => {
   return (
     <Wrapper centered paddingOff>
       <AddQuestion />
@@ -10,4 +9,4 @@ const AddQuestionPage = () => {
   );
 };
 
-export default AddQuestionPage;
+export default CreateQuestionScreen;

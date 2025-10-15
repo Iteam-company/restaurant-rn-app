@@ -1,10 +1,9 @@
-import React from "react";
+import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { Stack, Tabs } from "expo-router";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
-import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 
 export default function RestaurantLayout() {
   const { colors } = useTheme();
@@ -34,15 +33,6 @@ export default function RestaurantLayout() {
         }}
         safeAreaInsets={{ bottom: 0, top: 0 }}
       >
-        <Tabs.Screen
-          name="(menu)"
-          options={{
-            title: "Menu",
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name="restaurant-menu" size={25} color={color} />
-            ),
-          }}
-        />
         <Tabs.Screen
           name="(quiz)"
           options={{

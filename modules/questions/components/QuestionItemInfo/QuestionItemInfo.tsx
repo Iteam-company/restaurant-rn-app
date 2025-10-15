@@ -1,6 +1,8 @@
-import { router, useGlobalSearchParams } from "expo-router";
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
+import { navigateToEditQuestion } from "@/modules/common/utils/flowNavigation";
+import { useGlobalSearchParams } from "expo-router";
+import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -13,7 +15,6 @@ import {
   useDeleteQuestionMutation,
   useGetOneQuestionQuery,
 } from "../../redux/slices/question-api";
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 
 const QuestionItemInfo = () => {
   const {
@@ -59,11 +60,7 @@ const QuestionItemInfo = () => {
         <Button
           mode="elevated"
           onPress={() =>
-            router.push({
-              pathname:
-                "/restaurant/[id]/(quiz)/[quizId]/(questions)/[questionId]/editQuestion",
-              params: { id: restaurantId, quizId, questionId },
-            })
+            navigateToEditQuestion(questionId, quizId, restaurantId)
           }
         >
           Edit

@@ -1,11 +1,11 @@
 import Wrapper from "@/modules/common/components/Wrapper";
-import { StyleSheet } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
-import React from "react";
-import { FAB } from "react-native-paper";
-import WorkerInfo from "@/modules/restaurant/components/RestaurantInfo/workerInfo/WorkerInfo";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
+import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
+import WorkerInfo from "@/modules/restaurant/components/RestaurantInfo/workerInfo/WorkerInfo";
+import { useLocalSearchParams } from "expo-router";
+import { StyleSheet } from "react-native";
+import { FAB } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const WorkerInfoPage = () => {
   const { id: restaurantId, workerId } = useLocalSearchParams<{
@@ -21,10 +21,7 @@ const WorkerInfoPage = () => {
         icon="pencil"
         style={[styles.fab, getFabUiSettings(insets)]}
         onPress={() => {
-          router.push({
-            pathname: "/restaurant/[id]/(workers)/worker/edit/[workerId]",
-            params: { id: restaurantId, workerId: workerId },
-          });
+          navigateToEditUser(workerId, restaurantId);
         }}
       />
     </Wrapper>
