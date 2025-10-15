@@ -31,7 +31,6 @@ export default function AddWorker() {
       validationSchema,
       onSubmit: async (values) => {
         try {
-          console.log(values);
           const res = await signUp({
             ...values,
           }).unwrap();
