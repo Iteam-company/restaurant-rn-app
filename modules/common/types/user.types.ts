@@ -17,6 +17,10 @@ export enum UserROLES {
   ADMIN = "admin",
 }
 
+export const UserRolesArray: string[] = Object.values(UserROLES).filter(
+  (value) => typeof value === "string"
+) as string[];
+
 export interface UserInfo {
   id: number;
   username: string;

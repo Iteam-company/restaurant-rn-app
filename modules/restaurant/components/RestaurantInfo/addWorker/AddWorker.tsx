@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import { ActivityIndicator, StyleSheet, ScrollView } from "react-native";
-import { Button, TextInput, Text, Title } from "react-native-paper";
+import { useSignupMutation } from "@/modules/auth/redux/slices/auth-api";
 import FormWrapper from "@/modules/common/components/FormWrapper";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { UserROLES } from "@/modules/common/types/user.types";
 import { RTKMutationPayloadType } from "@/modules/common/types";
+import { UserROLES, UserRolesArray } from "@/modules/common/types/user.types";
+import { capitalizeFirstLetter } from "@/modules/common/utils";
 import {
   initialValues,
   validationSchema,
 } from "@/modules/common/utils/createUserSchema";
-import { useSignupMutation } from "@/modules/auth/redux/slices/auth-api";
 import { useAddWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFormik } from "formik";
+import { useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
+import { Button, Text, TextInput, Title } from "react-native-paper";
+import { Dropdown } from "react-native-paper-dropdown";
 
 export default function AddWorker() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const insets = useSafeAreaInsets();
 
   const [signUp, { isLoading, error }] =
     useSignupMutation<RTKMutationPayloadType>();
@@ -33,7 +33,6 @@ export default function AddWorker() {
         try {
           const res = await signUp({
             ...values,
-            role: UserROLES.WAITER,
           }).unwrap();
           if (res.id) {
             await addWorkerToRestaurant({
@@ -50,6 +49,7 @@ export default function AddWorker() {
         } catch {}
       },
     });
+
   return (
     <ScrollView>
       <FormWrapper>
@@ -118,6 +118,17 @@ export default function AddWorker() {
             />
           }
         />
+        <Dropdown
+          mode="outlined"
+          label="Role"
+          value={values.role || UserROLES.WAITER}
+          options={UserRolesArray.map((role) => ({
+            label: capitalizeFirstLetter(role),
+            value: role,
+          }))}
+          onSelect={(value) => setFieldValue("role", value as string)}
+          error={touched.role && !!errors.role}
+        />
 
         <Text style={styles.errorText}>
           {error?.status === 401 && `Failed to sign up, please try later`}
@@ -129,12 +140,9 @@ export default function AddWorker() {
             handleSubmit();
           }}
           style={styles.button}
+          loading={isLoading}
         >
-          {isLoading ? (
-            <ActivityIndicator animating={true} color={"#7c8ebf"} />
-          ) : (
-            "Create User"
-          )}
+          Create User
         </Button>
       </FormWrapper>
     </ScrollView>
