@@ -3,7 +3,7 @@ import AddWorker from "@/modules/restaurant/components/RestaurantInfo/addWorker/
 
 const CreateUserScreen = () => {
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper paddingOff>
       <AddWorker />
     </Wrapper>
   );
