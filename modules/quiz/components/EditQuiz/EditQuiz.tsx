@@ -4,12 +4,7 @@ import { ScrollView, StyleSheet } from "react-native";
 
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import { useEffect } from "react";
-import {
-  ActivityIndicator,
-  Button,
-  Headline,
-  TextInput,
-} from "react-native-paper";
+import { ActivityIndicator, Button, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -74,7 +69,6 @@ const EditQuiz = () => {
   return (
     <ScrollView style={[styles.container]}>
       <FormWrapper>
-        <Headline>Edit New Quiz</Headline>
         <TextInput
           mode="outlined"
           label="Title"

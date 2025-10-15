@@ -12,13 +12,12 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { Alert, ScrollView, StyleSheet } from "react-native";
-import { Appbar, Button, Text, TextInput, useTheme } from "react-native-paper";
+import { Button, Text, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 
 export default function AddWorker() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { colors } = useTheme();
 
   const [signUp, { isLoading, error }] =
     useSignupMutation<RTKMutationPayloadType>();
@@ -58,17 +57,6 @@ export default function AddWorker() {
     });
 
   return (
-    <>
-      <Appbar.Header
-        statusBarHeight={0}
-        style={{ backgroundColor: colors.background }}
-      >
-        <Appbar.BackAction iconColor="white" onPress={() => router.back()} />
-        <Appbar.Content
-          title="Create and add new User"
-          titleStyle={{ color: "white" }}
-        />
-      </Appbar.Header>
       <ScrollView>
         <FormWrapper>
           <TextInput
@@ -163,7 +151,6 @@ export default function AddWorker() {
           </Button>
         </FormWrapper>
       </ScrollView>
-    </>
   );
 }
 

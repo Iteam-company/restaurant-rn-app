@@ -1,26 +1,17 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
+import VariantsCreator from "@/modules/common/components/VariantsCreator";
+import { useGetQuizByRestaurantQuery } from "@/modules/quiz/redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
+import { useEffect } from "react";
 import { ScrollView } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { quizItems, validationSchema } from "../AddQuestion/utils";
-import {
-  ActivityIndicator,
-  Button,
-  Headline,
-  TextInput,
-} from "react-native-paper";
-import VariantsCreator from "@/modules/common/components/VariantsCreator";
+import { ActivityIndicator, Button, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import {
-  useGetQuizByRestaurantQuery,
-  useGetQuizQuery,
-} from "@/modules/quiz/redux/slices/quiz-api";
 import {
   useGetOneQuestionQuery,
   useUpdateQuestionMutation,
 } from "../../redux/slices/question-api";
-import { useEffect } from "react";
+import { quizItems, validationSchema } from "../AddQuestion/utils";
 
 const EditQuestion = () => {
   const {
@@ -32,7 +23,6 @@ const EditQuestion = () => {
     questionId: string;
     quizId: string;
   }>();
-  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     console.log(questionId);
@@ -84,7 +74,6 @@ const EditQuestion = () => {
   return (
     <ScrollView style={[{ width: "100%" }]}>
       <FormWrapper>
-        <Headline>Add New Question</Headline>
         <TextInput
           mode="outlined"
           label="Question"

@@ -4,9 +4,8 @@ import { useGetQuizByRestaurantQuery } from "@/modules/quiz/redux/slices/quiz-ap
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import { ScrollView } from "react-native";
-import { Button, Headline, TextInput } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCreateQuestionMutation } from "../../redux/slices/question-api";
 import { initialValues, quizItems, validationSchema } from "./utils";
 
@@ -15,7 +14,6 @@ const AddQuestion = () => {
     id: string;
     quizId: string;
   }>();
-  const insets = useSafeAreaInsets();
 
   const { data: quizes, isLoading } = useGetQuizByRestaurantQuery(restaurantId);
   const [createQuestion, { isLoading: isCreating }] =
@@ -39,7 +37,6 @@ const AddQuestion = () => {
   return (
     <ScrollView style={[{ width: "100%" }]}>
       <FormWrapper>
-        <Headline>Add New Question</Headline>
         <TextInput
           mode="outlined"
           label="Question"
