@@ -17,9 +17,7 @@ const AddQuiz = () => {
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
-      initialValues: {
-        ...initialValues,
-      },
+      initialValues,
       validationSchema,
       validateOnChange: true,
       onSubmit: async (formData) => {
