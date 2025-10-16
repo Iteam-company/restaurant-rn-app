@@ -25,7 +25,9 @@ import {
   ActivityIndicator,
   Avatar,
   Button,
+  Icon,
   IconButton,
+  Surface,
   Text,
   TextInput,
   useTheme,
@@ -65,7 +67,6 @@ const EditWorker = () => {
   const { colors } = useTheme();
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<UserROLES | null>(null);
-
   const {
     workerId: initialWorkerId,
     userId,
@@ -113,6 +114,7 @@ const EditWorker = () => {
   const updateUser = isWaiter ? updateCurrentUserInfo : updateUserInfo;
   const isUpdating = isWaiter ? isUpdatingCurrentUser : isUpdatingUser;
   const error = isWaiter ? currentUserError : userError;
+  const isOwnEdit = currentUserData?.id === parseInt(userId);
 
   const {
     values,
@@ -152,7 +154,7 @@ const EditWorker = () => {
     }
   }, [data, setValues]);
 
-  if (isLoadingUser) {
+  if (isLoadingUser || isLoadingCurrentUser) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator animating={true} size="large" />
@@ -189,6 +191,24 @@ const EditWorker = () => {
               }}
             />
           </View>
+
+          {isOwnEdit && (
+            <Surface
+              style={[
+                styles.roleContainer,
+                { backgroundColor: colors.secondaryContainer },
+              ]}
+            >
+              <Icon
+                source="badge-account-horizontal"
+                size={20}
+                color={colors.primary}
+              />
+              <Text style={styles.role}>
+                {capitalizeFirstLetter(currentUserData?.role || "Unknown")}
+              </Text>
+            </Surface>
+          )}
 
           <View style={styles.form}>
             <TextInput
@@ -258,12 +278,11 @@ const EditWorker = () => {
             {touched.phoneNumber && errors.phoneNumber && (
               <Text style={styles.errorText}>{errors.phoneNumber}</Text>
             )}
-            {isWaiter ? (
-              <></>
-            ) : (
+            {!isWaiter && !isOwnEdit && (
               <Dropdown
                 label="Role"
                 mode="outlined"
+                placeholder="Select Role"
                 value={values.role}
                 options={UserRolesArray.filter(
                   (role) => role !== UserROLES.OWNER
@@ -372,6 +391,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: -4,
     marginBottom: 4,
+  },
+  roleContainer: {
+    margin: "auto",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 8,
+    borderRadius: 20,
+    gap: 8,
+    maxWidth: "50%",
+  },
+  role: {
+    fontSize: 16,
+    color: "#fff",
+    textTransform: "capitalize",
   },
 });
 
