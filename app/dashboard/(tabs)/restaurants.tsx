@@ -3,7 +3,7 @@ import RestaurantsComponent from "@/modules/restaurant/components/Restaurants/Re
 
 export default function Restaurants() {
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper paddingOff>
       <RestaurantsComponent />
     </Wrapper>
   );
