@@ -2,7 +2,6 @@ import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDial
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { navigateToEditRestaurant } from "@/modules/common/utils/flowNavigation";
 import { useDeleteRestaurantMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
-import Entypo from "@expo/vector-icons/Entypo";
 import { router } from "expo-router";
 import { FC, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
@@ -10,6 +9,7 @@ import {
   Button,
   Card,
   Divider,
+  IconButton,
   Menu,
   Paragraph,
   Title,
@@ -89,7 +89,8 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
                   pathname: "/restaurant/[id]/(quiz)",
                   params: { id },
                 });
-              }}>
+              }}
+            >
               View Details
             </Button>
 
@@ -97,13 +98,9 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
               visible={visible}
               onDismiss={closeMenu}
               anchor={
-                <Entypo
-                  name="dots-three-vertical"
-                  size={20}
-                  color={colors.primary}
-                  onPress={openMenu}
-                />
-              }>
+                <IconButton icon="dots-vertical" onPress={openMenu} size={20} />
+              }
+            >
               <Menu.Item
                 onPress={handleEdit}
                 title="Edit"
