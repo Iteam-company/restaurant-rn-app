@@ -1,28 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
-import { useRouter, useLocalSearchParams } from "expo-router";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Dropdown } from "react-native-paper-dropdown";
-import {
-  TextInput,
-  Button,
-  Title,
-  Surface,
-  Avatar,
-  Text,
-  ActivityIndicator,
-  IconButton,
-  useTheme,
-  Icon,
-} from "react-native-paper";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import FormWrapper from "@/modules/common/components/FormWrapper";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import { USER_ROLE } from "@/modules/common/constants/api";
 import {
   useGetCurrentUserQuery,
   useGetUserByIdQuery,
@@ -34,17 +13,24 @@ import {
 } from "@/modules/common/redux/slices/user-api";
 import { RTKMutationPayloadType } from "@/modules/common/types";
 import { UserROLES } from "@/modules/common/types/user.types";
-import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
+import { handleFile } from "@/modules/common/utils/handleFile";
 import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  handleFile,
-  pickImageFromGallery,
-} from "@/modules/common/utils/handleFile";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import { USER_ROLE } from "@/modules/common/constants/api";
-import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Avatar,
+  Button,
+  IconButton,
+  Text,
+  TextInput,
+  useTheme,
+} from "react-native-paper";
+import { Dropdown } from "react-native-paper-dropdown";
+import * as Yup from "yup";
 
 interface WorkerFormData {
   firstName: string;
@@ -175,16 +161,8 @@ const EditWorker = () => {
   return (
     <>
       <ScrollView style={[{ width: "100%", paddingHorizontal: 8 }]}>
-        <TouchableOpacity
-          style={[styles.goBackButton]}
-          onPress={() => router.back()}
-        >
-          <Icon source="arrow-left" size={24} />
-        </TouchableOpacity>
-
         <FormWrapper>
           <View style={styles.header}>
-            <Title>Edit Worker Profile</Title>
             {data?.icon ? (
               <Avatar.Image size={80} source={{ uri: data.icon }} />
             ) : (

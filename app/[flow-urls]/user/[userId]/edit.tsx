@@ -3,7 +3,7 @@ import EditWorker from "@/modules/restaurant/components/RestaurantInfo/editWorke
 
 const EditUserScreen = () => {
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper paddingOff headerTitle={"Edit Worker Profile"}>
       <EditWorker />
     </Wrapper>
   );

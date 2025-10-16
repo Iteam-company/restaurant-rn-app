@@ -3,7 +3,7 @@ import AddQuestion from "@/modules/questions/components/AddQuestion/AddQuestion"
 
 const CreateQuestionScreen = () => {
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper paddingOff headerTitle={"Add New Question"}>
       <AddQuestion />
     </Wrapper>
   );
