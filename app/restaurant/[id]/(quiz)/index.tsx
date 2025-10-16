@@ -2,7 +2,7 @@ import Wrapper from "@/modules/common/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { navigateToCreateQuiz } from "@/modules/common/utils/flowNavigation";
 import QuizList from "@/modules/quiz/components/QuizList";
-import { router, useGlobalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import React from "react";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -25,15 +25,6 @@ const Quiz = () => {
             icon: "progress-question",
             label: "Generate Quiz",
             onPress: () => navigateToCreateQuiz(restaurantId),
-          },
-          {
-            icon: "format-list-bulleted",
-            label: "Quiz Results",
-            onPress: () =>
-              router.push({
-                pathname: "/restaurant/[id]/(quiz)/(quizResult)/quizResult",
-                params: { id: restaurantId },
-              }),
           },
           {
             icon: "plus",

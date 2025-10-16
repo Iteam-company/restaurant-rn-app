@@ -31,7 +31,8 @@ export default function RestaurantPageLayout() {
       />
       <Appbar.Header
         statusBarHeight={0}
-        style={{ backgroundColor: colors.background }}>
+        style={{ backgroundColor: colors.background }}
+      >
         <Appbar.BackAction
           iconColor="white"
           onPress={() =>
@@ -68,7 +69,8 @@ export default function RestaurantPageLayout() {
             default: {},
           }),
         }}
-        safeAreaInsets={{ bottom: 0, top: 0 }}>
+        safeAreaInsets={{ bottom: 0, top: 0 }}
+      >
         <Tabs.Screen
           name="(workers)"
           options={{
@@ -89,6 +91,20 @@ export default function RestaurantPageLayout() {
             title: "Quiz",
             tabBarIcon: ({ color }) => (
               <AntDesign name="question" size={25} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="(quizResult)"
+          options={{
+            title: "Quiz Results",
+            tabBarIcon: ({ color }) => (
+              <IconSymbol
+                size={25}
+                name="chart.bar.fill"
+                weight="medium"
+                color={color}
+              />
             ),
           }}
         />
