@@ -12,7 +12,8 @@ import {
   useUploadCurrentUserPhotoMutation,
 } from "@/modules/common/redux/slices/user-api";
 import { RTKMutationPayloadType } from "@/modules/common/types";
-import { UserROLES } from "@/modules/common/types/user.types";
+import { UserROLES, UserRolesArray } from "@/modules/common/types/user.types";
+import { capitalizeFirstLetter } from "@/modules/common/utils";
 import { handleFile } from "@/modules/common/utils/handleFile";
 import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -41,26 +42,6 @@ interface WorkerFormData {
   role?: UserROLES;
 }
 
-interface IOptions {
-  label: string;
-  value: UserROLES;
-}
-
-const OPTIONS: IOptions[] = [
-  {
-    label: "Admin",
-    value: UserROLES.ADMIN,
-  },
-  {
-    label: "Owner",
-    value: UserROLES.OWNER,
-  },
-  {
-    label: "Waiter",
-    value: UserROLES.WAITER,
-  },
-];
-
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
@@ -83,6 +64,7 @@ const EditWorker = () => {
   const router = useRouter();
   const { colors } = useTheme();
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+  const [userRole, setUserRole] = useState<UserROLES | null>(null);
 
   const {
     workerId: initialWorkerId,
@@ -95,22 +77,42 @@ const EditWorker = () => {
   }>();
   const workerId = initialWorkerId || userId;
 
-  const { data, isLoading: isLoadingUser } =
-    SecureStore.getItem(USER_ROLE) === "waiter"
-      ? useGetCurrentUserQuery()
-      : useGetUserByIdQuery(workerId);
+  useEffect(() => {
+    (async () => {
+      const role = await SecureStore.getItem(USER_ROLE);
+      if (!role) return;
+      setUserRole(role as UserROLES);
+    })();
+  }, []);
+
+  const isWaiter = userRole === UserROLES.WAITER;
+
+  const { data: currentUserData, isLoading: isLoadingCurrentUser } =
+    useGetCurrentUserQuery();
+  const { data: userByIdData, isLoading: isLoadingUserById } =
+    useGetUserByIdQuery(workerId, {
+      skip: !workerId,
+    });
 
   const [removeWorker] = useRemoveWorkerMutation();
   const [removeCurrentUser] = useRemoveCurrentUserMutation();
 
-  const [updatePhoto, { isLoading: isLoadingImage }] =
-    SecureStore.getItem(USER_ROLE) === "waiter"
-      ? useUploadCurrentUserPhotoMutation()
-      : useUpdateUserPhotoMutation();
-  const [updateUser, { isLoading: isUpdating, error }] =
-    SecureStore.getItem(USER_ROLE) === "waiter"
-      ? useUpdateCurrentUserInfoMutation()
-      : useUpdateUserInfoMutation<RTKMutationPayloadType>();
+  const [updateCurrentUserPhoto] = useUploadCurrentUserPhotoMutation();
+  const [updateUserPhoto] = useUpdateUserPhotoMutation();
+
+  const [
+    updateCurrentUserInfo,
+    { isLoading: isUpdatingCurrentUser, error: currentUserError },
+  ] = useUpdateCurrentUserInfoMutation();
+  const [updateUserInfo, { isLoading: isUpdatingUser, error: userError }] =
+    useUpdateUserInfoMutation<RTKMutationPayloadType>();
+
+  const data = isWaiter ? currentUserData : userByIdData;
+  const isLoadingUser = isWaiter ? isLoadingCurrentUser : isLoadingUserById;
+  const updatePhoto = isWaiter ? updateCurrentUserPhoto : updateUserPhoto;
+  const updateUser = isWaiter ? updateCurrentUserInfo : updateUserInfo;
+  const isUpdating = isWaiter ? isUpdatingCurrentUser : isUpdatingUser;
+  const error = isWaiter ? currentUserError : userError;
 
   const {
     values,
@@ -256,16 +258,22 @@ const EditWorker = () => {
             {touched.phoneNumber && errors.phoneNumber && (
               <Text style={styles.errorText}>{errors.phoneNumber}</Text>
             )}
-            {SecureStore.getItem(USER_ROLE) === "waiter" ? (
+            {isWaiter ? (
               <></>
             ) : (
               <Dropdown
                 label="Role"
                 mode="outlined"
                 value={values.role}
-                options={OPTIONS}
+                options={UserRolesArray.filter(
+                  (role) => role !== UserROLES.OWNER
+                ).map((role) => ({
+                  label: capitalizeFirstLetter(role),
+                  value: role as UserROLES,
+                }))}
                 onSelect={(value) => setFieldValue("role", value)}
-                CustomMenuHeader={(props) => <></>}
+                CustomMenuHeader={() => <></>}
+                error={touched.role && !!errors.role}
               />
             )}
 
@@ -285,12 +293,9 @@ const EditWorker = () => {
                 onPress={() => handleSubmit()}
                 style={styles.submitButton}
                 disabled={isUpdating}
+                loading={isUpdating}
               >
-                {isUpdating ? (
-                  <ActivityIndicator animating={true} color={"#ffffff"} />
-                ) : (
-                  <Text>Save Changes</Text>
-                )}
+                <Text>Save Changes</Text>
               </Button>
               <Button
                 mode="contained-tonal"
@@ -309,7 +314,7 @@ const EditWorker = () => {
       </ScrollView>
       <ConfirmationDialog
         action={() => {
-          if (SecureStore.getItem(USER_ROLE) === "waiter") removeCurrentUser();
+          if (isWaiter) removeCurrentUser();
           else
             removeWorker({
               userId: data?.id ?? "",
