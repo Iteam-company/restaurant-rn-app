@@ -34,24 +34,36 @@ export const navigateToFlow = (
 
   switch (flowType) {
     case FlowType.USER:
-      baseUrl += "user/[userId]/";
-      idParam = params.userId || "";
+      baseUrl += "user/";
+      if (action === ActionType.EDIT) {
+        baseUrl += "[userId]/";
+        idParam = params.userId || "";
+      }
       break;
     case FlowType.RESTAURANT:
-      baseUrl += "restaurant/[restaurantId]/";
-      idParam = params.restaurantId || "";
+      baseUrl += "restaurant/";
+      if (action === ActionType.EDIT) {
+        baseUrl += "[restaurantId]/";
+        idParam = params.restaurantId || "";
+      }
       break;
     case FlowType.QUIZ:
-      baseUrl += "quiz/[quizId]/";
-      idParam = params.quizId || "";
+      baseUrl += "quiz/";
+      if (action === ActionType.EDIT) {
+        baseUrl += "[quizId]/";
+        idParam = params.quizId || "";
+      }
       break;
     case FlowType.QUESTION:
-      baseUrl += "question/[questionId]/";
-      idParam = params.questionId || "";
+      baseUrl += "question/";
+      if (action === ActionType.EDIT) {
+        baseUrl += "[questionId]/";
+        idParam = params.questionId || "";
+      }
       break;
   }
 
-  const url = baseUrl + action;
+  let url = baseUrl + action;
 
   const searchParams: Record<string, string> = {};
 
@@ -71,7 +83,7 @@ export const navigateToFlow = (
   }
 
   Object.entries(params).forEach(([key, value]) => {
-    if (value && key !== "action" && key !== flowType + "Id") {
+    if (value && key !== "action") {
       searchParams[key] = String(value);
     }
   });
@@ -147,5 +159,16 @@ export const navigateToCreateQuestion = (
     quizId,
     restaurantId,
     action: ActionType.CREATE,
+  });
+};
+
+export const navigateToGenerateQuestions = (
+  quizId?: string,
+  restaurantId?: string
+) => {
+  navigateToFlow(FlowType.QUESTION, {
+    quizId,
+    restaurantId,
+    action: ActionType.GENERATE,
   });
 };
