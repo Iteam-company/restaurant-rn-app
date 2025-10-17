@@ -9,7 +9,7 @@ export default function RestaurantIdLayout() {
         headerBackTitle: "Back",
       }}
     >
-      <Stack.Screen name="edit" options={{ title: "Edit Restaurant" }} />
+      <Stack.Screen name="[restaurantId]/edit" options={{ title: "Edit Restaurant" }} />
       <Stack.Screen name="create" options={{ title: "Create Restaurant" }} />
     </Stack>
   );

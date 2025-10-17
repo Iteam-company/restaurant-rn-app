@@ -9,8 +9,12 @@ export default function QuestionIdLayout() {
         headerBackTitle: "Back",
       }}
     >
-      <Stack.Screen name="edit" options={{ title: "Edit Question" }} />
       <Stack.Screen name="create" options={{ title: "Add Question" }} />
+      <Stack.Screen name="generate" options={{ title: "Generate Questions" }} />
+      <Stack.Screen
+        name="[questionId]/edit"
+        options={{ title: "Edit Question" }}
+      />
     </Stack>
   );
 }

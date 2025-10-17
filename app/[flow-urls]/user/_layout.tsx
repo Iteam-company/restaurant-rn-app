@@ -9,7 +9,7 @@ export default function UserIdLayout() {
         headerBackTitle: "Back",
       }}
     >
-      <Stack.Screen name="edit" options={{ title: "Edit User" }} />
+      <Stack.Screen name="[userId]/edit" options={{ title: "Edit User" }} />
       <Stack.Screen name="create" options={{ title: "Add User" }} />
     </Stack>
   );
