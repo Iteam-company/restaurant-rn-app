@@ -1,8 +1,11 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
-import { navigateToCreateQuestion } from "@/modules/common/utils/flowNavigation";
+import {
+  navigateToCreateQuestion,
+  navigateToGenerateQuestions,
+} from "@/modules/common/utils/flowNavigation";
 import QuestionList from "@/modules/questions/components/QuestionList";
-import { router, useGlobalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
@@ -38,12 +41,7 @@ const Question = () => {
           {
             icon: "lightbulb-outline",
             label: "Generate Question",
-            onPress: () =>
-              router.push({
-                pathname:
-                  "/restaurant/[id]/(quiz)/[quizId]/(questions)/generateQuestions",
-                params: { id: restaurantId, quizId },
-              }),
+            onPress: () => navigateToGenerateQuestions(quizId, restaurantId),
           },
         ]}
         onStateChange={onStateChange}

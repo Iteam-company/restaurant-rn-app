@@ -9,7 +9,7 @@ export default function QuizIdLayout() {
         headerBackTitle: "Back",
       }}
     >
-      <Stack.Screen name="edit" options={{ title: "Edit Quiz" }} />
+      <Stack.Screen name="[quizId]/edit" options={{ title: "Edit Quiz" }} />
       <Stack.Screen name="create" options={{ title: "Create Quiz" }} />
     </Stack>
   );
