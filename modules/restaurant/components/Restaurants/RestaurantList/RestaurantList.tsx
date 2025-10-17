@@ -48,14 +48,14 @@ const windowWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
-    width: windowWidth,
+    width: "100%",
   },
   scrollContent: {
-    margin: 20,
+    margin: 10,
     paddingBottom: 30,
   },
   card: {
-    width: windowWidth - 40,
+    width: windowWidth,
     marginBottom: 20,
     overflow: "hidden",
     borderRadius: 14,
