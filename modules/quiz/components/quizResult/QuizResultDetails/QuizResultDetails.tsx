@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "react-native-paper";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface QuizResultDetailsProps {
   // Add your props here
 }

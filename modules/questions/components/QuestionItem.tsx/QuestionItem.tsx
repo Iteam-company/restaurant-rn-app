@@ -27,7 +27,7 @@ const QuestionItem = ({ question }: Props) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const { colors } = useTheme();
 
-  const [removeQuestion, { isLoading }] = useDeleteQuestionMutation();
+  const [removeQuestion] = useDeleteQuestionMutation();
 
   const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);

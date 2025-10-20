@@ -9,7 +9,6 @@ import {
   Chip,
   Title,
 } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useGetQuizQuery } from "../../redux/slices/quiz-api";
 import { DifficultyLevelEnum, StatusEnum } from "../../types";
 
@@ -21,8 +20,6 @@ export const QuizDetails = () => {
   const { data: quiz, isLoading: isLoadingQuiz } = useGetQuizQuery(quizId);
   const { data: questions, isLoading: isLoadingQuestions } =
     useGetQuestionsQuery(quizId);
-
-  const insets = useSafeAreaInsets();
 
   const getColorForDifficulty = (level: DifficultyLevelEnum): string => {
     switch (level) {

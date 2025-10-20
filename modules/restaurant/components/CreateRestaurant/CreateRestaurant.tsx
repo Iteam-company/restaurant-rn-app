@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
+import FormWrapper from "@/modules/common/components/FormWrapper";
 import { useRouter } from "expo-router";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
 import {
   Avatar,
   Button,
@@ -10,17 +12,13 @@ import {
   TextInput,
   useTheme,
 } from "react-native-paper";
-import FormWrapper from "@/modules/common/components/FormWrapper";
 import {
   useCreateRestaurantMutation,
   useGetOwnersQuery,
   useUplaodRestaurantImageMutation,
 } from "../../redux/slices/restaurant-api";
 import { getOptions, initialValues, validationSchema } from "./utils";
-import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
-import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ScrollView } from "react-native";
+
 import { handleFile } from "@/modules/common/utils/handleFile";
 import { Dropdown } from "react-native-paper-dropdown";
 
@@ -28,7 +26,6 @@ export default function CreateRestaurant() {
   const { colors } = useTheme();
   const router = useRouter();
   const { data: currentUser } = useValidateTokenQuery();
-  const insets = useSafeAreaInsets();
   const [formData, setFormData] = useState<FormData | null>(null);
   const [selectedOwner, setSelectedOwner] = useState<string>("");
 
@@ -39,8 +36,6 @@ export default function CreateRestaurant() {
 
   const [uploadImage, { isLoading: isLoadingImage }] =
     useUplaodRestaurantImageMutation();
-
-  const { handleFileSelect } = useFileSelect(() => {}, {});
 
   useEffect(() => {
     if (isSuccess) {
