@@ -1,6 +1,6 @@
 import { workerApi } from "@/modules/common/redux/slices/worker-api";
-import { IQuizInfo, IQuizResultDto, IQuizResultInfo } from "../../types";
 import { TagTypes } from "@/modules/common/redux/utils/api-config";
+import { IQuizInfo, IQuizResultDto, IQuizResultInfo } from "../../types";
 
 export const quizApi = workerApi
   .enhanceEndpoints({ addTagTypes: [TagTypes.QUIZ, TagTypes.QUIZ_RESULT] })
@@ -52,19 +52,7 @@ export const quizApi = workerApi
           { type: TagTypes.QUIZ, id: body.id },
         ],
       }),
-      connectQuizToMenu: builder.mutation<
-        void,
-        { quizId: string; menuId: string }
-      >({
-        query: ({ quizId, menuId }) => ({
-          url: `/quiz/${menuId}/${quizId}`,
-          method: "PATCH",
-        }),
-      }),
-      updateQuiz: builder.mutation<
-        IQuizInfo,
-        Partial<IQuizInfo & { menuId: undefined }>
-      >({
+      updateQuiz: builder.mutation<IQuizInfo, Partial<IQuizInfo>>({
         query: (body) => ({
           url: `/quiz/${body.id}`,
           method: "PATCH",
@@ -155,7 +143,6 @@ export const {
   useGetQuizByRestaurantQuery,
   useGetQuizesQuery,
   useCreateQuizMutation,
-  useConnectQuizToMenuMutation,
   useUpdateQuizMutation,
   useDeleteQuizMutation,
   useCreateQuizResultMutation,

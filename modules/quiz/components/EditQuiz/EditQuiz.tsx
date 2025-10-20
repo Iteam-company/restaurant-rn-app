@@ -6,7 +6,6 @@ import FormWrapper from "@/modules/common/components/FormWrapper";
 import { useEffect } from "react";
 import { ActivityIndicator, Button, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useGetQuizQuery,
   useUpdateQuizMutation,
@@ -19,8 +18,7 @@ import {
 } from "../AddQuiz/utils";
 
 const EditQuiz = () => {
-  const insets = useSafeAreaInsets();
-  const { id: restaurantId, quizId } = useGlobalSearchParams<{
+  const { quizId } = useGlobalSearchParams<{
     id: string;
     quizId: string;
   }>();
@@ -37,32 +35,38 @@ const EditQuiz = () => {
           timeLimit: initialValues.timeLimit,
           title: initialValues.title,
         }
-      : { ...secondaryInitialValues, menuId: undefined },
+      : { ...secondaryInitialValues },
     validationSchema,
     validateOnChange: true,
     onSubmit: async (formData) => {
       await updateQuiz({
         ...formData,
         id: parseInt(quizId),
-        menuId: undefined,
       }).unwrap();
       router.back();
     },
   });
 
-  const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
-    formik;
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    setFieldValue,
+    handleBlur,
+    setValues,
+  } = formik;
 
   useEffect(() => {
     if (initialValues) {
-      formik.setValues({
+      setValues({
         difficultyLevel: initialValues.difficultyLevel,
         status: initialValues.status,
         timeLimit: initialValues.timeLimit,
         title: initialValues.title,
       });
     }
-  }, [initialValues]);
+  }, [setValues, initialValues]);
 
   if (!initialValues) return <ActivityIndicator size="large" />;
 

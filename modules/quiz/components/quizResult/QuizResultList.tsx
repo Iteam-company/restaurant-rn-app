@@ -1,17 +1,12 @@
-import React, { useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
-import {
-  useGetQuizResultListQuery,
-  useSearchQuizResultQuery,
-} from "../../redux/slices/quiz-api";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import useDebounce from "@/modules/common/hooks/useDebounce";
+import { useGlobalSearchParams } from "expo-router";
+import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Searchbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSearchQuizResultQuery } from "../../redux/slices/quiz-api";
 import QuizResultItem from "./QuizResultItem/QuizResultItem";
-import { useGlobalSearchParams } from "expo-router";
-import * as SecureStore from "expo-secure-store";
-import { USER_ROLE } from "@/modules/common/constants/api";
-import useDebounce from "@/modules/common/hooks/useDebounce";
-import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 const QuizResultList = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();

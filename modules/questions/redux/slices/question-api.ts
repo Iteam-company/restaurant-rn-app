@@ -50,10 +50,10 @@ const questionApi = workerApi
       }),
       generateQuestions: builder.mutation<
         ICreateQuestionDTO[],
-        { menuId: number; count: number }
+        { count: number }
       >({
-        query: ({ menuId, count }) => ({
-          url: `/quiz/generate/questions/${menuId}`,
+        query: ({ count }) => ({
+          url: `/quiz/generate/questions`,
           method: "GET",
           params: { count },
         }),

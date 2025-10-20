@@ -1,16 +1,9 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { ICreateQuestionDTO, IQuestionInfo } from "../../types";
-import {
-  Checkbox,
-  IconButton,
-  Menu,
-  Title,
-  useTheme,
-} from "react-native-paper";
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import VariantsCreator from "@/modules/common/components/VariantsCreator";
-import { IQuizInfo } from "@/modules/quiz/types";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { IconButton, Menu, Title, useTheme } from "react-native-paper";
+import { ICreateQuestionDTO } from "../../types";
 
 interface Props {
   question: ICreateQuestionDTO;
