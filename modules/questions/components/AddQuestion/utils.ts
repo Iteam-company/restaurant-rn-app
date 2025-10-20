@@ -24,10 +24,3 @@ export const validationSchema = yup.object().shape({
     .min(1, "At least 1 correct answer is required"),
   quizId: yup.number().required("Quiz is required").min(1, "Quiz is required"),
 });
-
-export const quizItems = (menu: IQuizInfo[]) => {
-  return menu.map((item) => ({
-    label: item.title,
-    value: `${item.id}`,
-  }));
-};

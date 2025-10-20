@@ -1,5 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import { useGetQuizQuery } from "@/modules/quiz/redux/slices/quiz-api";
+import { router, useGlobalSearchParams } from "expo-router";
+import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -7,24 +10,18 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useCreateManyQuestionsMutation,
   useGenerateQuestionsMutation,
 } from "../../redux/slices/question-api";
-import { useGetQuizQuery } from "@/modules/quiz/redux/slices/quiz-api";
-import { router, useGlobalSearchParams } from "expo-router";
-import QuestionItem from "../QuestionItem.tsx/QuestionItem";
+import { ICreateQuestionDTO } from "../../types";
 import QuestionElement from "./QuestionElement";
-import { ICreateQuestionDTO, IQuestionInfo } from "../../types";
-import TabBarOffset from "@/modules/common/components/TabBarOffset";
 
 const GenerateQuestion = () => {
-  const { id: restaurantId, quizId } = useGlobalSearchParams<{
+  const { quizId } = useGlobalSearchParams<{
     id: string;
     quizId: string;
   }>();
-  const insets = useSafeAreaInsets();
   const [count, setCount] = useState<string>("");
   const [data, setData] = useState<ICreateQuestionDTO[] | undefined>(undefined);
   const { colors } = useTheme();
@@ -79,7 +76,6 @@ const GenerateQuestion = () => {
           onPress={async () =>
             await setData(
               await generateQuestion({
-                menuId: quiz.menu.id,
                 count: parseInt(count) > 0 ? parseInt(count) : 10,
               }).unwrap()
             )
