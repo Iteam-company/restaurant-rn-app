@@ -1,11 +1,8 @@
-import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
-import React, { useEffect, useState } from "react";
-import {
-  useCreateQuizResultMutation,
-  useGetQuizQuery,
-} from "../../redux/slices/quiz-api";
+import InformationDialog from "@/modules/common/components/InformationDialog";
 import { useGetQuestionsQuery } from "@/modules/questions/redux/slices/question-api";
 import { router, useGlobalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -14,11 +11,8 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { setIn } from "formik";
 import { useTimer } from "react-timer-hook";
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
-import InformationDialog from "@/modules/common/components/InformationDialog";
+import { useCreateQuizResultMutation } from "../../redux/slices/quiz-api";
 
 const TakeQuiz = () => {
   const {
@@ -31,7 +25,6 @@ const TakeQuiz = () => {
     timer: string;
   }>();
   const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
 
   const [isDialog, setIsDialog] = useState(false);
   const [index, setIndex] = useState(0);
@@ -75,7 +68,7 @@ const TakeQuiz = () => {
         })
         .catch(console.log);
     }
-  }, [result]);
+  }, [createQuizResult, index, questions, quizId, restaurantId, result]);
 
   if (isLoadingQuestions || isLoading)
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;

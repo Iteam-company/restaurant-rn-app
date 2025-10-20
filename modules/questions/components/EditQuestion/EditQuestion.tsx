@@ -53,14 +53,21 @@ const EditQuestion = () => {
     },
   });
 
-  const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
-    formik;
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    setFieldValue,
+    handleBlur,
+    setValues,
+  } = formik;
 
   useEffect(() => {
     if (initialValues) {
-      formik.setValues({ ...initialValues, quizId });
+      setValues({ ...initialValues, quizId });
     }
-  }, [initialValues]);
+  }, [initialValues, quizId, setValues]);
 
   if (
     !initialValues ||

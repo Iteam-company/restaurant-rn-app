@@ -11,18 +11,17 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface QuizResultDetailsProps {
   // Add your props here
 }
 
 export const QuizResultDetails: React.FC<QuizResultDetailsProps> = () => {
-  const { id: restaurantId, quizResultId } = useGlobalSearchParams<{
+  const { quizResultId } = useGlobalSearchParams<{
     id: string;
     quizResultId: string;
   }>();
-  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
 
   const getColorForDifficulty = (level: DifficultyLevelEnum): string => {

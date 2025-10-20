@@ -18,7 +18,6 @@ export interface FlowNavigationParams {
   restaurantId?: string;
   quizId?: string;
   questionId?: string;
-  menuId?: string;
   action?: ActionType;
 }
 

@@ -10,7 +10,6 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useDeleteQuestionMutation,
   useGetOneQuestionQuery,
@@ -27,10 +26,9 @@ const QuestionItemInfo = () => {
     questionId: string;
   }>();
   const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
-  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
 
-  const [removeQuestion, { isLoading }] = useDeleteQuestionMutation();
+  const [removeQuestion] = useDeleteQuestionMutation();
 
   const { data, isLoading: isLoadingData } = useGetOneQuestionQuery(questionId);
 

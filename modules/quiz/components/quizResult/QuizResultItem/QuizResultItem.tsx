@@ -59,7 +59,7 @@ export const QuizResultItem = ({ quizResult }: Props) => {
           pathname:
             SecureStore.getItem(USER_ROLE) === "waiter"
               ? "/user-dashboard/[id]/(quiz)/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails"
-              : "/restaurant/[id]/(quiz)/(quizResult)/[quizResultId]/quizResultDetailsPage",
+              : "/restaurant/[id]/(quizResult)/[quizResultId]/quizResultDetailsPage",
           params: { id: restaurantId, quizResultId: quizResult.id },
         })
       }

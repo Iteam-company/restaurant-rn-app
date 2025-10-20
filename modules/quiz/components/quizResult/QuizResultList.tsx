@@ -1,22 +1,12 @@
-import React, { useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
-import {
-  useGetQuizResultListQuery,
-  useSearchQuizResultQuery,
-} from "../../redux/slices/quiz-api";
-import { ActivityIndicator, Searchbar } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import QuizResultItem from "./QuizResultItem/QuizResultItem";
-import { useGlobalSearchParams } from "expo-router";
-import * as SecureStore from "expo-secure-store";
-import { USER_ROLE } from "@/modules/common/constants/api";
-import useDebounce from "@/modules/common/hooks/useDebounce";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import useDebounce from "@/modules/common/hooks/useDebounce";
+import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Searchbar } from "react-native-paper";
+import { useSearchQuizResultQuery } from "../../redux/slices/quiz-api";
+import QuizResultItemComponent from "./QuizResultItem/QuizResultItem";
 
 const QuizResultList = () => {
-  const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
-  const insets = useSafeAreaInsets();
-
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedSearchTerm = useDebounce(searchQuery, 500);
 
@@ -40,7 +30,9 @@ const QuizResultList = () => {
           quizResults
             ?.slice()
             .reverse()
-            .map((elem) => <QuizResultItem key={elem.id} quizResult={elem} />)
+            .map((elem) => (
+              <QuizResultItemComponent key={elem.id} quizResult={elem} />
+            ))
         )}
       </View>
       <TabBarOffset />

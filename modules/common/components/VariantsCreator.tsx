@@ -1,9 +1,6 @@
-import { FormikErrors, FormikTouched } from "formik";
-import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-import { TextInput, Button, Checkbox, useTheme } from "react-native-paper";
-import { initialValues } from "../utils/createUserSchema";
-import { IQuestionInfo } from "@/modules/questions/types";
+import { useCallback, useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { Button, Checkbox, TextInput, useTheme } from "react-native-paper";
 
 type VariantType = { text: string; isCorrect: boolean };
 
@@ -57,7 +54,7 @@ const VariantsCreator = ({
     setText("");
   };
 
-  const handleParseVariants = () => {
+  const handleParseVariants = useCallback(() => {
     const resultVariants = checkedItems.map((elem) => elem.text);
     const resultIsCorrect: number[] = [];
 
@@ -66,15 +63,15 @@ const VariantsCreator = ({
     );
 
     return { variants: resultVariants, correct: resultIsCorrect };
-  };
+  }, [checkedItems]);
 
   const handleRemoveChecked = (text: string) => {
     setCheckedItems((prev) => prev.filter((elem) => elem.text !== text));
   };
 
   useEffect(() => {
-    onChange && onChange(handleParseVariants());
-  }, [checkedItems]);
+    onChange?.(handleParseVariants());
+  }, [checkedItems, handleParseVariants, onChange]);
 
   return (
     <View>
@@ -124,9 +121,9 @@ const VariantsCreator = ({
         )}
       </View>
       <Text style={{ marginVertical: 12, color: colors.secondary }}>
-        To add a new variant, write in the field and press the "Add variant"
+        {`To add a new variant, write in the field and press the "Add variant"
         button. Your question will be created under the button. If the question
-        is correct, check it.
+        is correct, check it.`}
       </Text>
     </View>
   );
