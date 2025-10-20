@@ -1,24 +1,20 @@
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import {
+  Avatar,
+  Icon,
   Surface,
   Text,
   Title,
-  Avatar,
-  Divider,
-  Icon,
   useTheme,
 } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const UserInfo = () => {
   const { colors } = useTheme();
   const { workerId } = useLocalSearchParams<{ workerId: string }>();
   const { data } = useGetUserByIdQuery(workerId);
-  const insets = useSafeAreaInsets();
 
   if (!data) return null;
 

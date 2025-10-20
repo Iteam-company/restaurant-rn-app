@@ -1,5 +1,4 @@
 import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system";
 import { useCallback } from "react";
 
 type FileSelectOptionsType = {
@@ -21,7 +20,7 @@ export const useFileSelect = (
     }
 
     callback(result.assets[0]);
-  }, [options]);
+  }, [callback, options]);
 
   return { handleFileSelect };
 };
