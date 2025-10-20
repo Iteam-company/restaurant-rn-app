@@ -1,7 +1,9 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
+import { handleFile } from "@/modules/common/utils/handleFile";
+import { router, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { useEffect } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
   Avatar,
@@ -11,25 +13,20 @@ import {
   TextInput,
   useTheme,
 } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { validationSchema } from "./utils";
 import {
   useGetRestaurantQuery,
   useUpdateRestaurantMutation,
   useUplaodRestaurantImageMutation,
 } from "../../redux/slices/restaurant-api";
-import { router, useLocalSearchParams } from "expo-router";
-import { handleFile } from "@/modules/common/utils/handleFile";
+import { validationSchema } from "./utils";
 
 const EditRestaurant = () => {
   const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
   const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
 
   const { data: initialValues } = useGetRestaurantQuery(restaurantId);
 
-  const [updateRestaurant, { isLoading, isError, error, isSuccess, data }] =
-    useUpdateRestaurantMutation();
+  const [updateRestaurant] = useUpdateRestaurantMutation();
 
   const [uploadImage] = useUplaodRestaurantImageMutation();
 
@@ -41,14 +38,21 @@ const EditRestaurant = () => {
       router.back();
     },
   });
-  const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
-    formik;
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    setFieldValue,
+    handleBlur,
+    setValues,
+  } = formik;
 
   useEffect(() => {
     if (initialValues) {
-      formik.setValues(initialValues);
+      setValues(initialValues);
     }
-  }, [initialValues]);
+  }, [initialValues, setValues]);
 
   if (!initialValues) return <ActivityIndicator size="large" />;
 

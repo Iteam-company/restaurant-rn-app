@@ -1,4 +1,4 @@
-import { Platform, View, StyleSheet } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { useTheme } from "react-native-paper";
 
 export const TabBackground = () => {
@@ -10,13 +10,10 @@ export const TabBackground = () => {
         styles.container,
         {
           backgroundColor: dark ? colors.surface : colors.background,
-          borderTopColor: "",
+          borderTopColor:
+            (colors as any).outline || (dark ? "#333333" : "#e0e0e0"),
         },
-        Platform.select({
-          ios: styles.ios,
-          // @ts-ignore
-          android: styles.android,
-        }),
+        Platform.OS === "ios" ? styles.ios : styles.android,
       ]}
     />
   );
