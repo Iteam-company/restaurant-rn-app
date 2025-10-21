@@ -19,7 +19,7 @@ export default function RestaurantPageLayout() {
     workerId: string;
   }>();
 
-  const { data: restaurantData } = useGetRestaurantQuery(id);
+  const { data: restaurantData } = useGetRestaurantQuery(id, { skip: !id });
   const pathname = usePathname();
 
   return (

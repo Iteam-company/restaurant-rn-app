@@ -31,7 +31,10 @@ const EditQuestion = () => {
   const { data: initialValues, isLoading: isLoadingQuestion } =
     useGetOneQuestionQuery(questionId);
 
-  const { data: quizes, isLoading } = useGetQuizByRestaurantQuery(restaurantId);
+  const { data: quizes, isLoading } = useGetQuizByRestaurantQuery(
+    restaurantId,
+    { skip: !restaurantId }
+  );
 
   const [editQuestion, { isLoading: isEditing }] = useUpdateQuestionMutation();
 

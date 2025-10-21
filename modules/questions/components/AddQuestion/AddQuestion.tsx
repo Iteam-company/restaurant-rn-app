@@ -15,7 +15,10 @@ const AddQuestion = () => {
     quizId: string;
   }>();
 
-  const { data: quizes, isLoading } = useGetQuizByRestaurantQuery(restaurantId);
+  const { data: quizes, isLoading } = useGetQuizByRestaurantQuery(
+    restaurantId,
+    { skip: !restaurantId }
+  );
   const [createQuestion, { isLoading: isCreating }] =
     useCreateQuestionMutation();
 
