@@ -38,7 +38,7 @@ export default function AddWorker() {
             await addWorkerToRestaurant({
               userId: res.id,
               restaurantId: parseInt(id),
-            });
+            }).unwrap();
             router.push({
               pathname: "/restaurant/[id]/(workers)",
               params: {

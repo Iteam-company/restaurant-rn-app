@@ -10,7 +10,9 @@ import QuizItem from "./QuizItem/QuizItem";
 
 const QuizList = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
-  const { data, isLoading } = useGetQuizByRestaurantQuery(restaurantId);
+  const { data, isLoading } = useGetQuizByRestaurantQuery(restaurantId, {
+    skip: !restaurantId,
+  });
   const { colors } = useTheme();
 
   const [selectedStatus, setSelectedStatus] = useState<StatusEnum[]>([]);
