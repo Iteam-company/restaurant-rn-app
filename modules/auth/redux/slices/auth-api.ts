@@ -19,6 +19,7 @@ export const authApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Auth"],
     }),
     signup: builder.mutation<
       { access_token: string; id: number },
@@ -29,6 +30,7 @@ export const authApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Auth"],
     }),
     validateToken: builder.query<UserType, void | { token: string }>({
       query: (props) => ({
