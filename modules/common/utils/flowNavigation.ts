@@ -87,6 +87,7 @@ export const navigateToFlow = (
     }
   });
 
+  console.log(url, searchParams, "~~~navigateToFlow");
   router.push({
     pathname: url as any,
     params: searchParams,

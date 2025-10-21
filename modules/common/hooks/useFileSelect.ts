@@ -1,26 +1,38 @@
 import * as DocumentPicker from "expo-document-picker";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 type FileSelectOptionsType = {
   type: string[];
   copyToCacheDirectory: boolean;
+  multiple?: boolean;
 };
 
 export const useFileSelect = (
-  callback: (file: DocumentPicker.DocumentPickerAsset) => void,
-  options: Partial<FileSelectOptionsType>
+  callback: (files: DocumentPicker.DocumentPickerAsset[]) => void,
+  options: Partial<FileSelectOptionsType> = {}
 ) => {
-  const handleFileSelect = useCallback(async () => {
-    const result = await DocumentPicker.getDocumentAsync(options);
+  const callbackRef = useRef(callback);
+  callbackRef.current = callback;
 
-    console.log(result, "~~~");
+  const handleFileSelect = useCallback(async () => {
+    const result = await DocumentPicker.getDocumentAsync({
+      multiple: true,
+      copyToCacheDirectory: true,
+      type: [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "image/*",
+      ],
+      ...options,
+    });
 
     if (result.canceled) {
       return;
     }
 
-    callback(result.assets[0]);
-  }, [callback, options]);
+    callbackRef.current(result.assets);
+  }, [options]);
 
   return { handleFileSelect };
 };
