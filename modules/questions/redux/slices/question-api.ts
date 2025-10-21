@@ -1,5 +1,6 @@
 import { workerApi } from "@/modules/common/redux/slices/worker-api";
 import { TagTypes } from "@/modules/common/redux/utils/api-config";
+import * as DocumentPicker from "expo-document-picker";
 import { ICreateQuestionDTO, IQuestionInfo } from "../../types";
 
 const questionApi = workerApi
@@ -50,13 +51,48 @@ const questionApi = workerApi
       }),
       generateQuestions: builder.mutation<
         ICreateQuestionDTO[],
-        { count: number }
+        {
+          count: number;
+          prompt?: string;
+          previousQuestions?: ICreateQuestionDTO[];
+          files?: DocumentPicker.DocumentPickerAsset[];
+        }
       >({
-        query: ({ count }) => ({
-          url: `/quiz/generate/questions`,
-          method: "GET",
-          params: { count },
-        }),
+        query: ({ count, prompt, previousQuestions, files }) => {
+          const formData = new FormData();
+
+          formData.append("count", count.toString());
+
+          if (prompt) {
+            formData.append("prompt", prompt);
+          }
+
+          if (previousQuestions && previousQuestions.length > 0) {
+            formData.append(
+              "previousQuestions",
+              JSON.stringify(previousQuestions)
+            );
+          }
+
+          if (files && files.length > 0) {
+            files.forEach((file, index) => {
+              formData.append("files", {
+                uri: file.uri,
+                type: file.mimeType || "application/octet-stream",
+                name: file.name,
+              } as any);
+            });
+          }
+
+          return {
+            url: `/quiz/generate/questions`,
+            method: "POST",
+            body: formData,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+        },
       }),
       updateQuestion: builder.mutation<
         IQuestionInfo,
