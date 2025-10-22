@@ -22,13 +22,13 @@ const Quiz = () => {
         icon={isOpen ? "minus" : "plus"}
         actions={[
           {
-            icon: "progress-question",
-            label: "Generate Quiz",
+            icon: "plus",
+            label: "Add Quiz",
             onPress: () => navigateToCreateQuiz(restaurantId),
           },
           {
-            icon: "plus",
-            label: "Add Quiz",
+            icon: "progress-question",
+            label: "Generate Quiz",
             onPress: () => navigateToCreateQuiz(restaurantId),
           },
         ]}
