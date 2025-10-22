@@ -25,8 +25,6 @@ export default function AddWorker() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  console.log(id);
-
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
       initialValues,
