@@ -71,7 +71,7 @@ const VariantsCreator = ({
 
   useEffect(() => {
     onChange?.(handleParseVariants());
-  }, [checkedItems, handleParseVariants, onChange]);
+  }, [checkedItems, handleParseVariants]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <View>
