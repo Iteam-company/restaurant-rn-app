@@ -43,6 +43,15 @@ export default function RestaurantLayout() {
           }}
         />
         <Tabs.Screen
+          name="(quizResult)"
+          options={{
+            title: "Quiz Results",
+            tabBarIcon: ({ color }) => (
+              <IconSymbol size={28} name="chart.bar.fill" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
           name="(user)"
           options={{
             title: "User",
