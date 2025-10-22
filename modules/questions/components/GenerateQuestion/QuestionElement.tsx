@@ -1,6 +1,6 @@
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import VariantsCreator from "@/modules/common/components/VariantsCreator";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { IconButton, Menu, Title, useTheme } from "react-native-paper";
 import { ICreateQuestionDTO } from "../../types";
@@ -19,12 +19,12 @@ const QuestionElement = ({ question, onChange, onDelete }: Props) => {
   const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);
 
-  const handleOnChange = (values: {
-    variants: string[];
-    correct: number[];
-  }) => {
-    onChange && onChange({ ...question, ...values });
-  };
+  const handleOnChange = useCallback(
+    (values: { variants: string[]; correct: number[] }) => {
+      onChange && onChange({ ...question, ...values });
+    },
+    [onChange, question]
+  );
 
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
@@ -83,7 +83,7 @@ const QuestionElement = ({ question, onChange, onDelete }: Props) => {
       <ConfirmationDialog
         title="Delete Question?"
         text={`Are you sure you want to delete "${question.text}"? This action cannot be undone.`}
-        action={async () => {
+        action={() => {
           onDelete && onDelete();
         }}
         close={() => {
