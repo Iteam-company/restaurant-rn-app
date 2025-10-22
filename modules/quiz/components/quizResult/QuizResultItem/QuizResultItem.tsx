@@ -49,7 +49,7 @@ export const QuizResultItem = ({ quizResult }: Props) => {
 
   const [removeQuizResult, { isLoading }] = useDeleteQuizResultMutation();
 
-  const date = new Date(quizResult.raitingDate);
+  const date = new Date(quizResult.ratingDate);
 
   return (
     <Card
@@ -58,7 +58,7 @@ export const QuizResultItem = ({ quizResult }: Props) => {
         router.push({
           pathname:
             SecureStore.getItem(USER_ROLE) === "waiter"
-              ? "/user-dashboard/[id]/(quiz)/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails"
+              ? "/user-dashboard/[id]/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails"
               : "/restaurant/[id]/(quizResult)/[quizResultId]/quizResultDetailsPage",
           params: { id: restaurantId, quizResultId: quizResult.id },
         })

@@ -24,7 +24,7 @@ export interface IQuizInfo {
 export interface IQuizResultInfo {
   id: number;
   score: string;
-  raitingDate: Date;
+  ratingDate: Date;
   user: UserInfo;
   quiz: IQuizInfo;
 }
