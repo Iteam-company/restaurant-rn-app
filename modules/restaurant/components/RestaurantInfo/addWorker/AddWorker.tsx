@@ -17,13 +17,15 @@ import { Dropdown } from "react-native-paper-dropdown";
 
 export default function AddWorker() {
   const router = useRouter();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { restaurantId: id } = useLocalSearchParams<{ restaurantId: string }>();
 
   const [signUp, { isLoading, error }] =
     useSignupMutation<RTKMutationPayloadType>();
   const [addWorkerToRestaurant] = useAddWorkerMutation();
 
   const [showPassword, setShowPassword] = useState(false);
+
+  console.log(id);
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
