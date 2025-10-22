@@ -2,7 +2,7 @@ import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
 import { useGetQuizQuery } from "@/modules/quiz/redux/slices/quiz-api";
 import * as DocumentPicker from "expo-document-picker";
-import { router, useGlobalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import {
@@ -30,8 +30,8 @@ import {
 } from "./utils";
 
 const GenerateQuestion = () => {
-  const { quizId } = useGlobalSearchParams<{
-    id: string;
+  const { quizId } = useLocalSearchParams<{
+    restaurantId: string;
     quizId: string;
   }>();
   const [formData, setFormData] =
@@ -54,7 +54,6 @@ const GenerateQuestion = () => {
     },
     []
   );
-
 
   const { handleFileSelect } = useFileSelect(handleFileSelection);
 
