@@ -1,0 +1,30 @@
+{
+  "cli": {
+    "version": ">= 16.24.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "autoIncrement": true,
+      "distribution": "store",
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "simulator": false,
+        "buildConfiguration": "Release"
+      },
+      "env": {
+        "APP_ENV": "production",
+        "API_URL": "https://restaurant-be-v0np.onrender.com"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
