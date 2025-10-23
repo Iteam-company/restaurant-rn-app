@@ -15,7 +15,7 @@ export default function AuthTabsLayout() {
   const router = useRouter();
   const { token } = useAuthToken();
 
-  const { data: user, refetch } = useValidateTokenQuery(
+  const { data: user } = useValidateTokenQuery(
     { token: token! },
     { skip: !token }
   );
@@ -39,7 +39,7 @@ export default function AuthTabsLayout() {
     }
 
     if (user) SecureStore.setItem(USER_ROLE, user.role);
-  }, [user, router, token, refetch]);
+  }, [user, user?.role, user?.restaurantId, router, token]);
 
   return (
     <Tabs

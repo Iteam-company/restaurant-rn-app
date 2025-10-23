@@ -26,7 +26,7 @@ const QuizItem = ({ quiz }: Params) => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
 
   const [menuVisible, setMenuVisible] = useState(false);
-  const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
+  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 
   const [deleteQuiz] = useDeleteQuizMutation();
 
@@ -67,7 +67,7 @@ const QuizItem = ({ quiz }: Params) => {
     >
       <Card.Content>
         <View style={styles.headerContainer}>
-          <Title>{quiz.title}</Title>
+          <Title style={styles.title}>{quiz.title}</Title>
           {SecureStore.getItem(USER_ROLE) === "waiter" ? (
             <></>
           ) : (
@@ -133,7 +133,7 @@ const QuizItem = ({ quiz }: Params) => {
           close={() => {
             setIsOpenDialog(false);
           }}
-          isOpen={isOpenDialg}
+          isOpen={isOpenDialog}
         />
       </Card.Content>
     </Card>
@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  title: { flex: 1 },
   tagsContainer: {
     flexDirection: "row",
     marginTop: 12,
