@@ -11,6 +11,8 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
+import * as SecureStore from "expo-secure-store";
+import { USER_ROLE } from "@/modules/common/constants/api";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface QuizResultDetailsProps {
@@ -39,39 +41,48 @@ export const QuizResultDetails: React.FC<QuizResultDetailsProps> = () => {
 
   const { data: quizResult, isLoading } = useGetQuizResultQuery(quizResultId);
 
-  if (isLoading)
+  if (isLoading || !quizResult)
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
+
+  const date = new Date(quizResult.ratingDate);
 
   return (
     <ScrollView>
       <View style={[styles.container, { backgroundColor: colors.surface }]}>
-        <Title>{quizResult?.quiz.title}</Title>
+        <Title>{quizResult.quiz.title}</Title>
         <View style={styles.detailsContainer}>
           <Chip icon="trophy" mode="outlined">
-            {quizResult?.score}
+            {quizResult.score}
           </Chip>
           <Chip
             mode="outlined"
             style={[
-              styles.chip,
               {
                 borderColor: getColorForDifficulty(
-                  quizResult?.quiz.difficultyLevel || DifficultyLevelEnum.EASY
+                  quizResult.quiz.difficultyLevel || DifficultyLevelEnum.EASY
                 ),
               },
             ]}
           >
-            {quizResult?.quiz.difficultyLevel}
+            {quizResult.quiz.difficultyLevel}
           </Chip>
           <Chip
-            icon={
-              statusIcons[quizResult?.quiz.status || StatusEnum.NOT_STARTED]
-            }
+            icon={statusIcons[quizResult.quiz.status || StatusEnum.NOT_STARTED]}
             mode="outlined"
-            style={styles.chip}
           >
-            {quizResult?.quiz.status || "Active"}
+            {quizResult.quiz.status || "Active"}
           </Chip>
+          {SecureStore.getItem(USER_ROLE) === "waiter" ? (
+            <></>
+          ) : (
+            <Chip
+              icon="account"
+              mode="outlined"
+            >{`${quizResult.user.firstName} ${quizResult.user.lastName}`}</Chip>
+          )}
+          <Chip icon="calendar" mode="outlined">{`${date.getDate()}.${
+            date.getMonth() + 1
+          }.${date.getFullYear()}`}</Chip>
         </View>
         <Button mode="outlined" onPress={() => router.back()}>
           Back

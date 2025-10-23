@@ -24,14 +24,10 @@ const EditQuestion = () => {
     quizId: string;
   }>();
 
-  useEffect(() => {
-    console.log(questionId);
-  }, [questionId]);
-
   const { data: initialValues, isLoading: isLoadingQuestion } =
     useGetOneQuestionQuery(questionId);
 
-  const { data: quizes, isLoading } = useGetQuizByRestaurantQuery(
+  const { data: quizzes, isLoading } = useGetQuizByRestaurantQuery(
     restaurantId,
     { skip: !restaurantId }
   );
@@ -112,7 +108,7 @@ const EditQuestion = () => {
           disabled={parseInt(quizId) !== -1}
           mode="outlined"
           value={`${parseInt(quizId) !== -1 ? quizId : values.quizId}`}
-          options={quizItems(quizes || [])}
+          options={quizItems(quizzes || [])}
           onSelect={(value) => setFieldValue("quizId", value ? parseInt : 0)}
           error={touched.quizId && !!errors.quizId}
         />
