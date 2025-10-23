@@ -1,6 +1,5 @@
-import { UserInfo } from "../../types/user.types";
+import { UserInfo, SearchUser } from "../../types/user.types";
 import { UpdateUserInfoI } from "../../types/restaurant.types";
-import { SearchUser } from "../../types/user.types";
 import { TagTypes } from "../utils/api-config";
 import { workerApi } from "./worker-api";
 
@@ -37,6 +36,12 @@ export const userApi = workerApi
           { type: TagTypes.USER, id },
           { type: TagTypes.USER, id: "LIST" },
         ],
+      }),
+      getCurrentUser: builder.query<UserInfo, void>({
+        query: () => ({
+          url: "/user",
+          method: "GET",
+        }),
       }),
 
       searchUsers: builder.query<UserInfo[], Partial<SearchUser>>({
@@ -81,6 +86,17 @@ export const userApi = workerApi
           { type: TagTypes.USER, id: "LIST" },
         ],
       }),
+      updateCurrentUserInfo: builder.mutation<void, UpdateUserInfoI>({
+        query: (request) => ({
+          url: `/user/`,
+          method: "PATCH",
+          body: request.body,
+        }),
+        invalidatesTags: (result, error, { params }) => [
+          { type: TagTypes.USER, id: params.userId },
+          { type: TagTypes.USER, id: "LIST" },
+        ],
+      }),
 
       updateUserPhoto: builder.mutation<
         void,
@@ -99,6 +115,29 @@ export const userApi = workerApi
           { type: TagTypes.USER, id: "LIST" },
         ],
       }),
+      uploadCurrentUserPhoto: builder.mutation<
+        void,
+        { formData: FormData; workerId: string }
+      >({
+        query: ({ formData }) => ({
+          url: `/user/icon/`,
+          method: "PATCH",
+          body: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }),
+        invalidatesTags: (result, error, { workerId }) => [
+          { type: TagTypes.USER, id: workerId },
+          { type: TagTypes.USER, id: "LIST" },
+        ],
+      }),
+      removeCurrentUser: builder.mutation<UserInfo, void>({
+        query: () => ({
+          url: "user/",
+          method: "DELETE",
+        }),
+      }),
     }),
   });
 
@@ -107,6 +146,10 @@ export const {
   useCreateUserMutation,
   useSearchUsersQuery,
   useGetUserByIdQuery,
+  useGetCurrentUserQuery,
   useUpdateUserInfoMutation,
+  useUpdateCurrentUserInfoMutation,
   useUpdateUserPhotoMutation,
+  useUploadCurrentUserPhotoMutation,
+  useRemoveCurrentUserMutation,
 } = userApi;

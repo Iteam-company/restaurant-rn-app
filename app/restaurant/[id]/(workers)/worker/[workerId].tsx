@@ -1,9 +1,10 @@
 import Wrapper from "@/modules/common/components/Wrapper";
-import { Platform, StyleSheet } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
-import React from "react";
-import { FAB, Title } from "react-native-paper";
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
+import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
 import WorkerInfo from "@/modules/restaurant/components/RestaurantInfo/workerInfo/WorkerInfo";
+import { useLocalSearchParams } from "expo-router";
+import { StyleSheet } from "react-native";
+import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const WorkerInfoPage = () => {
@@ -18,15 +19,9 @@ const WorkerInfoPage = () => {
       <WorkerInfo />
       <FAB
         icon="pencil"
-        style={
-          (styles.fab,
-          { bottom: Platform.select({ ios: insets.bottom * 2.5, default: 0 }) })
-        }
+        style={[styles.fab, getFabUiSettings(insets)]}
         onPress={() => {
-          router.push({
-            pathname: "/restaurant/[id]/(workers)/worker/edit/[workerId]",
-            params: { id: restaurantId, workerId: workerId },
-          });
+          navigateToEditUser(workerId, restaurantId);
         }}
       />
     </Wrapper>
@@ -49,7 +44,8 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: "absolute",
-    right: 16,
-    bottom: 16,
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });

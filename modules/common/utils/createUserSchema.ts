@@ -1,4 +1,4 @@
-import { UserType } from "@/modules/common/types/user.types";
+import { UserROLES, UserType } from "@/modules/common/types/user.types";
 import * as Yup from "yup";
 
 export const initialValues: Partial<UserType> = {
@@ -8,6 +8,7 @@ export const initialValues: Partial<UserType> = {
   email: "",
   phoneNumber: "",
   password: "",
+  role: UserROLES.WAITER,
 };
 
 export const validationSchema = Yup.object().shape({
@@ -19,4 +20,7 @@ export const validationSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
+  role: Yup.string()
+    .oneOf(Object.values(UserROLES), "Invalid role")
+    .required("Role is required"),
 });

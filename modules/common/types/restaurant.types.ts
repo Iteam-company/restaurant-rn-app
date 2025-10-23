@@ -15,7 +15,6 @@ export interface CreateRestaurantResponse {
 export interface RestaurantInfo {
   id: number;
   name: string;
-  menu: null;
   workers: UserInfo[];
   address: string;
   ownerId: number;

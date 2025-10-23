@@ -7,6 +7,8 @@ export type UserType = {
   phoneNumber: "";
   password: "";
   role: UserROLES;
+  icon: "";
+  restaurantId: number;
 };
 
 export enum UserROLES {
@@ -14,6 +16,10 @@ export enum UserROLES {
   WAITER = "waiter",
   ADMIN = "admin",
 }
+
+export const UserRolesArray: string[] = Object.values(UserROLES).filter(
+  (value) => typeof value === "string"
+) as string[];
 
 export interface UserInfo {
   id: number;

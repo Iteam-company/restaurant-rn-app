@@ -1,8 +1,7 @@
 import React from "react";
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
-import { Colors } from "@/modules/common/constants/Colors";
 import { Tabs } from "expo-router";
-import { Platform, useColorScheme } from "react-native";
+import { Platform } from "react-native";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
 import { useTheme } from "react-native-paper";
 
@@ -25,6 +24,7 @@ export default function TabLayout() {
           default: {},
         }),
       }}
+      safeAreaInsets={{ bottom: 0, top: 0 }}
     >
       <Tabs.Screen
         name="restaurants"
@@ -36,11 +36,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="(user)"
         options={{
-          title: "Explore",
+          title: "User",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={28} name="person.fill" color={color} />
           ),
         }}
       />

@@ -1,21 +1,20 @@
-import React, { FC, useState } from "react";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
-import { Dimensions, View, StyleSheet } from "react-native";
+import { navigateToEditRestaurant } from "@/modules/common/utils/flowNavigation";
+import { useDeleteRestaurantMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { router } from "expo-router";
+import { FC, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
 import {
   Button,
   Card,
-  Dialog,
   Divider,
+  IconButton,
   Menu,
   Paragraph,
-  Portal,
   Title,
   useTheme,
 } from "react-native-paper";
-import { router } from "expo-router";
-import Entypo from "@expo/vector-icons/Entypo";
-import { useDeleteRestaurantMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 
 interface RestaurantListItemProps {
   id: number;
@@ -51,6 +50,11 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
     setShowDeleteDialog(false);
   };
 
+  const handleEdit = () => {
+    closeMenu();
+    navigateToEditRestaurant(id);
+  };
+
   return (
     <>
       <Card style={styles.card}>
@@ -82,7 +86,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
               style={styles.button}
               onPress={() => {
                 router.push({
-                  pathname: "/restaurant/[id]/(menu)",
+                  pathname: "/restaurant/[id]/(quiz)",
                   params: { id },
                 });
               }}
@@ -94,16 +98,11 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
               visible={visible}
               onDismiss={closeMenu}
               anchor={
-                <Entypo
-                  name="dots-three-vertical"
-                  size={20}
-                  color={colors.primary}
-                  onPress={openMenu}
-                />
+                <IconButton icon="dots-vertical" onPress={openMenu} size={20} />
               }
             >
               <Menu.Item
-                onPress={() => {}}
+                onPress={handleEdit}
                 title="Edit"
                 leadingIcon="pencil-outline"
               />
