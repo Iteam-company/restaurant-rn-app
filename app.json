@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "restaurant-rn-app",
-    "slug": "restaurant-rn-app",
+    "slug": "restaurant",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.iteamcomporg.restaurant"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +37,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "0a0c1e01-a690-47fb-969c-1c1ef30eab86"
+      }
+    },
+    "owner": "iteam-comporg"
   }
 }
