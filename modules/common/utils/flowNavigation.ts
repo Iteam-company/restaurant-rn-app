@@ -28,7 +28,7 @@ export const navigateToFlow = (
 ) => {
   const { action = ActionType.EDIT } = params;
 
-  let baseUrl = "/[flow-urls]/";
+  let baseUrl = "/forms/";
   let idParam = "";
 
   switch (flowType) {
