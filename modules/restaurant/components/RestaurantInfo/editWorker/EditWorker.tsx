@@ -166,167 +166,171 @@ const EditWorker = () => {
     <>
       <ScrollView style={[{ width: "100%", paddingHorizontal: 8 }]}>
         <FormWrapper>
-          <View style={styles.header}>
-            {data?.icon ? (
-              <Avatar.Image size={80} source={{ uri: data.icon }} />
-            ) : (
-              <Avatar.Text
-                size={80}
-                label={`${values.firstName.charAt(0)}${values.lastName.charAt(
-                  0
-                )}`}
-              />
-            )}
-            <IconButton
-              icon="camera"
-              size={24}
-              style={[styles.photoButton, { backgroundColor: colors.surface }]}
-              onPress={async () => {
-                const formData = await handleFile();
-                if (!formData) return;
-                updatePhoto({
-                  formData: formData,
-                  workerId,
-                });
-              }}
-            />
-          </View>
-
-          {isOwnEdit && (
-            <Surface
-              style={[
-                styles.roleContainer,
-                { backgroundColor: colors.secondaryContainer },
-              ]}
-            >
-              <Icon
-                source="badge-account-horizontal"
-                size={20}
-                color={colors.primary}
-              />
-              <Text style={styles.role}>
-                {capitalizeFirstLetter(currentUserData?.role || "Unknown")}
-              </Text>
-            </Surface>
-          )}
-
-          <View style={styles.form}>
-            <TextInput
-              mode="outlined"
-              label="First Name"
-              value={values.firstName}
-              onChangeText={(text) => setFieldValue("firstName", text)}
-              onBlur={handleBlur("firstName")}
-              error={touched.firstName && !!errors.firstName}
-              left={<TextInput.Icon icon="account" />}
-            />
-            {touched.firstName && errors.firstName && (
-              <Text style={styles.errorText}>{errors.firstName}</Text>
-            )}
-
-            <TextInput
-              mode="outlined"
-              label="Last Name"
-              value={values.lastName}
-              onChangeText={(text) => setFieldValue("lastName", text)}
-              onBlur={handleBlur("lastName")}
-              error={touched.lastName && !!errors.lastName}
-              left={<TextInput.Icon icon="account" />}
-            />
-            {touched.lastName && errors.lastName && (
-              <Text style={styles.errorText}>{errors.lastName}</Text>
-            )}
-
-            <TextInput
-              mode="outlined"
-              label="Username"
-              value={values.username}
-              onChangeText={(text) => setFieldValue("username", text)}
-              onBlur={handleBlur("username")}
-              error={touched.username && !!errors.username}
-              left={<TextInput.Icon icon="account-circle" />}
-            />
-            {touched.username && errors.username && (
-              <Text style={styles.errorText}>{errors.username}</Text>
-            )}
-
-            <TextInput
-              mode="outlined"
-              label="Email"
-              value={values.email}
-              onChangeText={(text) => setFieldValue("email", text)}
-              onBlur={handleBlur("email")}
-              error={touched.email && !!errors.email}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              left={<TextInput.Icon icon="email" />}
-            />
-            {touched.email && errors.email && (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            )}
-
-            <TextInput
-              mode="outlined"
-              label="Phone Number"
-              value={values.phoneNumber}
-              onChangeText={(text) => setFieldValue("phoneNumber", text)}
-              onBlur={handleBlur("phoneNumber")}
-              error={touched.phoneNumber && !!errors.phoneNumber}
-              keyboardType="phone-pad"
-              left={<TextInput.Icon icon="phone" />}
-            />
-            {touched.phoneNumber && errors.phoneNumber && (
-              <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-            )}
-            {!isWaiter && !isOwnEdit && (
-              <Dropdown
-                label="Role"
-                mode="outlined"
-                placeholder="Select Role"
-                value={values.role}
-                options={UserRolesArray.filter(
-                  (role) => role !== UserROLES.OWNER
-                ).map((role) => ({
-                  label: capitalizeFirstLetter(role),
-                  value: role as UserROLES,
-                }))}
-                onSelect={(value) => setFieldValue("role", value)}
-                CustomMenuHeader={() => <></>}
-                error={touched.role && !!errors.role}
-              />
-            )}
-
-            {touched.role && errors.role && (
-              <Text style={styles.errorText}>{errors.role}</Text>
-            )}
-
-            {error && (
-              <Text style={styles.errorText}>
-                Failed to update worker profile. Please try again.
-              </Text>
-            )}
-
-            <View>
-              <Button
-                mode="contained-tonal"
-                onPress={() => handleSubmit()}
-                style={styles.submitButton}
-                disabled={isUpdating}
-                loading={isUpdating}
-              >
-                <Text>Save Changes</Text>
-              </Button>
-              <Button
-                mode="contained-tonal"
-                onPress={() => {
-                  setIsOpenDialog(true);
+          <Surface style={styles.surface}>
+            <View style={styles.header}>
+              {data?.icon ? (
+                <Avatar.Image size={80} source={{ uri: data.icon }} />
+              ) : (
+                <Avatar.Text
+                  size={80}
+                  label={`${values.firstName.charAt(0)}${values.lastName.charAt(
+                    0
+                  )}`}
+                />
+              )}
+              <IconButton
+                icon="camera"
+                size={24}
+                style={[
+                  styles.photoButton,
+                  { backgroundColor: colors.surface },
+                ]}
+                onPress={async () => {
+                  const formData = await handleFile();
+                  if (!formData) return;
+                  updatePhoto({
+                    formData: formData,
+                    workerId,
+                  });
                 }}
-                style={[styles.submitButton, { backgroundColor: colors.error }]}
-                disabled={isUpdating}
-              >
-                Delete User
-              </Button>
+              />
             </View>
+
+            {isOwnEdit && (
+              <View
+                style={[
+                  styles.roleContainer,
+                  { backgroundColor: colors.secondaryContainer },
+                ]}
+              >
+                <Icon
+                  source="badge-account-horizontal"
+                  size={20}
+                  color={colors.primary}
+                />
+                <Text style={styles.role}>
+                  {capitalizeFirstLetter(currentUserData?.role || "Unknown")}
+                </Text>
+              </View>
+            )}
+
+            <View style={styles.form}>
+              <TextInput
+                mode="outlined"
+                label="First Name"
+                value={values.firstName}
+                onChangeText={(text) => setFieldValue("firstName", text)}
+                onBlur={handleBlur("firstName")}
+                error={touched.firstName && !!errors.firstName}
+                left={<TextInput.Icon icon="account" />}
+              />
+              {touched.firstName && errors.firstName && (
+                <Text style={styles.errorText}>{errors.firstName}</Text>
+              )}
+
+              <TextInput
+                mode="outlined"
+                label="Last Name"
+                value={values.lastName}
+                onChangeText={(text) => setFieldValue("lastName", text)}
+                onBlur={handleBlur("lastName")}
+                error={touched.lastName && !!errors.lastName}
+                left={<TextInput.Icon icon="account" />}
+              />
+              {touched.lastName && errors.lastName && (
+                <Text style={styles.errorText}>{errors.lastName}</Text>
+              )}
+
+              <TextInput
+                mode="outlined"
+                label="Username"
+                value={values.username}
+                onChangeText={(text) => setFieldValue("username", text)}
+                onBlur={handleBlur("username")}
+                error={touched.username && !!errors.username}
+                left={<TextInput.Icon icon="account-circle" />}
+              />
+              {touched.username && errors.username && (
+                <Text style={styles.errorText}>{errors.username}</Text>
+              )}
+
+              <TextInput
+                mode="outlined"
+                label="Email"
+                value={values.email}
+                onChangeText={(text) => setFieldValue("email", text)}
+                onBlur={handleBlur("email")}
+                error={touched.email && !!errors.email}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                left={<TextInput.Icon icon="email" />}
+              />
+              {touched.email && errors.email && (
+                <Text style={styles.errorText}>{errors.email}</Text>
+              )}
+
+              <TextInput
+                mode="outlined"
+                label="Phone Number"
+                value={values.phoneNumber}
+                onChangeText={(text) => setFieldValue("phoneNumber", text)}
+                onBlur={handleBlur("phoneNumber")}
+                error={touched.phoneNumber && !!errors.phoneNumber}
+                keyboardType="phone-pad"
+                left={<TextInput.Icon icon="phone" />}
+              />
+              {touched.phoneNumber && errors.phoneNumber && (
+                <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+              )}
+              {!isWaiter && !isOwnEdit && (
+                <Dropdown
+                  label="Role"
+                  mode="outlined"
+                  placeholder="Select Role"
+                  value={values.role}
+                  options={UserRolesArray.filter(
+                    (role) => role !== UserROLES.OWNER
+                  ).map((role) => ({
+                    label: capitalizeFirstLetter(role),
+                    value: role as UserROLES,
+                  }))}
+                  onSelect={(value) => setFieldValue("role", value)}
+                  CustomMenuHeader={() => <></>}
+                  error={touched.role && !!errors.role}
+                />
+              )}
+
+              {touched.role && errors.role && (
+                <Text style={styles.errorText}>{errors.role}</Text>
+              )}
+
+              {error && (
+                <Text style={styles.errorText}>
+                  Failed to update worker profile. Please try again.
+                </Text>
+              )}
+            </View>
+          </Surface>
+          <View>
+            <Button
+              mode="contained-tonal"
+              onPress={() => handleSubmit()}
+              style={styles.submitButton}
+              disabled={isUpdating}
+              loading={isUpdating}
+            >
+              <Text>Save Changes</Text>
+            </Button>
+            <Button
+              mode="contained-tonal"
+              onPress={() => {
+                setIsOpenDialog(true);
+              }}
+              style={[styles.submitButton, { backgroundColor: colors.error }]}
+              disabled={isUpdating}
+            >
+              Delete User
+            </Button>
           </View>
           <TabBarOffset />
         </FormWrapper>
@@ -363,11 +367,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   surface: {
-    height: "auto",
-    marginVertical: 10,
-    padding: 20,
-    borderRadius: 8,
-    elevation: 4,
+    borderRadius: 16,
+    padding: 24,
+    gap: 8,
   },
   header: {
     position: "relative",
