@@ -1,18 +1,16 @@
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
+import { useGetRestaurantQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import {
   router,
   Stack,
   Tabs,
   useGlobalSearchParams,
-  useLocalSearchParams,
+  usePathname,
 } from "expo-router";
-import React, { useEffect } from "react";
-import { Platform, StyleSheet } from "react-native";
+import { Platform } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useGetRestaurantQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
 
 export default function RestaurantPageLayout() {
   const { colors } = useTheme();
@@ -21,7 +19,8 @@ export default function RestaurantPageLayout() {
     workerId: string;
   }>();
 
-  const { data: restaurantData, isLoading } = useGetRestaurantQuery(id);
+  const { data: restaurantData } = useGetRestaurantQuery(id, { skip: !id });
+  const pathname = usePathname();
 
   return (
     <>
@@ -30,22 +29,31 @@ export default function RestaurantPageLayout() {
           headerShown: false,
         }}
       />
-      <Appbar.Header>
-        <Appbar.BackAction iconColor="white" onPress={() => router.back()} />
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{ backgroundColor: colors.background }}
+      >
+        <Appbar.BackAction
+          iconColor="white"
+          onPress={() =>
+            /^\/restaurant\/\d+$/.test(pathname)
+              ? router.push({
+                  pathname: "/dashboard/(tabs)/restaurants",
+                })
+              : /^\/restaurant\/\d+\/\d+\/addQuiz\/addQuiz$/.test(pathname)
+              ? router.push({
+                  pathname: "/restaurant/[id]/(quiz)",
+                  params: { id },
+                })
+              : router.back()
+          }
+        />
         <Appbar.Content
           title={restaurantData?.name ? restaurantData?.name : ""}
           titleStyle={{ color: "white" }}
         />
-        <Appbar.Action
-          icon="home-outline"
-          iconColor="white"
-          onPress={() =>
-            router.push({
-              pathname: "/dashboard/(tabs)/restaurants",
-            })
-          }
-        />
       </Appbar.Header>
+
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: colors.primary,
@@ -60,8 +68,8 @@ export default function RestaurantPageLayout() {
             },
             default: {},
           }),
-          sceneStyle: { backgroundColor: colors.background },
         }}
+        safeAreaInsets={{ bottom: 0, top: 0 }}
       >
         <Tabs.Screen
           name="(workers)"
@@ -78,26 +86,30 @@ export default function RestaurantPageLayout() {
           }}
         />
         <Tabs.Screen
-          name="quiz"
+          name="(quiz)"
           options={{
             title: "Quiz",
             tabBarIcon: ({ color }) => (
-              <AntDesign name="question" size={34} color={color} />
+              <AntDesign name="question" size={25} color={color} />
             ),
           }}
         />
         <Tabs.Screen
-          name="(menu)"
+          name="(quizResult)"
           options={{
-            title: "Menu",
+            title: "Quiz Results",
             tabBarIcon: ({ color }) => (
-              <MaterialIcons name="restaurant-menu" size={25} color={color} />
+              <IconSymbol
+                size={25}
+                name="chart.bar.fill"
+                weight="medium"
+                color={color}
+              />
             ),
           }}
         />
+        <Tabs.Screen name="edit" options={{ href: null }} />
       </Tabs>
     </>
   );
 }
-
-const styles = StyleSheet.create({});

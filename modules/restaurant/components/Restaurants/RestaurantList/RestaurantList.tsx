@@ -1,29 +1,12 @@
-import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import { navigateToCreateRestaurant } from "@/modules/common/utils/flowNavigation";
 import { useGetRestaurantsQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
-import React, { useEffect } from "react";
-import { StyleSheet, View, Dimensions, Platform } from "react-native";
-import { ScrollView } from "react-native";
-import {
-  ActivityIndicator,
-  Divider,
-  Menu,
-  Text,
-  useTheme,
-} from "react-native-paper";
-import { Button, Card, Title, Paragraph } from "react-native-paper";
-import { router } from "expo-router";
-import Entypo from "@expo/vector-icons/Entypo";
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Button } from "react-native-paper";
 import { RestaurantListItem } from "./components/RestaurantListItem";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const RestaurantList = () => {
-  const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
-  const { data, isLoading, isError } = useGetRestaurantsQuery();
-  const [visible, setVisible] = React.useState(false);
-
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
+  const { data, isLoading } = useGetRestaurantsQuery();
 
   if (isLoading) {
     return (
@@ -35,28 +18,27 @@ const RestaurantList = () => {
   return (
     <View style={[styles.container]}>
       <ScrollView
-        style={{
-          ...Platform.select({
-            ios: {
-              marginTop: insets.top - 10,
-              marginBottom: insets.bottom + 30,
-            },
-            default: { marginTop: 30 },
-          }),
-        }}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {data?.map((restaurant) => (
-          <RestaurantListItem
-            id={restaurant.id}
-            key={restaurant.id}
-            address={restaurant.address}
-            name={restaurant.name}
-            workersCount={restaurant.workers.length}
-            image={restaurant.image}
-          />
-        ))}
+        {Array.isArray(data) &&
+          data?.map((restaurant) => (
+            <RestaurantListItem
+              id={restaurant.id}
+              key={restaurant.id}
+              address={restaurant.address}
+              name={restaurant.name}
+              workersCount={restaurant.workers.length}
+              image={restaurant.image}
+            />
+          ))}
+        <Button
+          style={styles.addButton}
+          onPress={() => navigateToCreateRestaurant()}
+        >
+          Add new Restaurant
+        </Button>
+        <TabBarOffset />
       </ScrollView>
     </View>
   );
@@ -66,13 +48,14 @@ const windowWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
-    width: windowWidth,
+    width: "100%",
   },
   scrollContent: {
-    margin: 20,
+    margin: 10,
+    paddingBottom: 30,
   },
   card: {
-    width: windowWidth - 40,
+    width: windowWidth,
     marginBottom: 20,
     overflow: "hidden",
     borderRadius: 14,
@@ -129,6 +112,12 @@ const styles = StyleSheet.create({
   },
   menuIcon: {
     padding: 8,
+  },
+  addButton: {
+    paddingVertical: 5,
+    borderRadius: 40,
+    borderColor: "#3A4150",
+    borderWidth: 1,
   },
 });
 

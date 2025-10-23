@@ -1,33 +1,39 @@
-import React, { useEffect, useState } from "react";
-import * as DocumentPicker from "expo-document-picker";
-import { StyleSheet, View, ScrollView, Platform } from "react-native";
-import { useRouter, useLocalSearchParams } from "expo-router";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Dropdown } from "react-native-paper-dropdown";
-import {
-  TextInput,
-  Button,
-  Title,
-  Surface,
-  Avatar,
-  Text,
-  ActivityIndicator,
-  IconButton,
-  useTheme,
-} from "react-native-paper";
+import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import FormWrapper from "@/modules/common/components/FormWrapper";
+import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import { USER_ROLE } from "@/modules/common/constants/api";
 import {
+  useGetCurrentUserQuery,
   useGetUserByIdQuery,
+  useRemoveCurrentUserMutation,
+  useUpdateCurrentUserInfoMutation,
   useUpdateUserInfoMutation,
   useUpdateUserPhotoMutation,
+  useUploadCurrentUserPhotoMutation,
 } from "@/modules/common/redux/slices/user-api";
 import { RTKMutationPayloadType } from "@/modules/common/types";
-import { UserROLES } from "@/modules/common/types/user.types";
-import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
+import { UserROLES, UserRolesArray } from "@/modules/common/types/user.types";
+import { capitalizeFirstLetter } from "@/modules/common/utils";
+import { handleFile } from "@/modules/common/utils/handleFile";
 import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Avatar,
+  Button,
+  Icon,
+  IconButton,
+  Surface,
+  Text,
+  TextInput,
+  useTheme,
+} from "react-native-paper";
+import { Dropdown } from "react-native-paper-dropdown";
+import * as Yup from "yup";
 
 interface WorkerFormData {
   firstName: string;
@@ -37,26 +43,6 @@ interface WorkerFormData {
   phoneNumber: string;
   role?: UserROLES;
 }
-
-interface IOptions {
-  label: string;
-  value: UserROLES;
-}
-
-const OPTIONS: IOptions[] = [
-  {
-    label: "Admin",
-    value: UserROLES.ADMIN,
-  },
-  {
-    label: "Owner",
-    value: UserROLES.OWNER,
-  },
-  {
-    label: "Waiter",
-    value: UserROLES.WAITER,
-  },
-];
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -80,37 +66,55 @@ const EditWorker = () => {
   const router = useRouter();
   const { colors } = useTheme();
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
-  const { workerId, id: restaurantId } = useLocalSearchParams<{
+  const [userRole, setUserRole] = useState<UserROLES | null>(null);
+  const {
+    workerId: initialWorkerId,
+    userId,
+    id: restaurantId,
+  } = useLocalSearchParams<{
     workerId: string;
+    userId: string;
     id: string;
   }>();
-  const { data, isLoading: isLoadingUser } = useGetUserByIdQuery(workerId);
-  const insets = useSafeAreaInsets();
+  const workerId = initialWorkerId || userId;
+
+  useEffect(() => {
+    (async () => {
+      const role = await SecureStore.getItem(USER_ROLE);
+      if (!role) return;
+      setUserRole(role as UserROLES);
+    })();
+  }, []);
+
+  const isWaiter = userRole === UserROLES.WAITER;
+
+  const { data: currentUserData, isLoading: isLoadingCurrentUser } =
+    useGetCurrentUserQuery();
+  const { data: userByIdData, isLoading: isLoadingUserById } =
+    useGetUserByIdQuery(workerId, {
+      skip: !workerId,
+    });
 
   const [removeWorker] = useRemoveWorkerMutation();
-  const [updatePhoto] = useUpdateUserPhotoMutation();
-  const [updateUser, { isLoading: isUpdating, error }] =
+  const [removeCurrentUser] = useRemoveCurrentUserMutation();
+
+  const [updateCurrentUserPhoto] = useUploadCurrentUserPhotoMutation();
+  const [updateUserPhoto] = useUpdateUserPhotoMutation();
+
+  const [
+    updateCurrentUserInfo,
+    { isLoading: isUpdatingCurrentUser, error: currentUserError },
+  ] = useUpdateCurrentUserInfoMutation();
+  const [updateUserInfo, { isLoading: isUpdatingUser, error: userError }] =
     useUpdateUserInfoMutation<RTKMutationPayloadType>();
 
-  const handleFile = async (fileData: DocumentPicker.DocumentPickerAsset) => {
-    const formData = new FormData();
-    const file = {
-      name: fileData.name.split(".")[0],
-      uri: fileData.uri,
-      type: fileData.mimeType,
-      size: fileData.size,
-    };
-
-    formData.append("file", file as any);
-    updatePhoto({
-      formData,
-      workerId,
-    });
-  };
-  const { handleFileSelect } = useFileSelect(handleFile, {
-    copyToCacheDirectory: true,
-    type: ["image/*"],
-  });
+  const data = isWaiter ? currentUserData : userByIdData;
+  const isLoadingUser = isWaiter ? isLoadingCurrentUser : isLoadingUserById;
+  const updatePhoto = isWaiter ? updateCurrentUserPhoto : updateUserPhoto;
+  const updateUser = isWaiter ? updateCurrentUserInfo : updateUserInfo;
+  const isUpdating = isWaiter ? isUpdatingCurrentUser : isUpdatingUser;
+  const error = isWaiter ? currentUserError : userError;
+  const isOwnEdit = currentUserData?.id === parseInt(userId);
 
   const {
     values,
@@ -150,7 +154,7 @@ const EditWorker = () => {
     }
   }, [data, setValues]);
 
-  if (isLoadingUser) {
+  if (isLoadingUser || isLoadingCurrentUser) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator animating={true} size="large" />
@@ -159,161 +163,187 @@ const EditWorker = () => {
   }
 
   return (
-    <ScrollView
-      style={{
-        ...Platform.select({
-          ios: {
-            marginBottom: insets.bottom + 30,
-          },
-          default: { marginTop: 30 },
-        }),
-      }}
-    >
-      <FormWrapper>
-        <Surface style={styles.surface}>
-          <View style={styles.header}>
-            <Title>Edit Worker Profile</Title>
-            {data?.icon ? (
-              <Avatar.Image size={80} source={{ uri: data.icon }} />
-            ) : (
-              <Avatar.Text
-                size={80}
-                label={`${values.firstName.charAt(0)}${values.lastName.charAt(
-                  0
-                )}`}
-              />
-            )}
-            <IconButton
-              icon="camera"
-              size={24}
-              style={[styles.photoButton, { backgroundColor: colors.surface }]}
-              onPress={handleFileSelect}
-            />
-          </View>
-
-          <View style={styles.form}>
-            <TextInput
-              mode="outlined"
-              label="First Name"
-              value={values.firstName}
-              onChangeText={(text) => setFieldValue("firstName", text)}
-              onBlur={handleBlur("firstName")}
-              error={touched.firstName && !!errors.firstName}
-              left={<TextInput.Icon icon="account" />}
-            />
-            {touched.firstName && errors.firstName && (
-              <Text style={styles.errorText}>{errors.firstName}</Text>
-            )}
-
-            <TextInput
-              mode="outlined"
-              label="Last Name"
-              value={values.lastName}
-              onChangeText={(text) => setFieldValue("lastName", text)}
-              onBlur={handleBlur("lastName")}
-              error={touched.lastName && !!errors.lastName}
-              left={<TextInput.Icon icon="account" />}
-            />
-            {touched.lastName && errors.lastName && (
-              <Text style={styles.errorText}>{errors.lastName}</Text>
-            )}
-
-            <TextInput
-              mode="outlined"
-              label="Username"
-              value={values.username}
-              onChangeText={(text) => setFieldValue("username", text)}
-              onBlur={handleBlur("username")}
-              error={touched.username && !!errors.username}
-              left={<TextInput.Icon icon="account-circle" />}
-            />
-            {touched.username && errors.username && (
-              <Text style={styles.errorText}>{errors.username}</Text>
-            )}
-
-            <TextInput
-              mode="outlined"
-              label="Email"
-              value={values.email}
-              onChangeText={(text) => setFieldValue("email", text)}
-              onBlur={handleBlur("email")}
-              error={touched.email && !!errors.email}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              left={<TextInput.Icon icon="email" />}
-            />
-            {touched.email && errors.email && (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            )}
-
-            <TextInput
-              mode="outlined"
-              label="Phone Number"
-              value={values.phoneNumber}
-              onChangeText={(text) => setFieldValue("phoneNumber", text)}
-              onBlur={handleBlur("phoneNumber")}
-              error={touched.phoneNumber && !!errors.phoneNumber}
-              keyboardType="phone-pad"
-              left={<TextInput.Icon icon="phone" />}
-            />
-            {touched.phoneNumber && errors.phoneNumber && (
-              <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-            )}
-            <Dropdown
-              label="Role"
-              mode="outlined"
-              value={values.role}
-              options={OPTIONS}
-              onSelect={(value) => setFieldValue("role", value)}
-              CustomMenuHeader={(props) => <></>}
-            />
-
-            {touched.role && errors.role && (
-              <Text style={styles.errorText}>{errors.role}</Text>
-            )}
-
-            {error && (
-              <Text style={styles.errorText}>
-                Failed to update worker profile. Please try again.
-              </Text>
-            )}
-
-            <View>
-              <Button
-                mode="contained"
-                onPress={() => handleSubmit()}
-                style={styles.submitButton}
-                disabled={isUpdating}
-              >
-                {isUpdating ? (
-                  <ActivityIndicator animating={true} color={"#ffffff"} />
-                ) : (
-                  <Text>Save Changes</Text>
-                )}
-              </Button>
-              <Button
-                mode="contained"
-                onPress={() => {
-                  setIsOpenDialog(true);
+    <>
+      <ScrollView style={[{ width: "100%", paddingHorizontal: 8 }]}>
+        <FormWrapper>
+          <Surface style={styles.surface}>
+            <View style={styles.header}>
+              {data?.icon ? (
+                <Avatar.Image size={80} source={{ uri: data.icon }} />
+              ) : (
+                <Avatar.Text
+                  size={80}
+                  label={`${values.firstName.charAt(0)}${values.lastName.charAt(
+                    0
+                  )}`}
+                />
+              )}
+              <IconButton
+                icon="camera"
+                size={24}
+                style={[
+                  styles.photoButton,
+                  { backgroundColor: colors.surface },
+                ]}
+                onPress={async () => {
+                  const formData = await handleFile();
+                  if (!formData) return;
+                  updatePhoto({
+                    formData: formData,
+                    workerId,
+                  });
                 }}
-                style={[styles.submitButton, { backgroundColor: colors.error }]}
-                disabled={isUpdating}
-              >
-                Delete User
-              </Button>
+              />
             </View>
+
+            {isOwnEdit && (
+              <View
+                style={[
+                  styles.roleContainer,
+                  { backgroundColor: colors.secondaryContainer },
+                ]}
+              >
+                <Icon
+                  source="badge-account-horizontal"
+                  size={20}
+                  color={colors.primary}
+                />
+                <Text style={styles.role}>
+                  {capitalizeFirstLetter(currentUserData?.role || "Unknown")}
+                </Text>
+              </View>
+            )}
+
+            <View style={styles.form}>
+              <TextInput
+                mode="outlined"
+                label="First Name"
+                value={values.firstName}
+                onChangeText={(text) => setFieldValue("firstName", text)}
+                onBlur={handleBlur("firstName")}
+                error={touched.firstName && !!errors.firstName}
+                left={<TextInput.Icon icon="account" />}
+              />
+              {touched.firstName && errors.firstName && (
+                <Text style={styles.errorText}>{errors.firstName}</Text>
+              )}
+
+              <TextInput
+                mode="outlined"
+                label="Last Name"
+                value={values.lastName}
+                onChangeText={(text) => setFieldValue("lastName", text)}
+                onBlur={handleBlur("lastName")}
+                error={touched.lastName && !!errors.lastName}
+                left={<TextInput.Icon icon="account" />}
+              />
+              {touched.lastName && errors.lastName && (
+                <Text style={styles.errorText}>{errors.lastName}</Text>
+              )}
+
+              <TextInput
+                mode="outlined"
+                label="Username"
+                value={values.username}
+                onChangeText={(text) => setFieldValue("username", text)}
+                onBlur={handleBlur("username")}
+                error={touched.username && !!errors.username}
+                left={<TextInput.Icon icon="account-circle" />}
+              />
+              {touched.username && errors.username && (
+                <Text style={styles.errorText}>{errors.username}</Text>
+              )}
+
+              <TextInput
+                mode="outlined"
+                label="Email"
+                value={values.email}
+                onChangeText={(text) => setFieldValue("email", text)}
+                onBlur={handleBlur("email")}
+                error={touched.email && !!errors.email}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                left={<TextInput.Icon icon="email" />}
+              />
+              {touched.email && errors.email && (
+                <Text style={styles.errorText}>{errors.email}</Text>
+              )}
+
+              <TextInput
+                mode="outlined"
+                label="Phone Number"
+                value={values.phoneNumber}
+                onChangeText={(text) => setFieldValue("phoneNumber", text)}
+                onBlur={handleBlur("phoneNumber")}
+                error={touched.phoneNumber && !!errors.phoneNumber}
+                keyboardType="phone-pad"
+                left={<TextInput.Icon icon="phone" />}
+              />
+              {touched.phoneNumber && errors.phoneNumber && (
+                <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+              )}
+              {!isWaiter && !isOwnEdit && (
+                <Dropdown
+                  label="Role"
+                  mode="outlined"
+                  placeholder="Select Role"
+                  value={values.role}
+                  options={UserRolesArray.filter(
+                    (role) => role !== UserROLES.OWNER
+                  ).map((role) => ({
+                    label: capitalizeFirstLetter(role),
+                    value: role as UserROLES,
+                  }))}
+                  onSelect={(value) => setFieldValue("role", value)}
+                  CustomMenuHeader={() => <></>}
+                  error={touched.role && !!errors.role}
+                />
+              )}
+
+              {touched.role && errors.role && (
+                <Text style={styles.errorText}>{errors.role}</Text>
+              )}
+
+              {error && (
+                <Text style={styles.errorText}>
+                  Failed to update worker profile. Please try again.
+                </Text>
+              )}
+            </View>
+          </Surface>
+          <View>
+            <Button
+              mode="contained-tonal"
+              onPress={() => handleSubmit()}
+              style={styles.submitButton}
+              disabled={isUpdating}
+              loading={isUpdating}
+            >
+              <Text>Save Changes</Text>
+            </Button>
+            <Button
+              mode="contained-tonal"
+              onPress={() => {
+                setIsOpenDialog(true);
+              }}
+              style={[styles.submitButton, { backgroundColor: colors.error }]}
+              disabled={isUpdating}
+            >
+              Delete User
+            </Button>
           </View>
-        </Surface>
-      </FormWrapper>
+          <TabBarOffset />
+        </FormWrapper>
+      </ScrollView>
       <ConfirmationDialog
         action={() => {
-          removeWorker({ userId: data?.id ?? "", restaurantId: restaurantId });
-          router.push({
-            pathname: "/restaurant/[id]/(workers)",
-            params: {
-              id: restaurantId,
-            },
-          });
+          if (isWaiter) removeCurrentUser();
+          else
+            removeWorker({
+              userId: data?.id ?? "",
+              restaurantId: restaurantId,
+            });
+          router.push("/auth/(tabs)/signin");
         }}
         text={`Are you sure you want to delete ${data?.username} ? This action cannot be undone.`}
         close={() => {
@@ -321,22 +351,25 @@ const EditWorker = () => {
         }}
         isOpen={isOpenDialog}
       />
-    </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  goBackButton: {
+    position: "absolute",
+    left: 0,
+    paddingVertical: 16,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   surface: {
-    height: "auto",
-    margin: 10,
-    padding: 20,
-    borderRadius: 8,
-    elevation: 4,
+    borderRadius: 16,
+    padding: 24,
+    gap: 8,
   },
   header: {
     position: "relative",
@@ -360,6 +393,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: -4,
     marginBottom: 4,
+  },
+  roleContainer: {
+    margin: "auto",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 8,
+    borderRadius: 20,
+    gap: 8,
+    maxWidth: "50%",
+  },
+  role: {
+    fontSize: 16,
+    color: "#fff",
+    textTransform: "capitalize",
   },
 });
 

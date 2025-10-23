@@ -1,29 +1,22 @@
-import {
-  createNavigationContainerRef,
-  DarkTheme,
-  DefaultTheme,
-  NavigationContainer,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { createNavigationContainerRef } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
-import { useColorScheme } from "react-native";
 
+import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
+import { store } from "@/modules/common/redux/store/store";
 import { theme } from "@/modules/common/theme/theme";
 import "react-native-reanimated";
-import { Provider, useDispatch } from "react-redux";
-import { store } from "@/modules/common/redux/store/store";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { Provider } from "react-redux";
 
 SplashScreen.preventAutoHideAsync();
 export const navigationRef = createNavigationContainerRef();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -39,30 +32,20 @@ export default function RootLayout() {
   }
 
   return (
-    <NavigationContainer>
-      <Provider store={store}>
-        <PaperProvider theme={theme}>
+    <Provider store={store}>
+      <PaperProvider theme={theme}>
+        <AuthTokenProvider>
           <SafeAreaProvider>
-            <Stack>
-              <Stack.Screen
-                name="auth/(tabs)"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="dashboard/(tabs)"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="restaurant/create"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-            <StatusBar style="light" />
-            {/* </ThemeProvider> */}
+            <SafeAreaView
+              style={{ flex: 1, backgroundColor: theme.colors.background }}
+            >
+              <Stack screenOptions={{ headerShown: false }} />
+              <StatusBar style="light" />
+              {/* </ThemeProvider> */}
+            </SafeAreaView>
           </SafeAreaProvider>
-        </PaperProvider>
-      </Provider>
-    </NavigationContainer>
+        </AuthTokenProvider>
+      </PaperProvider>
+    </Provider>
   );
 }

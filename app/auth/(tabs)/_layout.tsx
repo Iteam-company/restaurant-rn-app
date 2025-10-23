@@ -1,11 +1,45 @@
+import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
-import { Tabs } from "expo-router";
+import { USER_ROLE } from "@/modules/common/constants/api";
+import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
+import { UserROLES } from "@/modules/common/types/user.types";
+import { Tabs, useRouter } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import { useEffect } from "react";
 import { Platform } from "react-native";
 import { useTheme } from "react-native-paper";
 
 export default function AuthTabsLayout() {
   const { colors } = useTheme();
+  const router = useRouter();
+  const { token } = useAuthToken();
+
+  const { data: user } = useValidateTokenQuery(
+    { token: token! },
+    { skip: !token }
+  );
+
+  useEffect(() => {
+    if (token) {
+      switch (user?.role) {
+        case UserROLES.WAITER:
+          router.push({
+            pathname: "/user-dashboard/[id]/(quiz)",
+            params: { id: user.restaurantId },
+          });
+          break;
+        case UserROLES.ADMIN:
+        case UserROLES.OWNER:
+          router.push({
+            pathname: "/dashboard/restaurants",
+          });
+          break;
+      }
+    }
+
+    if (user) SecureStore.setItem(USER_ROLE, user.role);
+  }, [user, user?.role, user?.restaurantId, router, token]);
 
   return (
     <Tabs
@@ -23,6 +57,7 @@ export default function AuthTabsLayout() {
           default: {},
         }),
       }}
+      safeAreaInsets={{ bottom: 0, top: 0 }}
     >
       <Tabs.Screen
         name="signup"

@@ -1,21 +1,21 @@
-import { router, useGlobalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Platform } from "react-native";
-import {
-  useTheme,
-  List,
-  Title,
-  FAB,
-  Searchbar,
-  Avatar,
-  ActivityIndicator,
-} from "react-native-paper";
-import { useLocalSearchParams } from "expo-router";
 import Wrapper from "@/modules/common/components/Wrapper";
-import Feather from "@expo/vector-icons/Feather";
-import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
 import useDebounce from "@/modules/common/hooks/useDebounce";
+import { navigateToCreateUser } from "@/modules/common/utils/flowNavigation";
+import Feather from "@expo/vector-icons/Feather";
+import { router, useGlobalSearchParams } from "expo-router";
+import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Avatar,
+  FAB,
+  List,
+  Searchbar,
+  Title,
+  useTheme,
+} from "react-native-paper";
 
+import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -36,31 +36,20 @@ const Workers = () => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper paddingOff>
       <Searchbar
         placeholder="Search"
+        style={{ marginTop: 10 }}
         onChangeText={handleSearch}
         value={searchQuery}
       />
-      <View style={styles.container}>
-        {isLoading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={colors.primary} />
-          </View>
-        ) : (
-          <ScrollView
-            style={
-              (styles.scrollView,
-              {
-                ...Platform.select({
-                  ios: {
-                    marginBottom: insets.bottom + 30,
-                  },
-                  default: { marginTop: 30 },
-                }),
-              })
-            }
-          >
+      <ScrollView style={[styles.scrollView]}>
+        <View style={styles.container}>
+          {isLoading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={colors.primary} />
+            </View>
+          ) : (
             <View style={styles.content}>
               {findedUsers?.map((el) => (
                 <List.Item
@@ -92,25 +81,19 @@ const Workers = () => {
                 />
               ))}
               {!findedUsers?.length && !isLoading && (
-                <Title>We don't have workers now 💔</Title>
+                <Title>We don&apos;t have workers now 💔</Title>
               )}
             </View>
-          </ScrollView>
-        )}
-        <FAB
-          icon="plus"
-          style={[
-            styles.fab,
-            Platform.select({ ios: insets.bottom * 2.5, default: 0 }),
-          ]}
-          onPress={() => {
-            router.push({
-              pathname: "/restaurant/[id]/(workers)/addWorker",
-              params: { id: restaurantId },
-            });
-          }}
-        />
-      </View>
+          )}
+        </View>
+      </ScrollView>
+      <FAB
+        icon="plus"
+        style={[styles.fab, getFabUiSettings(insets)]}
+        onPress={() => {
+          navigateToCreateUser(restaurantId);
+        }}
+      />
     </Wrapper>
   );
 };
@@ -127,12 +110,12 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "100%",
-    paddingBottom: 80,
   },
   fab: {
     position: "absolute",
-    right: 16,
-    bottom: 16,
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
   loadingContainer: {
     flex: 1,

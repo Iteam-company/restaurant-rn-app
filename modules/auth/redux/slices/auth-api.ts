@@ -3,6 +3,7 @@ import { API_URL } from "../../../common/constants/api";
 import { prepareHeadersWithAuth } from "@/modules/common/redux/utils/prepareHeadersWithAuth";
 import { UserType } from "@/modules/common/types/user.types";
 import { AuthCredentials } from "../types";
+import { UpdateUserInfoI } from "@/modules/common/types/restaurant.types";
 
 export const authApi = createApi({
   reducerPath: "auth-api",
@@ -10,6 +11,7 @@ export const authApi = createApi({
     baseUrl: `${API_URL}`,
     prepareHeaders: prepareHeadersWithAuth,
   }),
+  tagTypes: ["Auth"],
   endpoints: (builder) => ({
     signin: builder.mutation<{ access_token: string }, AuthCredentials>({
       query: (body) => ({
@@ -17,6 +19,7 @@ export const authApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Auth"],
     }),
     signup: builder.mutation<
       { access_token: string; id: number },
@@ -27,9 +30,26 @@ export const authApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Auth"],
     }),
-    validateToken: builder.query<UserType, void>({
-      query: () => "/auth/me",
+    validateToken: builder.query<UserType, void | { token: string }>({
+      query: (props) => ({
+        url: "/auth/me",
+        headers: props?.token
+          ? {
+              Authorization: `Bearer ${props.token}`,
+            }
+          : undefined,
+      }),
+      providesTags: ["Auth"],
+    }),
+    updateCurrentUserInfo: builder.mutation<void, UpdateUserInfoI>({
+      query: (request) => ({
+        url: `/user/`,
+        method: "PATCH",
+        body: request.body,
+      }),
+      invalidatesTags: ["Auth"],
     }),
   }),
 });
