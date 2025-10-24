@@ -9,7 +9,6 @@ import { PaperProvider } from "react-native-paper";
 import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
 import { store } from "@/modules/common/redux/store/store";
 import { theme } from "@/modules/common/theme/theme";
-import "react-native-reanimated";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 
