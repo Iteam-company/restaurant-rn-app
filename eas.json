@@ -15,7 +15,7 @@
       },
       "env": {
         "APP_ENV": "development",
-        "API_URL": "https://restaurant-be-v0np.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://restaurant-be-v0np.onrender.com"
       }
     },
     "production": {
@@ -30,7 +30,7 @@
       },
       "env": {
         "APP_ENV": "production",
-        "API_URL": "https://restaurant-be-v0np.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://restaurant-be-v0np.onrender.com"
       }
     }
   },
