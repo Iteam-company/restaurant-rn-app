@@ -11,9 +11,10 @@ import { useAddWorkerMutation } from "@/modules/restaurant/redux/slices/restaura
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { Alert, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { Button, Surface, Text, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
+import Toast from "react-native-toast-message";
 
 export default function AddWorker() {
   const router = useRouter();
@@ -48,10 +49,10 @@ export default function AddWorker() {
           }
         } catch (e: any) {
           console.error("Failed to create user:", e);
-          Alert.alert(
-            "Failed to create user",
-            `${e.data.message}\n\nPlease try again later`
-          );
+          Toast.show({
+            text1: "Failed to create user",
+            text2: `${e.data.message}\n\nPlease try again later`,
+          });
         }
       },
     });

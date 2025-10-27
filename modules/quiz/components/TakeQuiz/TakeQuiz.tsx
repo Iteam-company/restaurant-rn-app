@@ -13,6 +13,7 @@ import {
 } from "react-native-paper";
 import { useTimer } from "react-timer-hook";
 import { useCreateQuizResultMutation } from "../../redux/slices/quiz-api";
+import Toast from "react-native-toast-message";
 
 const TakeQuiz = () => {
   const {
@@ -62,11 +63,18 @@ const TakeQuiz = () => {
         .then((quizResult) => {
           router.push({
             pathname:
-              "/user-dashboard/[id]/(quiz)/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
+              "/user-dashboard/[id]/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
             params: { id: restaurantId, quizResultId: quizResult.id },
           });
         })
-        .catch(console.log);
+        .catch((...props) => {
+          console.log(...props);
+          Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: "Something went wrong, try to take quiz again!",
+          });
+        });
     }
   }, [createQuizResult, index, questions, quizId, restaurantId, result]);
 

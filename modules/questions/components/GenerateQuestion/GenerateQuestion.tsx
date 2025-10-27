@@ -4,7 +4,7 @@ import { useGetQuizQuery } from "@/modules/quiz/redux/slices/quiz-api";
 import * as DocumentPicker from "expo-document-picker";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
-import { Alert, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -28,6 +28,7 @@ import {
   generateQuestionValidationSchema,
   initialFormData,
 } from "./utils";
+import Toast from "react-native-toast-message";
 
 const GenerateQuestion = () => {
   const { quizId } = useLocalSearchParams<{
@@ -128,7 +129,11 @@ const GenerateQuestion = () => {
       setData(result);
     } catch (error) {
       console.error("Error generating questions:", error);
-      Alert.alert("Error", "Failed to generate questions. Please try again.");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to generate questions. Please try again.",
+      });
     }
   }, [validateForm, formData, generateQuestion]);
 
@@ -142,7 +147,11 @@ const GenerateQuestion = () => {
       router.back();
     } catch (error) {
       console.error("Error creating questions:", error);
-      Alert.alert("Error", "Failed to create questions. Please try again.");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to create questions. Please try again.",
+      });
     }
   }, [data, createManyQuestion, quizId]);
 

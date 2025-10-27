@@ -15,6 +15,7 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { RTKMutationPayloadType } from "@/modules/common/types";
 import { useSigninMutation } from "../../redux/slices/auth-api";
 import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
+import Toast from "react-native-toast-message";
 
 export default function SignInForm() {
   const [authMethod, setAuthMethod] = useState<AuthMethod>("email");
@@ -54,6 +55,13 @@ export default function SignInForm() {
         const error = e as FetchBaseQueryError;
         if (error.status === 401) {
           console.log("unauthorized");
+          Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: `${
+              authMethod === "email" ? "Email" : "Phone Number"
+            } or Password is wrong!`,
+          });
         }
       }
     },
