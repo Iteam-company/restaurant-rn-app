@@ -28,7 +28,8 @@ import {
   generateQuestionValidationSchema,
   initialFormData,
 } from "./utils";
-import Toast from "react-native-toast-message";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { ErrorResponseType } from "@/modules/common/types";
 
 const GenerateQuestion = () => {
   const { quizId } = useLocalSearchParams<{
@@ -129,9 +130,7 @@ const GenerateQuestion = () => {
       setData(result);
     } catch (error) {
       console.error("Error generating questions:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
+      toastErrorHandler(error as ErrorResponseType, {
         text2: "Failed to generate questions. Please try again.",
       });
     }
@@ -147,9 +146,7 @@ const GenerateQuestion = () => {
       router.back();
     } catch (error) {
       console.error("Error creating questions:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
+      toastErrorHandler(error as ErrorResponseType, {
         text2: "Failed to create questions. Please try again.",
       });
     }

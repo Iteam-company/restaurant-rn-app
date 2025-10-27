@@ -13,7 +13,8 @@ import {
 } from "react-native-paper";
 import { useTimer } from "react-timer-hook";
 import { useCreateQuizResultMutation } from "../../redux/slices/quiz-api";
-import Toast from "react-native-toast-message";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { ErrorResponseType } from "@/modules/common/types";
 
 const TakeQuiz = () => {
   const {
@@ -67,11 +68,9 @@ const TakeQuiz = () => {
             params: { id: restaurantId, quizResultId: quizResult.id },
           });
         })
-        .catch((...props) => {
-          console.log(...props);
-          Toast.show({
-            type: "error",
-            text1: "Error",
+        .catch((error) => {
+          console.log(error);
+          toastErrorHandler(error as ErrorResponseType, {
             text2: "Something went wrong, try to take quiz again!",
           });
         });

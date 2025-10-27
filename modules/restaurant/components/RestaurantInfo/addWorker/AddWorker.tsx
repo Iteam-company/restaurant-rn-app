@@ -1,6 +1,10 @@
 import { useSignupMutation } from "@/modules/auth/redux/slices/auth-api";
 import FormWrapper from "@/modules/common/components/FormWrapper";
-import { RTKMutationPayloadType } from "@/modules/common/types";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import {
+  ErrorResponseType,
+  RTKMutationPayloadType,
+} from "@/modules/common/types";
 import { UserROLES, UserRolesArray } from "@/modules/common/types/user.types";
 import { capitalizeFirstLetter } from "@/modules/common/utils";
 import {
@@ -14,7 +18,6 @@ import { useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { Button, Surface, Text, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import Toast from "react-native-toast-message";
 
 export default function AddWorker() {
   const router = useRouter();
@@ -49,8 +52,7 @@ export default function AddWorker() {
           }
         } catch (e: any) {
           console.error("Failed to create user:", e);
-          Toast.show({
-            type: "error",
+          toastErrorHandler(error as ErrorResponseType, {
             text1: "Failed to create user",
             text2: `${e.data.message}\n\nPlease try again later`,
           });

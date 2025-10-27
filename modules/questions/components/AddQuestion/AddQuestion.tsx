@@ -9,6 +9,8 @@ import { Button, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { useCreateQuestionMutation } from "../../redux/slices/question-api";
 import { initialValues, quizItems, validationSchema } from "./utils";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { ErrorResponseType } from "@/modules/common/types";
 
 const AddQuestion = () => {
   const { id: restaurantId, quizId } = useGlobalSearchParams<{
@@ -29,12 +31,16 @@ const AddQuestion = () => {
       validationSchema,
       validateOnChange: true,
       onSubmit: async (formData) => {
-        await createQuestion({
-          ...formData,
-          multipleCorrect: formData.correct.length < 1,
-          quizId: parseInt(formData.quizId),
-        });
-        router.back();
+        try {
+          await createQuestion({
+            ...formData,
+            multipleCorrect: formData.correct.length < 1,
+            quizId: parseInt(formData.quizId),
+          });
+          router.back();
+        } catch (e) {
+          toastErrorHandler(e as ErrorResponseType);
+        }
       },
     });
 

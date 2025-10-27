@@ -21,7 +21,8 @@ import { getOptions, initialValues, validationSchema } from "./utils";
 
 import { handleFile } from "@/modules/common/utils/handleFile";
 import { Dropdown } from "react-native-paper-dropdown";
-import Toast from "react-native-toast-message";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { ErrorResponseType } from "@/modules/common/types";
 
 export default function CreateRestaurant() {
   const { colors } = useTheme();
@@ -44,11 +45,7 @@ export default function CreateRestaurant() {
     }
     if (isError) {
       console.error("Error creating restaurant:", error);
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Something went wrong, try again!",
-      });
+      toastErrorHandler(error as ErrorResponseType);
     }
   }, [isSuccess, isError, data, error]);
 
