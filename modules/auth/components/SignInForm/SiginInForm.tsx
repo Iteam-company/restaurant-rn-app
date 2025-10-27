@@ -57,7 +57,7 @@ export default function SignInForm() {
           console.log("unauthorized");
           Toast.show({
             type: "error",
-            text1: "Error",
+            text1: "Login error",
             text2: `${
               authMethod === "email" ? "Email" : "Phone Number"
             } or Password is wrong!`,

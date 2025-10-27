@@ -16,9 +16,11 @@ import {
 import {
   useGetRestaurantQuery,
   useUpdateRestaurantMutation,
-  useUplaodRestaurantImageMutation,
+  useUploadRestaurantImageMutation,
 } from "../../redux/slices/restaurant-api";
 import { validationSchema } from "./utils";
+import { ErrorResponseType } from "@/modules/common/types";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 
 const EditRestaurant = () => {
   const { colors } = useTheme();
@@ -28,14 +30,19 @@ const EditRestaurant = () => {
 
   const [updateRestaurant] = useUpdateRestaurantMutation();
 
-  const [uploadImage] = useUplaodRestaurantImageMutation();
+  const [uploadImage] = useUploadRestaurantImageMutation();
 
   const formik = useFormik({
     initialValues: { name: "", address: "" },
     validationSchema,
     onSubmit: (values) => {
-      updateRestaurant({ values, id: restaurantId });
-      router.back();
+      try {
+        updateRestaurant({ values, id: restaurantId }).unwrap();
+        router.back();
+      } catch (e) {
+        const error = e as ErrorResponseType;
+        toastErrorHandler(error);
+      }
     },
   });
   const {
