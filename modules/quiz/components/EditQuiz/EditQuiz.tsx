@@ -16,6 +16,8 @@ import {
   statusItem,
   validationSchema,
 } from "../AddQuiz/utils";
+import { ErrorResponseType } from "@/modules/common/types";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 
 const EditQuiz = () => {
   const { quizId } = useGlobalSearchParams<{
@@ -39,11 +41,16 @@ const EditQuiz = () => {
     validationSchema,
     validateOnChange: true,
     onSubmit: async (formData) => {
-      await updateQuiz({
-        ...formData,
-        id: parseInt(quizId),
-      }).unwrap();
-      router.back();
+      try {
+        await updateQuiz({
+          ...formData,
+          id: parseInt(quizId),
+        }).unwrap();
+        router.back();
+      } catch (e) {
+        const error = e as ErrorResponseType;
+        toastErrorHandler(error);
+      }
     },
   });
 

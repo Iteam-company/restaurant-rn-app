@@ -1,6 +1,10 @@
 import { useSignupMutation } from "@/modules/auth/redux/slices/auth-api";
 import FormWrapper from "@/modules/common/components/FormWrapper";
-import { RTKMutationPayloadType } from "@/modules/common/types";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import {
+  ErrorResponseType,
+  RTKMutationPayloadType,
+} from "@/modules/common/types";
 import { UserROLES, UserRolesArray } from "@/modules/common/types/user.types";
 import { capitalizeFirstLetter } from "@/modules/common/utils";
 import {
@@ -11,7 +15,7 @@ import { useAddWorkerMutation } from "@/modules/restaurant/redux/slices/restaura
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { Alert, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { Button, Surface, Text, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 
@@ -48,10 +52,10 @@ export default function AddWorker() {
           }
         } catch (e: any) {
           console.error("Failed to create user:", e);
-          Alert.alert(
-            "Failed to create user",
-            `${e.data.message}\n\nPlease try again later`
-          );
+          toastErrorHandler(error as ErrorResponseType, {
+            text1: "Failed to create user",
+            text2: `${e.data.message}\n\nPlease try again later`,
+          });
         }
       },
     });

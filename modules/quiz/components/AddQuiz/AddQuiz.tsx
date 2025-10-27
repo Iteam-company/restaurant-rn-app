@@ -11,6 +11,8 @@ import {
   statusItem,
   validationSchema,
 } from "./utils";
+import { ErrorResponseType } from "@/modules/common/types";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 
 const AddQuiz = () => {
   const [createQuiz, { isLoading: isCreatingQuiz }] = useCreateQuizMutation();
@@ -24,7 +26,10 @@ const AddQuiz = () => {
         try {
           await createQuiz(formData).unwrap();
           router.back();
-        } catch {}
+        } catch (e) {
+          const error = e as ErrorResponseType;
+          toastErrorHandler(error);
+        }
       },
     });
 
