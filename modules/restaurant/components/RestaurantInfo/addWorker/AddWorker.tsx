@@ -50,6 +50,7 @@ export default function AddWorker() {
         } catch (e: any) {
           console.error("Failed to create user:", e);
           Toast.show({
+            type: "error",
             text1: "Failed to create user",
             text2: `${e.data.message}\n\nPlease try again later`,
           });
