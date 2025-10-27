@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { useFormik } from "formik";
 import {
@@ -16,8 +16,13 @@ import { RTKMutationPayloadType } from "@/modules/common/types";
 import { useSigninMutation } from "../../redux/slices/auth-api";
 import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
 
-export default function SiginInForm() {
+export default function SignInForm() {
   const [authMethod, setAuthMethod] = useState<AuthMethod>("email");
+  const [authValues, setAuthValues] = useState<Record<AuthMethod, string>>({
+    email: "",
+    phoneNumber: "",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
   const { setToken } = useAuthToken();
 
@@ -48,7 +53,7 @@ export default function SiginInForm() {
       } catch (e) {
         const error = e as FetchBaseQueryError;
         if (error.status === 401) {
-          console.log("unautorized");
+          console.log("unauthorized");
         }
       }
     },
@@ -61,13 +66,21 @@ export default function SiginInForm() {
       <SegmentedButtons
         value={authMethod}
         onValueChange={(value) => {
-          setAuthMethod(value as AuthMethod);
-          setFieldValue("identifier", "");
+          const authValue: AuthMethod = value;
+
+          setAuthMethod(authValue);
+          setAuthValues((prev) => ({
+            ...prev,
+            [authValue === "email" ? "phoneNumber" : "email"]:
+              values.identifier,
+          }));
+
+          setFieldValue("identifier", authValues[authValue]);
           setFieldTouched("identifier", false);
         }}
         buttons={[
           { value: "email", label: "Email" },
-          { value: "phone", label: "Phone" },
+          { value: "phoneNumber", label: "Phone" },
         ]}
         style={styles.segmentedButtons}
       />
