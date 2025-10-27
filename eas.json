@@ -14,7 +14,7 @@
         "buildType": "apk"
       },
       "env": {
-        "APP_ENV": "development",
+        "EXPO_PUBLIC_APP_ENV": "development",
         "EXPO_PUBLIC_API_URL": "https://restaurant-be-v0np.onrender.com"
       }
     },
@@ -29,7 +29,7 @@
         "buildConfiguration": "Release"
       },
       "env": {
-        "APP_ENV": "production",
+        "EXPO_PUBLIC_APP_ENV": "production",
         "EXPO_PUBLIC_API_URL": "https://restaurant-be-v0np.onrender.com"
       }
     }
