@@ -22,7 +22,7 @@ import { validationSchema } from "./utils";
 
 const EditRestaurant = () => {
   const { colors } = useTheme();
-  const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
+  const { restaurantId } = useLocalSearchParams<{ restaurantId: string }>();
 
   const { data: initialValues } = useGetRestaurantQuery(restaurantId);
 
