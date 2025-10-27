@@ -5,12 +5,12 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
-
 import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
 import { store } from "@/modules/common/redux/store/store";
 import { theme } from "@/modules/common/theme/theme";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
+import ToastInit from "@/modules/common/components/Toast/ToastInit";
 
 SplashScreen.preventAutoHideAsync();
 export const navigationRef = createNavigationContainerRef();
@@ -41,6 +41,7 @@ export default function RootLayout() {
               <Stack screenOptions={{ headerShown: false }} />
               <StatusBar style="light" />
               {/* </ThemeProvider> */}
+              <ToastInit />
             </SafeAreaView>
           </SafeAreaProvider>
         </AuthTokenProvider>

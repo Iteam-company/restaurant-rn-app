@@ -12,6 +12,8 @@ import {
   useUpdateQuestionMutation,
 } from "../../redux/slices/question-api";
 import { quizItems, validationSchema } from "../AddQuestion/utils";
+import { ErrorResponseType } from "@/modules/common/types";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 
 const EditQuestion = () => {
   const {
@@ -39,16 +41,21 @@ const EditQuestion = () => {
     validationSchema,
     validateOnChange: true,
     onSubmit: async (formData) => {
-      await editQuestion({
-        body: {
-          ...formData,
-          multipleCorrect:
-            Array.isArray(formData.correct) && formData.correct.length > 1,
-          quizId: undefined,
-        },
-        questionId: parseInt(questionId),
-      });
-      router.back();
+      try {
+        await editQuestion({
+          body: {
+            ...formData,
+            multipleCorrect:
+              Array.isArray(formData.correct) && formData.correct.length > 1,
+            quizId: undefined,
+          },
+          questionId: parseInt(questionId),
+        });
+        router.back();
+      } catch (e) {
+        const error = e as ErrorResponseType;
+        toastErrorHandler(error);
+      }
     },
   });
 
