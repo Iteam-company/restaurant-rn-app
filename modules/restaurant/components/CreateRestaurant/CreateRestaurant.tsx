@@ -15,12 +15,13 @@ import {
 import {
   useCreateRestaurantMutation,
   useGetOwnersQuery,
-  useUplaodRestaurantImageMutation,
+  useUploadRestaurantImageMutation,
 } from "../../redux/slices/restaurant-api";
 import { getOptions, initialValues, validationSchema } from "./utils";
 
 import { handleFile } from "@/modules/common/utils/handleFile";
 import { Dropdown } from "react-native-paper-dropdown";
+import Toast from "react-native-toast-message";
 
 export default function CreateRestaurant() {
   const { colors } = useTheme();
@@ -35,7 +36,7 @@ export default function CreateRestaurant() {
     useCreateRestaurantMutation();
 
   const [uploadImage, { isLoading: isLoadingImage }] =
-    useUplaodRestaurantImageMutation();
+    useUploadRestaurantImageMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -43,6 +44,11 @@ export default function CreateRestaurant() {
     }
     if (isError) {
       console.error("Error creating restaurant:", error);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Something went wrong, try again!",
+      });
     }
   }, [isSuccess, isError, data, error]);
 

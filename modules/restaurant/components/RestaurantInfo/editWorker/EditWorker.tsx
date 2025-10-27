@@ -16,6 +16,7 @@ import { UserROLES, UserRolesArray } from "@/modules/common/types/user.types";
 import { capitalizeFirstLetter } from "@/modules/common/utils";
 import { handleFile } from "@/modules/common/utils/handleFile";
 import { useRemoveWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useFormik } from "formik";
@@ -33,6 +34,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
+import Toast from "react-native-toast-message";
 import * as Yup from "yup";
 
 interface WorkerFormData {
@@ -137,6 +139,12 @@ const EditWorker = () => {
         router.back();
       } catch (e) {
         console.error("Failed to update worker:", e);
+        const error = e as FetchBaseQueryError;
+        if (error)
+          Toast.show({
+            text1: "Failed to update user",
+            text2: `${error.data}\n\nPlease try again later`,
+          });
       }
     },
   });
