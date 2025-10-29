@@ -138,6 +138,13 @@ export const navigateToCreateQuiz = (restaurantId?: string) => {
   });
 };
 
+export const navigateToGenerateQuiz = (restaurantId?: string) => {
+  navigateToFlow(FlowType.QUIZ, {
+    restaurantId,
+    action: ActionType.GENERATE,
+  });
+};
+
 export const navigateToEditQuestion = (
   questionId: string | number,
   quizId?: string,
@@ -172,3 +179,10 @@ export const navigateToGenerateQuestions = (
     action: ActionType.GENERATE,
   });
 };
+
+// export const navigateToGenerateQuiz = (restaurantId?: string) => {
+//   router.push({
+//     pathname: "/forms/quiz/generate",
+//     params: { restaurantId },
+//   });
+// };
