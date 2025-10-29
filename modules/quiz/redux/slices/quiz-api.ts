@@ -1,5 +1,6 @@
 import { workerApi } from "@/modules/common/redux/slices/worker-api";
 import { TagTypes } from "@/modules/common/redux/utils/api-config";
+import { ICreateQuestionDTO } from "@/modules/questions/types";
 import { IQuizInfo, IQuizResultDto, IQuizResultInfo } from "../../types";
 
 export const quizApi = workerApi
@@ -135,6 +136,46 @@ export const quizApi = workerApi
           { type: TagTypes.QUIZ_RESULT, id },
         ],
       }),
+      generateQuizzes: builder.mutation<
+        IQuizInfo & { questions?: ICreateQuestionDTO[] },
+        {
+          count?: number;
+          prompt?: string;
+          files?: any[];
+        }
+      >({
+        query: ({ count, prompt, files }) => {
+          const formData = new FormData();
+
+          if (count) {
+            formData.append("count", count.toString());
+          }
+
+          if (prompt) {
+            formData.append("prompt", prompt);
+          }
+
+          if (files && files.length > 0) {
+            files.forEach((file, index) => {
+              formData.append("files", {
+                uri: file.uri,
+                type: file.mimeType || "application/octet-stream",
+                name: file.name,
+              } as any);
+            });
+          }
+
+          return {
+            url: "/quiz/generate/quiz",
+            method: "POST",
+            body: formData,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+        },
+        invalidatesTags: [{ type: TagTypes.QUIZ, id: "LIST" }],
+      }),
     }),
   });
 
@@ -150,4 +191,5 @@ export const {
   useGetQuizResultListQuery,
   useSearchQuizResultQuery,
   useDeleteQuizResultMutation,
+  useGenerateQuizzesMutation,
 } = quizApi;
