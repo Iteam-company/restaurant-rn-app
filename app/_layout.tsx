@@ -1,3 +1,9 @@
+import OfflineScreen from "@/modules/common/components/Offline/OfflineScreen";
+import ToastInit from "@/modules/common/components/Toast/ToastInit";
+import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
+import { useIsOnline } from "@/modules/common/hooks/useIsOnline";
+import { store } from "@/modules/common/redux/store/store";
+import { theme } from "@/modules/common/theme/theme";
 import { createNavigationContainerRef } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -5,12 +11,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
-import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
-import { store } from "@/modules/common/redux/store/store";
-import { theme } from "@/modules/common/theme/theme";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
-import ToastInit from "@/modules/common/components/Toast/ToastInit";
 
 SplashScreen.preventAutoHideAsync();
 export const navigationRef = createNavigationContainerRef();
@@ -38,7 +40,7 @@ export default function RootLayout() {
             <SafeAreaView
               style={{ flex: 1, backgroundColor: theme.colors.background }}
             >
-              <Stack screenOptions={{ headerShown: false }} />
+              <NetworkGate />
               <StatusBar style="light" />
               {/* </ThemeProvider> */}
               <ToastInit />
@@ -48,4 +50,12 @@ export default function RootLayout() {
       </PaperProvider>
     </Provider>
   );
+}
+
+function NetworkGate() {
+  const { isOnline, refresh } = useIsOnline(5000);
+  if (!isOnline) {
+    return <OfflineScreen onRetry={refresh} />;
+  }
+  return <Stack screenOptions={{ headerShown: false }} />;
 }
