@@ -1,6 +1,7 @@
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 import { USER_ROLE } from "@/modules/common/constants/api";
 import {
   useGetCurrentUserQuery,
@@ -11,7 +12,10 @@ import {
   useUpdateUserPhotoMutation,
   useUploadCurrentUserPhotoMutation,
 } from "@/modules/common/redux/slices/user-api";
-import { RTKMutationPayloadType } from "@/modules/common/types";
+import {
+  ErrorResponseType,
+  RTKMutationPayloadType,
+} from "@/modules/common/types";
 import { UserROLES, UserRolesArray } from "@/modules/common/types/user.types";
 import { capitalizeFirstLetter } from "@/modules/common/utils";
 import { handleFile } from "@/modules/common/utils/handleFile";
@@ -137,6 +141,11 @@ const EditWorker = () => {
         router.back();
       } catch (e) {
         console.error("Failed to update worker:", e);
+        const error = e as ErrorResponseType;
+        toastErrorHandler(error, {
+          text1: "Failed to update user",
+          text2: `${error.data?.message}\n\nPlease try again later`,
+        });
       }
     },
   });

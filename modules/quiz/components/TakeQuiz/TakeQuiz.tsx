@@ -13,6 +13,8 @@ import {
 } from "react-native-paper";
 import { useTimer } from "react-timer-hook";
 import { useCreateQuizResultMutation } from "../../redux/slices/quiz-api";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { ErrorResponseType } from "@/modules/common/types";
 
 const TakeQuiz = () => {
   const {
@@ -62,11 +64,16 @@ const TakeQuiz = () => {
         .then((quizResult) => {
           router.push({
             pathname:
-              "/user-dashboard/[id]/(quiz)/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
+              "/user-dashboard/[id]/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
             params: { id: restaurantId, quizResultId: quizResult.id },
           });
         })
-        .catch(console.log);
+        .catch((error) => {
+          console.log(error);
+          toastErrorHandler(error as ErrorResponseType, {
+            text2: "Something went wrong, try to take quiz again!",
+          });
+        });
     }
   }, [createQuizResult, index, questions, quizId, restaurantId, result]);
 
