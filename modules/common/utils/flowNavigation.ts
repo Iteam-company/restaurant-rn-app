@@ -179,10 +179,3 @@ export const navigateToGenerateQuestions = (
     action: ActionType.GENERATE,
   });
 };
-
-// export const navigateToGenerateQuiz = (restaurantId?: string) => {
-//   router.push({
-//     pathname: "/forms/quiz/generate",
-//     params: { restaurantId },
-//   });
-// };

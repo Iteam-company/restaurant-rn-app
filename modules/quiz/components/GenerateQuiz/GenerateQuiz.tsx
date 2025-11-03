@@ -17,6 +17,7 @@ import {
   Button,
   Card,
   Chip,
+  Divider,
   HelperText,
   Text,
   TextInput,
@@ -227,49 +228,6 @@ const GenerateQuiz = () => {
       >
         <Title>Create Quiz</Title>
 
-        <TextInput
-          mode="outlined"
-          label="Title"
-          value={formData.title}
-          onChangeText={(value) => handleFormChange("title", value)}
-          error={!!formErrors.title}
-          left={<TextInput.Icon icon="pencil" />}
-        />
-        <HelperText type="error" visible={!!formErrors.title}>
-          {formErrors.title}
-        </HelperText>
-
-        <Dropdown
-          label="Difficulty Level"
-          mode="outlined"
-          value={formData.difficultyLevel}
-          options={difficultyLevelItem}
-          onSelect={(value) => handleFormChange("difficultyLevel", value)}
-        />
-
-        <Dropdown
-          label="Status"
-          mode="outlined"
-          value={formData.status}
-          options={statusItem}
-          onSelect={(value) => handleFormChange("status", value)}
-        />
-
-        <TextInput
-          mode="outlined"
-          label="Time limit (minutes)"
-          keyboardType="numeric"
-          value={`${formData.timeLimit}`}
-          onChangeText={(text) =>
-            handleFormChange("timeLimit", parseInt(text) || 0)
-          }
-          error={!!formErrors.timeLimit}
-          left={<TextInput.Icon icon="timer" />}
-        />
-        <HelperText type="error" visible={!!formErrors.timeLimit}>
-          {formErrors.timeLimit}
-        </HelperText>
-
         <Card style={styles.fileCard}>
           <Card.Content>
             <Text variant="titleMedium" style={styles.fileTitle}>
@@ -322,6 +280,49 @@ const GenerateQuiz = () => {
           {formErrors.prompt}
         </HelperText>
 
+        <TextInput
+          mode="outlined"
+          label="Title"
+          value={formData.title}
+          onChangeText={(value) => handleFormChange("title", value)}
+          error={!!formErrors.title}
+          left={<TextInput.Icon icon="pencil" />}
+        />
+        <HelperText type="error" visible={!!formErrors.title}>
+          {formErrors.title}
+        </HelperText>
+
+        <Dropdown
+          label="Difficulty Level"
+          mode="outlined"
+          value={formData.difficultyLevel}
+          options={difficultyLevelItem}
+          onSelect={(value) => handleFormChange("difficultyLevel", value)}
+        />
+
+        <Dropdown
+          label="Status"
+          mode="outlined"
+          value={formData.status}
+          options={statusItem}
+          onSelect={(value) => handleFormChange("status", value)}
+        />
+
+        <TextInput
+          mode="outlined"
+          label="Time limit (minutes)"
+          keyboardType="numeric"
+          value={`${formData.timeLimit}`}
+          onChangeText={(text) =>
+            handleFormChange("timeLimit", parseInt(text) || 0)
+          }
+          error={!!formErrors.timeLimit}
+          left={<TextInput.Icon icon="timer" />}
+        />
+        <HelperText type="error" visible={!!formErrors.timeLimit}>
+          {formErrors.timeLimit}
+        </HelperText>
+
         {formErrors.general && (
           <HelperText type="error" visible={!!formErrors.general}>
             {formErrors.general}
@@ -339,6 +340,8 @@ const GenerateQuiz = () => {
           Generate with AI
         </Button>
 
+        <Divider />
+
         {generatedQuestions.length > 0 && (
           <View style={styles.container}>
             <Title style={{ marginBottom: 8 }}>Generated Questions</Title>
@@ -348,12 +351,17 @@ const GenerateQuiz = () => {
               don&apos;t want to include.
             </Text>
             {generatedQuestions.map((question, index) => (
-              <QuestionElement
-                key={`question-${index}-${question.text?.slice(0, 20)}`}
-                question={question}
-                onChange={(value) => handleQuestionChange(value, index)}
-                onDelete={() => handleQuestionDelete(index)}
-              />
+              <View key={`question-wrap-${index}`}>
+                <QuestionElement
+                  key={`question-${index}-${question.text?.slice(0, 20)}`}
+                  question={question}
+                  onChange={(value) => handleQuestionChange(value, index)}
+                  onDelete={() => handleQuestionDelete(index)}
+                />
+                {index !== generatedQuestions.length - 1 && (
+                  <Divider style={{ marginVertical: 8 }} />
+                )}
+              </View>
             ))}
           </View>
         )}
