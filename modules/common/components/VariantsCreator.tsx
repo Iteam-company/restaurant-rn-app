@@ -121,9 +121,9 @@ const VariantsCreator = ({
         )}
       </View>
       <Text style={{ marginVertical: 12, color: colors.secondary }}>
-        {`To add a new variant, write in the field and press the "Add variant"
-        button. Your question will be created under the button. If the question
-        is correct, check it.`}
+        To add a new variant, write in the field and press the &quot;Add
+        variant&quot; button. Your question will be created under the button. If
+        the question is correct, check it.
       </Text>
     </View>
   );
