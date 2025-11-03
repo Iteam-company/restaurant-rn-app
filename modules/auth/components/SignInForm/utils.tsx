@@ -20,7 +20,10 @@ export const getValidationSchema = (authMethod: AuthMethod) => {
   });
 };
 
-export const initialValues = {
-  identifier: "john.doe@example.com",
-  password: "SecureP@ssw0rd",
-};
+export const initialValues =
+  process.env.EXPO_PUBLIC_APP_ENV === "development"
+    ? {
+        identifier: "john.doe@example.com",
+        password: "SecureP@ssw0rd",
+      }
+    : { identifier: "", password: "" };

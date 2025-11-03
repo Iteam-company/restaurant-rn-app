@@ -9,9 +9,13 @@ import { Button, TextInput, Text } from "react-native-paper";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import { Logo } from "@/modules/common/components/ui/Logo";
 import { UserROLES } from "@/modules/common/types/user.types";
-import { RTKMutationPayloadType } from "@/modules/common/types";
+import {
+  ErrorResponseType,
+  RTKMutationPayloadType,
+} from "@/modules/common/types";
 import { useSignupMutation } from "../../redux/slices/auth-api";
 import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
+import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 
 export default function SignUpForm() {
   const [signUp, { isLoading, error }] =
@@ -33,9 +37,13 @@ export default function SignUpForm() {
           if (res.access_token) {
             setToken(res.access_token);
           }
-        } catch {}
+        } catch (e) {
+          const error = e as ErrorResponseType;
+          toastErrorHandler(error);
+        }
       },
     });
+
   return (
     <FormWrapper>
       <Logo size={150} style={{ margin: "auto" }} />

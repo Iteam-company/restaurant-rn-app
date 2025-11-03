@@ -64,7 +64,7 @@ export const restaurantApi = workerApi
           { type: TagTypes.RESTAURANT, id: "LIST" },
         ],
       }),
-      uplaodRestaurantImage: builder.mutation({
+      uploadRestaurantImage: builder.mutation({
         query: ({ formData, restaurantId }) => ({
           url: `/restaurant/${restaurantId}/image`,
           method: "PATCH",
@@ -152,7 +152,7 @@ export const {
   useGetRestaurantQuery,
   useGetOwnersQuery,
   useUpdateRestaurantMutation,
-  useUplaodRestaurantImageMutation,
+  useUploadRestaurantImageMutation,
   useRemoveWorkerMutation,
   useDeleteRestaurantMutation,
   useAddWorkerMutation,
