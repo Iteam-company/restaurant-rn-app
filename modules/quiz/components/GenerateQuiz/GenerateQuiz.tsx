@@ -15,7 +15,6 @@ import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
   Button,
-  Card,
   Chip,
   Divider,
   HelperText,
@@ -223,105 +222,131 @@ const GenerateQuiz = () => {
           {
             backgroundColor: colors.surface,
             padding: 16,
+            gap: 8,
           },
         ]}
       >
-        <Title>Create Quiz</Title>
+        <View style={styles.fileCard}>
+          <Text variant="titleMedium" style={styles.fileTitle}>
+            Upload Files (Required)
+          </Text>
+          <Text variant="bodySmall" style={styles.fileSubtitle}>
+            Upload PDF, DOC, DOCX, or image files
+          </Text>
 
-        <Card style={styles.fileCard}>
-          <Card.Content>
-            <Text variant="titleMedium" style={styles.fileTitle}>
-              Upload Files (Required)
-            </Text>
-            <Text variant="bodySmall" style={styles.fileSubtitle}>
-              Upload PDF, DOC, DOCX, or image files
-            </Text>
+          <Button
+            mode="outlined"
+            onPress={handleFileSelect}
+            style={styles.uploadButton}
+            icon="upload"
+          >
+            Select Files
+          </Button>
 
-            <Button
-              mode="outlined"
-              onPress={handleFileSelect}
-              style={styles.uploadButton}
-              icon="upload"
-            >
-              Select Files
-            </Button>
+          {formData.files.length > 0 && (
+            <View style={styles.fileList}>
+              {formData.files.map((file, index) => (
+                <Chip
+                  key={index}
+                  mode="outlined"
+                  onClose={() => handleRemoveFile(index)}
+                  style={styles.fileChip}
+                >
+                  {file.name}
+                </Chip>
+              ))}
+            </View>
+          )}
 
-            {formData.files.length > 0 && (
-              <View style={styles.fileList}>
-                {formData.files.map((file, index) => (
-                  <Chip
-                    key={index}
-                    mode="outlined"
-                    onClose={() => handleRemoveFile(index)}
-                    style={styles.fileChip}
-                  >
-                    {file.name}
-                  </Chip>
-                ))}
-              </View>
-            )}
-
+          {formErrors.files && (
             <HelperText type="error" visible={!!formErrors.files}>
               {formErrors.files}
             </HelperText>
-          </Card.Content>
-        </Card>
+          )}
+        </View>
 
-        <TextInput
-          mode="outlined"
-          label="Prompt (optional)"
-          value={formData.prompt || ""}
-          onChangeText={(value) => handleFormChange("prompt", value)}
-          error={!!formErrors.prompt}
-          multiline
-          numberOfLines={3}
-        />
-        <HelperText type="error" visible={!!formErrors.prompt}>
-          {formErrors.prompt}
-        </HelperText>
+        <View style={styles.fileCard}>
+          <TextInput
+            mode="outlined"
+            label="Prompt (optional)"
+            value={formData.prompt || ""}
+            onChangeText={(value) => handleFormChange("prompt", value)}
+            error={!!formErrors.prompt}
+            multiline
+            numberOfLines={3}
+          />
+          {formErrors.prompt && (
+            <HelperText type="error" visible={!!formErrors.prompt}>
+              {formErrors.prompt}
+            </HelperText>
+          )}
 
-        <TextInput
-          mode="outlined"
-          label="Title"
-          value={formData.title}
-          onChangeText={(value) => handleFormChange("title", value)}
-          error={!!formErrors.title}
-          left={<TextInput.Icon icon="pencil" />}
-        />
-        <HelperText type="error" visible={!!formErrors.title}>
-          {formErrors.title}
-        </HelperText>
+          <Button
+            disabled={isGeneratingQuizzes}
+            mode="outlined"
+            onPress={handleGenerate}
+            loading={isGeneratingQuizzes}
+            icon="auto-fix"
+            style={{ marginTop: 8 }}
+          >
+            Generate with AI
+          </Button>
+        </View>
 
-        <Dropdown
-          label="Difficulty Level"
-          mode="outlined"
-          value={formData.difficultyLevel}
-          options={difficultyLevelItem}
-          onSelect={(value) => handleFormChange("difficultyLevel", value)}
-        />
+        {generatedQuestions.length > 0 ? (
+          <>
+            <TextInput
+              mode="outlined"
+              label="Title"
+              value={formData.title}
+              onChangeText={(value) => handleFormChange("title", value)}
+              error={!!formErrors.title}
+              left={<TextInput.Icon icon="pencil" />}
+            />
+            <HelperText type="error" visible={!!formErrors.title}>
+              {formErrors.title}
+            </HelperText>
 
-        <Dropdown
-          label="Status"
-          mode="outlined"
-          value={formData.status}
-          options={statusItem}
-          onSelect={(value) => handleFormChange("status", value)}
-        />
+            <Dropdown
+              label="Difficulty Level"
+              mode="outlined"
+              value={formData.difficultyLevel}
+              options={difficultyLevelItem}
+              onSelect={(value) => handleFormChange("difficultyLevel", value)}
+            />
 
-        <TextInput
-          mode="outlined"
-          label="Time limit (minutes)"
-          keyboardType="numeric"
-          value={`${formData.timeLimit}`}
-          onChangeText={(text) =>
-            handleFormChange("timeLimit", parseInt(text) || 0)
-          }
-          error={!!formErrors.timeLimit}
-          left={<TextInput.Icon icon="timer" />}
-        />
-        <HelperText type="error" visible={!!formErrors.timeLimit}>
-          {formErrors.timeLimit}
-        </HelperText>
+            <Dropdown
+              label="Status"
+              mode="outlined"
+              value={formData.status}
+              options={statusItem}
+              onSelect={(value) => handleFormChange("status", value)}
+            />
+
+            <TextInput
+              mode="outlined"
+              label="Time limit (minutes)"
+              keyboardType="numeric"
+              value={`${formData.timeLimit}`}
+              onChangeText={(text) =>
+                handleFormChange("timeLimit", parseInt(text) || 0)
+              }
+              error={!!formErrors.timeLimit}
+              left={<TextInput.Icon icon="timer" />}
+            />
+            <HelperText type="error" visible={!!formErrors.timeLimit}>
+              {formErrors.timeLimit}
+            </HelperText>
+          </>
+        ) : (
+          <Text
+            variant="bodyMedium"
+            style={{ marginVertical: 8, color: colors.secondary }}
+          >
+            No questions generated yet. Please upload files and generate
+            questions.
+          </Text>
+        )}
 
         {formErrors.general && (
           <HelperText type="error" visible={!!formErrors.general}>
@@ -329,23 +354,13 @@ const GenerateQuiz = () => {
           </HelperText>
         )}
 
-        <Button
-          disabled={isGeneratingQuizzes}
-          mode="outlined"
-          onPress={handleGenerate}
-          loading={isGeneratingQuizzes}
-          icon="auto-fix"
-          style={{ marginBottom: 8 }}
-        >
-          Generate with AI
-        </Button>
-
-        <Divider />
-
         {generatedQuestions.length > 0 && (
           <View style={styles.container}>
             <Title style={{ marginBottom: 8 }}>Generated Questions</Title>
-            <Text variant="bodyMedium" style={{ marginBottom: 16 }}>
+            <Text
+              variant="bodyMedium"
+              style={{ marginVertical: 8, color: colors.secondary }}
+            >
               Review and edit the generated questions below. You can modify the
               text, variants, or correct answers. Delete any questions you
               don&apos;t want to include.
@@ -410,6 +425,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   fileChip: {
+    width: "100%",
     marginBottom: 8,
   },
   questionCard: {
