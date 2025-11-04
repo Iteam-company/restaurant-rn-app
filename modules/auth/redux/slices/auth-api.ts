@@ -1,16 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_URL } from "../../../common/constants/api";
-import { prepareHeadersWithAuth } from "@/modules/common/redux/utils/prepareHeadersWithAuth";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { UserType } from "@/modules/common/types/user.types";
 import { AuthCredentials } from "../types";
 import { UpdateUserInfoI } from "@/modules/common/types/restaurant.types";
+import { baseQueryWithReauth } from "@/modules/common/redux/store/reauth-store";
 
 export const authApi = createApi({
   reducerPath: "auth-api",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${API_URL}`,
-    prepareHeaders: prepareHeadersWithAuth,
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
     signin: builder.mutation<
