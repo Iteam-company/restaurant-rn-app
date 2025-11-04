@@ -22,7 +22,7 @@ export default function SignUpForm() {
     useSignupMutation<RTKMutationPayloadType>();
 
   const [showPassword, setShowPassword] = useState(false);
-  const { setToken } = useAuthToken();
+  const { setToken, setRefreshToken } = useAuthToken();
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
@@ -36,6 +36,9 @@ export default function SignUpForm() {
           }).unwrap();
           if (res.access_token) {
             setToken(res.access_token);
+            if (res.refresh_token) {
+              await setRefreshToken(res.refresh_token);
+            }
           }
         } catch (e) {
           const error = e as ErrorResponseType;

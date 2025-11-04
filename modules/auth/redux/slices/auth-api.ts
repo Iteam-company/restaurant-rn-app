@@ -13,7 +13,10 @@ export const authApi = createApi({
   }),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
-    signin: builder.mutation<{ access_token: string }, AuthCredentials>({
+    signin: builder.mutation<
+      { access_token: string; refresh_token?: string },
+      AuthCredentials
+    >({
       query: (body) => ({
         url: "/auth/login",
         method: "POST",
@@ -22,7 +25,7 @@ export const authApi = createApi({
       invalidatesTags: ["Auth"],
     }),
     signup: builder.mutation<
-      { access_token: string; id: number },
+      { access_token: string; refresh_token?: string; id: number },
       Partial<UserType>
     >({
       query: (body) => ({
