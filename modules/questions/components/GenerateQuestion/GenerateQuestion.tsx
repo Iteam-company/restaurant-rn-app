@@ -8,10 +8,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
   Button,
-  Card,
-  Chip,
   HelperText,
-  Text,
   TextInput,
   Title,
   useTheme,
@@ -30,6 +27,7 @@ import {
 } from "./utils";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 import { ErrorResponseType } from "@/modules/common/types";
+import FileUploader from "@/modules/common/components/FileUploader";
 
 const GenerateQuestion = () => {
   const { quizId } = useLocalSearchParams<{
@@ -78,12 +76,17 @@ const GenerateQuestion = () => {
     });
   }, []);
 
-  const handleRemoveFile = useCallback((index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      files: prev.files.filter((_, i) => i !== index),
-    }));
-  }, []);
+  const handleRemoveFile = useCallback(
+    (file: DocumentPicker.DocumentPickerAsset) => {
+      setFormData((prev) => ({
+        ...prev,
+        files: prev.files.filter(
+          (f) => !(f.name === file.name && f.size === file.size)
+        ),
+      }));
+    },
+    []
+  );
 
   const handleFormChange = useCallback(
     (field: keyof GenerateQuestionFormData, value: any) => {
@@ -183,7 +186,11 @@ const GenerateQuestion = () => {
           error={!!errors.count}
           keyboardType="numeric"
         />
-        <HelperText type="error" visible={!!errors.count}>
+        <HelperText
+          type="error"
+          visible={!!errors.count}
+          style={{ display: !!errors.count ? "flex" : "none" }}
+        >
           {errors.count}
         </HelperText>
 
@@ -196,48 +203,20 @@ const GenerateQuestion = () => {
           multiline
           numberOfLines={3}
         />
-        <HelperText type="error" visible={!!errors.prompt}>
+        <HelperText
+          type="error"
+          visible={!!errors.prompt}
+          style={{ display: !!errors.prompt ? "flex" : "none" }}
+        >
           {errors.prompt}
         </HelperText>
 
-        <Card style={styles.fileCard}>
-          <Card.Content>
-            <Text variant="titleMedium" style={styles.fileTitle}>
-              Upload Files (Required)
-            </Text>
-            <Text variant="bodySmall" style={styles.fileSubtitle}>
-              Upload PDF, DOC, DOCX, or image files
-            </Text>
-
-            <Button
-              mode="outlined"
-              onPress={handleFileSelect}
-              style={styles.uploadButton}
-              icon="upload"
-            >
-              Select Files
-            </Button>
-
-            {formData.files.length > 0 && (
-              <View style={styles.fileList}>
-                {formData.files.map((file, index) => (
-                  <Chip
-                    key={index}
-                    mode="outlined"
-                    onClose={() => handleRemoveFile(index)}
-                    style={styles.fileChip}
-                  >
-                    {file.name}
-                  </Chip>
-                ))}
-              </View>
-            )}
-
-            <HelperText type="error" visible={!!errors.files}>
-              {errors.files}
-            </HelperText>
-          </Card.Content>
-        </Card>
+        <FileUploader
+          data={formData.files}
+          onChange={handleFileSelect}
+          onChipClick={handleRemoveFile}
+          errors={errors.files}
+        />
 
         <Button
           disabled={isLoading}
