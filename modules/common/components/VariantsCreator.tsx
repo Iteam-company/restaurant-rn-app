@@ -10,6 +10,7 @@ type Props = {
   errorVariants?: string | string[] | undefined;
   touchedVariants?: boolean | undefined;
   errorCorrects?: string | string[] | undefined;
+  disabled?: boolean;
 };
 
 const parseValues = (value: { variants: string[]; corrects: number[] }) => {
@@ -26,6 +27,7 @@ const VariantsCreator = ({
   errorVariants,
   touchedVariants,
   errorCorrects,
+  disabled,
 }: Props) => {
   const [text, setText] = useState("");
   const [checkedItems, setCheckedItems] = useState<VariantType[]>(() =>
@@ -76,12 +78,14 @@ const VariantsCreator = ({
   return (
     <View>
       <TextInput
+        disabled={disabled}
         label="Variant Text"
         value={text}
         onChangeText={(text) => setText(text)}
         error={!!(errorVariants && touchedVariants)}
       />
       <Button
+        disabled={disabled}
         mode="outlined"
         style={{ marginVertical: 16 }}
         onPress={handleAddChecked}
@@ -100,12 +104,14 @@ const VariantsCreator = ({
             }}
           >
             <Checkbox.Item
+              disabled={disabled}
               labelStyle={{ width: "65%" }}
               label={elem.text}
               status={elem.isCorrect ? "checked" : "unchecked"}
               onPress={() => handleCheckboxChange(elem.text)}
             />
             <Button
+              disabled={disabled}
               labelStyle={{ color: colors.error }}
               onPress={() => handleRemoveChecked(elem.text)}
             >
