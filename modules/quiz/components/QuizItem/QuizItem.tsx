@@ -60,7 +60,7 @@ const QuizItem = ({ quiz }: Params) => {
           pathname:
             SecureStore.getItem(USER_ROLE) === "waiter"
               ? "/user-dashboard/[id]/(quiz)/[quizId]/(take-quiz)"
-              : `/restaurant/[id]/(quiz)/[quizId]/(questions)`,
+              : `/admin-dashboard/(tabs)/restaurants/[id]/(quiz)/[quizId]/(questions)`,
           params: { id: restaurantId, quizId: quiz.id },
         })
       }

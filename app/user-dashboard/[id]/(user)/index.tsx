@@ -3,13 +3,11 @@ import Wrapper from "@/modules/common/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
 import CurrentUserInfo from "@/modules/restaurant/components/RestaurantInfo/userInfo/CurrentUserInfo";
-import { useRouter } from "expo-router";
 import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function User() {
-  const router = useRouter();
   const insets = useSafeAreaInsets();
 
   const { data: currentUser } = useValidateTokenQuery();

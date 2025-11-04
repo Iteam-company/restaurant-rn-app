@@ -1,19 +1,18 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { API_URL } from "../../../common/constants/api";
-import { prepareHeadersWithAuth } from "@/modules/common/redux/utils/prepareHeadersWithAuth";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import { UserType } from "@/modules/common/types/user.types";
 import { AuthCredentials } from "../types";
 import { UpdateUserInfoI } from "@/modules/common/types/restaurant.types";
+import { baseQueryWithReauth } from "@/modules/common/redux/store/reauth-store";
 
 export const authApi = createApi({
   reducerPath: "auth-api",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${API_URL}`,
-    prepareHeaders: prepareHeadersWithAuth,
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
-    signin: builder.mutation<{ access_token: string }, AuthCredentials>({
+    signin: builder.mutation<
+      { access_token: string; refresh_token?: string },
+      AuthCredentials
+    >({
       query: (body) => ({
         url: "/auth/login",
         method: "POST",
@@ -22,7 +21,7 @@ export const authApi = createApi({
       invalidatesTags: ["Auth"],
     }),
     signup: builder.mutation<
-      { access_token: string; id: number },
+      { access_token: string; refresh_token?: string; id: number },
       Partial<UserType>
     >({
       query: (body) => ({

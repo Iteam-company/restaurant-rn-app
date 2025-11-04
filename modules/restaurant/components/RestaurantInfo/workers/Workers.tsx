@@ -58,7 +58,8 @@ const Workers = () => {
                   description={el.email}
                   onPress={() => {
                     router.push({
-                      pathname: "/restaurant/[id]/(workers)/worker/[workerId]",
+                      pathname:
+                        "/admin-dashboard/(tabs)/restaurants/[id]/(workers)/worker/[workerId]",
                       params: { id: restaurantId, workerId: el.id },
                     });
                   }}
