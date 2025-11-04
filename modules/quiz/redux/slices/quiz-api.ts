@@ -1,7 +1,12 @@
 import { workerApi } from "@/modules/common/redux/slices/worker-api";
 import { TagTypes } from "@/modules/common/redux/utils/api-config";
 import { ICreateQuestionDTO } from "@/modules/questions/types";
-import { IQuizInfo, IQuizResultDto, IQuizResultInfo } from "../../types";
+import {
+  ICreateQuizDTO,
+  IQuizInfo,
+  IQuizResultDto,
+  IQuizResultInfo,
+} from "../../types";
 
 export const quizApi = workerApi
   .enhanceEndpoints({ addTagTypes: [TagTypes.QUIZ, TagTypes.QUIZ_RESULT] })
@@ -43,14 +48,14 @@ export const quizApi = workerApi
           { type: TagTypes.QUIZ, id: id },
         ],
       }),
-      createQuiz: builder.mutation<IQuizInfo, Partial<IQuizInfo>>({
+      createQuiz: builder.mutation<IQuizInfo, Partial<ICreateQuizDTO>>({
         query: (body) => ({
           url: "/quiz",
           method: "POST",
           body,
         }),
-        invalidatesTags: (result: any, error: any, body) => [
-          { type: TagTypes.QUIZ, id: body.id },
+        invalidatesTags: (result: any) => [
+          { type: TagTypes.QUIZ, id: result.id },
         ],
       }),
       updateQuiz: builder.mutation<IQuizInfo, Partial<IQuizInfo>>({

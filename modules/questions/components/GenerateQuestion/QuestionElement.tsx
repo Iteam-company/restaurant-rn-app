@@ -9,9 +9,10 @@ interface Props {
   question: ICreateQuestionDTO;
   onChange?: (params: ICreateQuestionDTO) => void;
   onDelete?: () => void;
+  disabled?: boolean;
 }
 
-const QuestionElement = ({ question, onChange, onDelete }: Props) => {
+const QuestionElement = ({ question, onChange, onDelete, disabled }: Props) => {
   const { colors } = useTheme();
   const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -44,6 +45,7 @@ const QuestionElement = ({ question, onChange, onDelete }: Props) => {
             onChangeText={handleTextChange}
             style={styles.textInput}
             multiline
+            disabled={disabled}
           />
         </View>
         <Menu
@@ -55,6 +57,7 @@ const QuestionElement = ({ question, onChange, onDelete }: Props) => {
           anchorPosition="bottom"
         >
           <Menu.Item
+            disabled={disabled}
             title="Delete"
             leadingIcon="trash-can-outline"
             titleStyle={{ color: colors.error }}
@@ -71,6 +74,7 @@ const QuestionElement = ({ question, onChange, onDelete }: Props) => {
         </Menu>
       </View>
       <VariantsCreator
+        disabled={disabled}
         value={{ variants: question.variants, corrects: question.correct }}
         onChange={handleOnChange}
       />

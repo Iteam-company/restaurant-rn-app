@@ -1,4 +1,5 @@
 import { UserInfo } from "@/modules/common/types/user.types";
+import { ICreateQuestionDTO, IQuestionInfo } from "@/modules/questions/types";
 
 export enum StatusEnum {
   IN_PROGRESS = "in-progress",
@@ -19,6 +20,16 @@ export interface IQuizInfo {
   difficultyLevel: DifficultyLevelEnum;
   timeLimit: number;
   status: StatusEnum;
+  questions: IQuestionInfo[];
+}
+
+export interface ICreateQuizDTO {
+  title: string;
+  difficultyLevel: DifficultyLevelEnum;
+  timeLimit: number;
+  status: StatusEnum;
+  questions: ICreateQuestionDTO[];
+  restaurantId: number;
 }
 
 export interface IQuizResultInfo {
