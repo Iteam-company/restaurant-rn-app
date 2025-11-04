@@ -5,9 +5,10 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 import { secureStorage } from "@/modules/common/utils/secureStorage";
+import { API_URL } from "@/modules/common/constants/api";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.EXPO_PUBLIC_API_URL,
+  baseUrl: API_URL,
   prepareHeaders: (headers) => {
     const token = secureStorage.getAccessToken();
     if (token) {

@@ -38,7 +38,7 @@ const QuestionItem = ({ question }: Props) => {
       onPress={() =>
         router.push({
           pathname:
-            "/restaurant/[id]/(quiz)/[quizId]/(questions)/[questionId]/questionItemInfo",
+            "/admin-dashboard/(tabs)/restaurants/[id]/(quiz)/[quizId]/(questions)/[questionId]/questionItemInfo",
           params: { id: restaurantId, quizId, questionId: question.id },
         })
       }

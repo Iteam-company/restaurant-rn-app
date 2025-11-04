@@ -2,13 +2,7 @@ import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
 import { useGetRestaurantQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import {
-  router,
-  Stack,
-  Tabs,
-  useGlobalSearchParams,
-  usePathname,
-} from "expo-router";
+import { router, Stack, Tabs, useGlobalSearchParams } from "expo-router";
 import { Platform } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
 
@@ -20,7 +14,6 @@ export default function RestaurantPageLayout() {
   }>();
 
   const { data: restaurantData } = useGetRestaurantQuery(id, { skip: !id });
-  const pathname = usePathname();
 
   return (
     <>
@@ -36,16 +29,9 @@ export default function RestaurantPageLayout() {
         <Appbar.BackAction
           iconColor="white"
           onPress={() =>
-            /^\/restaurant\/\d+$/.test(pathname)
-              ? router.push({
-                  pathname: "/dashboard/(tabs)/restaurants",
-                })
-              : /^\/restaurant\/\d+\/\d+\/addQuiz\/addQuiz$/.test(pathname)
-              ? router.push({
-                  pathname: "/restaurant/[id]/(quiz)",
-                  params: { id },
-                })
-              : router.back()
+            router.push({
+              pathname: "/admin-dashboard/(tabs)/restaurants",
+            })
           }
         />
         <Appbar.Content
