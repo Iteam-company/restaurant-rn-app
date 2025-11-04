@@ -52,7 +52,7 @@ const questionApi = workerApi
       generateQuestions: builder.mutation<
         ICreateQuestionDTO[],
         {
-          count: number;
+          count?: number;
           prompt?: string;
           previousQuestions?: ICreateQuestionDTO[];
           files?: DocumentPicker.DocumentPickerAsset[];
@@ -61,7 +61,9 @@ const questionApi = workerApi
         query: ({ count, prompt, previousQuestions, files }) => {
           const formData = new FormData();
 
-          formData.append("count", count.toString());
+          if (count) {
+            formData.append("count", count.toString());
+          }
 
           if (prompt) {
             formData.append("prompt", prompt);

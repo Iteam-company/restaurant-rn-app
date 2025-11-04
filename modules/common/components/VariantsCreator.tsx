@@ -10,6 +10,7 @@ type Props = {
   errorVariants?: string | string[] | undefined;
   touchedVariants?: boolean | undefined;
   errorCorrects?: string | string[] | undefined;
+  disabled?: boolean;
 };
 
 const parseValues = (value: { variants: string[]; corrects: number[] }) => {
@@ -26,6 +27,7 @@ const VariantsCreator = ({
   errorVariants,
   touchedVariants,
   errorCorrects,
+  disabled,
 }: Props) => {
   const [text, setText] = useState("");
   const [checkedItems, setCheckedItems] = useState<VariantType[]>(() =>
@@ -76,12 +78,14 @@ const VariantsCreator = ({
   return (
     <View>
       <TextInput
+        disabled={disabled}
         label="Variant Text"
         value={text}
         onChangeText={(text) => setText(text)}
         error={!!(errorVariants && touchedVariants)}
       />
       <Button
+        disabled={disabled}
         mode="outlined"
         style={{ marginVertical: 16 }}
         onPress={handleAddChecked}
@@ -100,12 +104,14 @@ const VariantsCreator = ({
             }}
           >
             <Checkbox.Item
+              disabled={disabled}
               labelStyle={{ width: "65%" }}
               label={elem.text}
               status={elem.isCorrect ? "checked" : "unchecked"}
               onPress={() => handleCheckboxChange(elem.text)}
             />
             <Button
+              disabled={disabled}
               labelStyle={{ color: colors.error }}
               onPress={() => handleRemoveChecked(elem.text)}
             >
@@ -121,9 +127,9 @@ const VariantsCreator = ({
         )}
       </View>
       <Text style={{ marginVertical: 12, color: colors.secondary }}>
-        {`To add a new variant, write in the field and press the "Add variant"
-        button. Your question will be created under the button. If the question
-        is correct, check it.`}
+        To add a new variant, write in the field and press the &quot;Add
+        variant&quot; button. Your question will be created under the button. If
+        the question is correct, check it.
       </Text>
     </View>
   );
