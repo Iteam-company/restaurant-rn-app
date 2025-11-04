@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import * as SecureStore from "expo-secure-store";
-import { AUTH_TOKEN_KEY } from "../constants/api";
+import { secureStorage } from "../utils/secureStorage";
 
 type AuthTokenContextType = {
   token: string | null;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  setRefreshToken: (token: string | null) => Promise<void>;
+  clearTokens: () => Promise<void>;
 };
 
 const AuthTokenContext = createContext<AuthTokenContextType | undefined>(
@@ -15,16 +16,31 @@ export const AuthTokenProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [token, setToken] = useState<string | null>(() =>
-    SecureStore.getItem(AUTH_TOKEN_KEY)
+    secureStorage.getAccessToken()
   );
 
   useEffect(() => {
-    if (token) SecureStore.setItem(AUTH_TOKEN_KEY, token);
-    else SecureStore.deleteItemAsync(AUTH_TOKEN_KEY);
+    if (token) secureStorage.setAccessToken(token);
+    else secureStorage.deleteAccessToken();
   }, [token]);
 
+  const setRefreshToken = async (refreshToken: string | null) => {
+    if (refreshToken) {
+      await secureStorage.setRefreshToken(refreshToken);
+    } else {
+      await secureStorage.deleteRefreshToken();
+    }
+  };
+
+  const clearTokens = async () => {
+    setToken(null);
+    await secureStorage.clearTokens();
+  };
+
   return (
-    <AuthTokenContext.Provider value={{ token, setToken }}>
+    <AuthTokenContext.Provider
+      value={{ token, setToken, setRefreshToken, clearTokens }}
+    >
       {children}
     </AuthTokenContext.Provider>
   );

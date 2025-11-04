@@ -25,7 +25,7 @@ export default function SignInForm() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const { setToken } = useAuthToken();
+  const { setToken, setRefreshToken } = useAuthToken();
 
   const [signIn, { isLoading, error }] =
     useSigninMutation<RTKMutationPayloadType>();
@@ -50,6 +50,9 @@ export default function SignInForm() {
         }).unwrap();
         if (userToken.access_token) {
           setToken(userToken.access_token);
+          if (userToken.refresh_token) {
+            await setRefreshToken(userToken.refresh_token);
+          }
         }
       } catch (e) {
         const error = e as FetchBaseQueryError;

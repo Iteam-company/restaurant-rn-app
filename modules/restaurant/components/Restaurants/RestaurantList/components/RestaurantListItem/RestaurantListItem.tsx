@@ -86,7 +86,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
               style={styles.button}
               onPress={() => {
                 router.push({
-                  pathname: "/restaurant/[id]/(quiz)",
+                  pathname: "/admin-dashboard/(tabs)/restaurants/[id]/(quiz)",
                   params: { id },
                 });
               }}

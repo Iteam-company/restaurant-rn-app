@@ -32,7 +32,7 @@ export default function AuthTabsLayout() {
         case UserROLES.ADMIN:
         case UserROLES.OWNER:
           router.push({
-            pathname: "/dashboard/restaurants",
+            pathname: "/admin-dashboard/restaurants",
           });
           break;
       }
