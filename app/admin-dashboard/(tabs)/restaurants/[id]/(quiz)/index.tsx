@@ -1,6 +1,9 @@
 import Wrapper from "@/modules/common/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
-import { navigateToCreateQuiz } from "@/modules/common/utils/flowNavigation";
+import {
+  navigateToCreateQuiz,
+  navigateToGenerateQuiz,
+} from "@/modules/common/utils/flowNavigation";
 import QuizList from "@/modules/quiz/components/QuizList";
 import { useGlobalSearchParams } from "expo-router";
 import React from "react";
@@ -29,7 +32,7 @@ const Quiz = () => {
           {
             icon: "progress-question",
             label: "Generate Quiz",
-            onPress: () => navigateToCreateQuiz(restaurantId),
+            onPress: () => navigateToGenerateQuiz(restaurantId),
           },
         ]}
         style={[getFabUiSettings(insets, { isFABGroup: true })]}

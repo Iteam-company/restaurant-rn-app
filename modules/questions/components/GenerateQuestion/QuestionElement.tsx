@@ -2,22 +2,30 @@ import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDial
 import VariantsCreator from "@/modules/common/components/VariantsCreator";
 import { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { IconButton, Menu, Title, useTheme } from "react-native-paper";
+import { IconButton, Menu, TextInput, useTheme } from "react-native-paper";
 import { ICreateQuestionDTO } from "../../types";
 
 interface Props {
   question: ICreateQuestionDTO;
   onChange?: (params: ICreateQuestionDTO) => void;
   onDelete?: () => void;
+  disabled?: boolean;
 }
 
-const QuestionElement = ({ question, onChange, onDelete }: Props) => {
+const QuestionElement = ({ question, onChange, onDelete, disabled }: Props) => {
   const { colors } = useTheme();
   const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
   const [menuVisible, setMenuVisible] = useState(false);
 
   const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);
+
+  const handleTextChange = useCallback(
+    (text: string) => {
+      onChange && onChange({ ...question, text });
+    },
+    [onChange, question]
+  );
 
   const handleOnChange = useCallback(
     (values: { variants: string[]; correct: number[] }) => {
@@ -29,7 +37,17 @@ const QuestionElement = ({ question, onChange, onDelete }: Props) => {
   return (
     <View style={[styles.container, { backgroundColor: colors.surface }]}>
       <View style={styles.headerContainer}>
-        <Title style={styles.headerTitle}>{question.text}</Title>
+        <View style={styles.titleContainer}>
+          <TextInput
+            mode="outlined"
+            label="Question Text"
+            value={question.text}
+            onChangeText={handleTextChange}
+            style={styles.textInput}
+            multiline
+            disabled={disabled}
+          />
+        </View>
         <Menu
           visible={menuVisible}
           onDismiss={closeMenu}
@@ -38,14 +56,8 @@ const QuestionElement = ({ question, onChange, onDelete }: Props) => {
           }
           anchorPosition="bottom"
         >
-          {/* <Menu.Item
-            title="Edit"
-            leadingIcon="pencil-outline"
-            onPress={() => {
-              closeMenu();
-            }}
-          /> */}
           <Menu.Item
+            disabled={disabled}
             title="Delete"
             leadingIcon="trash-can-outline"
             titleStyle={{ color: colors.error }}
@@ -62,6 +74,7 @@ const QuestionElement = ({ question, onChange, onDelete }: Props) => {
         </Menu>
       </View>
       <VariantsCreator
+        disabled={disabled}
         value={{ variants: question.variants, corrects: question.correct }}
         onChange={handleOnChange}
       />
@@ -104,9 +117,14 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 8,
   },
-  headerTitle: {
-    width: "85%",
+  titleContainer: {
+    flex: 1,
+  },
+  textInput: {
+    flex: 1,
   },
 });
 
