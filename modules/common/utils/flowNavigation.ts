@@ -138,6 +138,13 @@ export const navigateToCreateQuiz = (restaurantId?: string) => {
   });
 };
 
+export const navigateToGenerateQuiz = (restaurantId?: string) => {
+  navigateToFlow(FlowType.QUIZ, {
+    restaurantId,
+    action: ActionType.GENERATE,
+  });
+};
+
 export const navigateToEditQuestion = (
   questionId: string | number,
   quizId?: string,
