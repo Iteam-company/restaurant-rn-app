@@ -1,21 +1,21 @@
+import FormWrapper from "@/modules/common/components/FormWrapper";
+import { Logo } from "@/modules/common/components/ui/Logo";
+import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
+import { RTKMutationPayloadType } from "@/modules/common/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useFormik } from "formik";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { useFormik } from "formik";
 import {
-  SegmentedButtons,
-  TextInput,
-  Button,
-  Text,
   ActivityIndicator,
+  Button,
+  SegmentedButtons,
+  Text,
+  TextInput,
 } from "react-native-paper";
-import { Logo } from "@/modules/common/components/ui/Logo";
-import FormWrapper from "@/modules/common/components/FormWrapper";
-import { AuthMethod, getValidationSchema, initialValues } from "./utils";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { RTKMutationPayloadType } from "@/modules/common/types";
-import { useSigninMutation } from "../../redux/slices/auth-api";
-import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
 import Toast from "react-native-toast-message";
+import { useSigninMutation } from "../../redux/slices/auth-api";
+import { AuthMethod, getValidationSchema, initialValues } from "./utils";
 
 export default function SignInForm() {
   const [authMethod, setAuthMethod] = useState<AuthMethod>("email");
