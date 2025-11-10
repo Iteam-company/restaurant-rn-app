@@ -3,7 +3,7 @@ import QuizResultList from "@/modules/quiz/components/quizResult/QuizResultList"
 
 const QuizResult = () => {
   return (
-    <Wrapper paddingOff centered>
+    <Wrapper>
       <QuizResultList />
     </Wrapper>
   );

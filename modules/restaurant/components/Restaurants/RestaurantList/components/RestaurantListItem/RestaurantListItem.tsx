@@ -1,7 +1,7 @@
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { navigateToEditRestaurant } from "@/modules/common/utils/flowNavigation";
-import { useDeleteRestaurantMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { useDeleteRestaurantMutation } from "@/lib/redux/slices/restaurant-api";
 import { router } from "expo-router";
 import { FC, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";

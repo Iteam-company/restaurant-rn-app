@@ -1,4 +1,4 @@
-import { IQuizInfo } from "@/modules/quiz/types";
+import { IQuizInfo } from "@/lib/redux/types";
 import * as yup from "yup";
 
 export const initialValues = {

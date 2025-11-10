@@ -1,7 +1,7 @@
-import { workerApi } from "@/modules/common/redux/slices/worker-api";
-import { TagTypes } from "@/modules/common/redux/utils/api-config";
 import * as DocumentPicker from "expo-document-picker";
-import { ICreateQuestionDTO, IQuestionInfo } from "../../types";
+
+import { workerApi } from "./worker-api";
+import { ICreateQuestionDTO, IQuestionInfo, TagTypes } from "../types";
 
 const questionApi = workerApi
   .enhanceEndpoints({ addTagTypes: [TagTypes.QUESTION] })

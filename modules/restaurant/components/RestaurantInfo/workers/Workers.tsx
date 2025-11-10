@@ -16,8 +16,8 @@ import {
 } from "react-native-paper";
 
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
-import { useSearchUsersQuery } from "@/modules/common/redux/slices/user-api";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSearchUsersQuery } from "@/lib/redux/slices/user-api";
 
 const Workers = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
@@ -36,7 +36,7 @@ const Workers = () => {
   };
 
   return (
-    <Wrapper paddingOff>
+    <Wrapper>
       <Searchbar
         placeholder="Search"
         style={{ marginTop: 10 }}

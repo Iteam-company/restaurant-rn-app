@@ -1,8 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { UserType } from "@/modules/common/types/user.types";
-import { AuthCredentials } from "../types";
-import { UpdateUserInfoI } from "@/modules/common/types/restaurant.types";
-import { baseQueryWithReauth } from "@/modules/common/redux/store/reauth-store";
+import { baseQueryWithReauth } from "@/lib/redux/utils/reauth-store";
+import { AuthCredentials, UpdateUserInfoI, UserType } from "../types";
 
 export const authApi = createApi({
   reducerPath: "auth-api",

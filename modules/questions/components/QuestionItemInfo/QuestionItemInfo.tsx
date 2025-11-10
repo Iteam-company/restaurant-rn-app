@@ -13,7 +13,7 @@ import {
 import {
   useDeleteQuestionMutation,
   useGetOneQuestionQuery,
-} from "../../redux/slices/question-api";
+} from "../../../../lib/redux/slices/question-api";
 
 const QuestionItemInfo = () => {
   const {

@@ -3,7 +3,7 @@ import QuizList from "@/modules/quiz/components/QuizList";
 
 const RestaurantQuiz = () => {
   return (
-    <Wrapper paddingOff>
+    <Wrapper>
       <QuizList />
     </Wrapper>
   );

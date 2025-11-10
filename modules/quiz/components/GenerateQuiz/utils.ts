@@ -1,7 +1,10 @@
 import * as yup from "yup";
-import { DifficultyLevelEnum, StatusEnum } from "../../types";
 import * as DocumentPicker from "expo-document-picker";
-import { ICreateQuestionDTO } from "@/modules/questions/types";
+import {
+  DifficultyLevelEnum,
+  ICreateQuestionDTO,
+  StatusEnum,
+} from "@/lib/redux/types";
 
 export const difficultyLevelItem = Object.entries(DifficultyLevelEnum).map(
   ([_, value]) => ({

@@ -1,6 +1,6 @@
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { navigateToCreateRestaurant } from "@/modules/common/utils/flowNavigation";
-import { useGetRestaurantsQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { useGetRestaurantsQuery } from "@/lib/redux/slices/restaurant-api";
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button } from "react-native-paper";
 import { RestaurantListItem } from "./components/RestaurantListItem";

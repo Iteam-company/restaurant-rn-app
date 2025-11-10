@@ -3,7 +3,7 @@ import EditRestaurant from "@/modules/restaurant/components/EditRestaurant/EditR
 
 const EditRestaurantScreen = () => {
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper>
       <EditRestaurant />
     </Wrapper>
   );

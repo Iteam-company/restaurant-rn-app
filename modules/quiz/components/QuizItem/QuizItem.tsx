@@ -1,7 +1,6 @@
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { USER_ROLE } from "@/modules/common/constants/api";
 import { navigateToEditQuiz } from "@/modules/common/utils/flowNavigation";
-import { statusIcons } from "@/modules/common/utils/menuUtils";
 import { router, useGlobalSearchParams } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useState } from "react";
@@ -15,8 +14,8 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
-import { useDeleteQuizMutation } from "../../redux/slices/quiz-api";
-import { DifficultyLevelEnum, IQuizInfo } from "../../types";
+import { useDeleteQuizMutation } from "../../../../lib/redux/slices/quiz-api";
+import { DifficultyLevelEnum, IQuizInfo, statusIcons } from "@/lib/redux/types";
 
 type Params = {
   quiz: IQuizInfo;

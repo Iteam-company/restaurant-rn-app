@@ -11,8 +11,8 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
-import { useDeleteQuestionMutation } from "../../redux/slices/question-api";
-import { IQuestionInfo } from "../../types";
+import { useDeleteQuestionMutation } from "../../../../lib/redux/slices/question-api";
+import { IQuestionInfo } from "@/lib/redux/types";
 
 type Props = {
   question: IQuestionInfo;

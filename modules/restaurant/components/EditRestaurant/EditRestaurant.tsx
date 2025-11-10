@@ -17,10 +17,10 @@ import {
   useGetRestaurantQuery,
   useUpdateRestaurantMutation,
   useUploadRestaurantImageMutation,
-} from "../../redux/slices/restaurant-api";
+} from "../../../../lib/redux/slices/restaurant-api";
 import { validationSchema } from "./utils";
-import { ErrorResponseType } from "@/modules/common/types";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const EditRestaurant = () => {
   const { colors } = useTheme();
@@ -40,7 +40,7 @@ const EditRestaurant = () => {
         updateRestaurant({ values, id: restaurantId }).unwrap();
         router.back();
       } catch (e) {
-        const error = e as ErrorResponseType;
+        const error = e as FetchBaseQueryError;
         toastErrorHandler(error);
       }
     },

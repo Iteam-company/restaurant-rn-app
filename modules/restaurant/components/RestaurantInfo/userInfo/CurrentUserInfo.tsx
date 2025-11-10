@@ -1,6 +1,4 @@
-import { useGetCurrentUserQuery } from "@/modules/common/redux/slices/user-api";
 import { router } from "expo-router";
-import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import {
   Surface,
@@ -15,6 +13,7 @@ import * as SecureStore from "expo-secure-store";
 import { USER_ROLE } from "@/modules/common/constants/api";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
+import { useGetCurrentUserQuery } from "@/lib/redux/slices/user-api";
 
 const CurrentUserInfo = () => {
   const { colors } = useTheme();

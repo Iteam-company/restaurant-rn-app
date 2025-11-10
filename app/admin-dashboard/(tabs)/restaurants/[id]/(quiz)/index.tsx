@@ -16,7 +16,7 @@ const Quiz = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper>
       <QuizList />
       <FAB.Group
         open={isOpen}

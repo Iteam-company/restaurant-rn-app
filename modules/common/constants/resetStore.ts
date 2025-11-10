@@ -1,7 +1,8 @@
-import { authApi } from "@/modules/auth/redux/slices/auth-api";
-import { userApi } from "@/modules/common/redux/slices/user-api";
-import { workerApi } from "@/modules/common/redux/slices/worker-api";
-import { store } from "@/modules/common/redux/store/store";
+import { authApi } from "@/lib/redux/slices/auth-api";
+import { userApi } from "@/lib/redux/slices/user-api";
+import { workerApi } from "@/lib/redux/slices/worker-api";
+
+import { store } from "@/lib/redux/store/store";
 
 export const resetStore = () => {
   store.dispatch(workerApi.util.resetApiState());

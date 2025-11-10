@@ -1,9 +1,9 @@
+import { ICreateQuestionDTO } from "@/lib/redux/types";
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import VariantsCreator from "@/modules/common/components/VariantsCreator";
 import { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { IconButton, Menu, TextInput, useTheme } from "react-native-paper";
-import { ICreateQuestionDTO } from "../../types";
 
 interface Props {
   question: ICreateQuestionDTO;

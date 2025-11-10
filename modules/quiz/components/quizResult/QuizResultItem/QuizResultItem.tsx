@@ -1,12 +1,6 @@
 import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { USER_ROLE } from "@/modules/common/constants/api";
-import { statusIcons } from "@/modules/common/utils/menuUtils";
-import { useDeleteQuizResultMutation } from "@/modules/quiz/redux/slices/quiz-api";
-import {
-  DifficultyLevelEnum,
-  IQuizResultInfo,
-  StatusEnum,
-} from "@/modules/quiz/types";
+import { useDeleteQuizResultMutation } from "@/lib/redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useState } from "react";
@@ -20,6 +14,12 @@ import {
   Title,
   useTheme,
 } from "react-native-paper";
+import {
+  DifficultyLevelEnum,
+  IQuizResultInfo,
+  StatusEnum,
+  statusIcons,
+} from "@/lib/redux/types";
 
 interface Props {
   quizResult: IQuizResultInfo;

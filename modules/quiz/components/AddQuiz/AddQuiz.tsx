@@ -4,15 +4,16 @@ import { useFormik } from "formik";
 import { ScrollView } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import { useCreateQuizMutation } from "../../redux/slices/quiz-api";
+import { useCreateQuizMutation } from "../../../../lib/redux/slices/quiz-api";
 import {
   difficultyLevelItem,
   initialValues,
   statusItem,
   validationSchema,
 } from "./utils";
-import { ErrorResponseType } from "@/modules/common/types";
+
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const AddQuiz = () => {
   const [createQuiz, { isLoading: isCreatingQuiz }] = useCreateQuizMutation();
@@ -27,7 +28,7 @@ const AddQuiz = () => {
           await createQuiz(formData).unwrap();
           router.back();
         } catch (e) {
-          const error = e as ErrorResponseType;
+          const error = e as FetchBaseQueryError;
           toastErrorHandler(error);
         }
       },

@@ -3,7 +3,7 @@ import QuestionItemInfo from "@/modules/questions/components/QuestionItemInfo/Qu
 
 const QuestionItemInfoPage = () => {
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper>
       <QuestionItemInfo />
     </Wrapper>
   );

@@ -1,6 +1,6 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import VariantsCreator from "@/modules/common/components/VariantsCreator";
-import { useGetQuizByRestaurantQuery } from "@/modules/quiz/redux/slices/quiz-api";
+import { useGetQuizByRestaurantQuery } from "@/lib/redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import { useEffect } from "react";
@@ -10,10 +10,10 @@ import { Dropdown } from "react-native-paper-dropdown";
 import {
   useGetOneQuestionQuery,
   useUpdateQuestionMutation,
-} from "../../redux/slices/question-api";
+} from "../../../../lib/redux/slices/question-api";
 import { quizItems, validationSchema } from "../AddQuestion/utils";
-import { ErrorResponseType } from "@/modules/common/types";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const EditQuestion = () => {
   const {
@@ -53,7 +53,7 @@ const EditQuestion = () => {
         });
         router.back();
       } catch (e) {
-        const error = e as ErrorResponseType;
+        const error = e as FetchBaseQueryError;
         toastErrorHandler(error);
       }
     },

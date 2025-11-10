@@ -1,6 +1,6 @@
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
-import { useGetQuizQuery } from "@/modules/quiz/redux/slices/quiz-api";
+import { useGetQuizQuery } from "@/lib/redux/slices/quiz-api";
 import * as DocumentPicker from "expo-document-picker";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
@@ -17,8 +17,7 @@ import * as yup from "yup";
 import {
   useCreateManyQuestionsMutation,
   useGenerateQuestionsMutation,
-} from "../../redux/slices/question-api";
-import { ICreateQuestionDTO } from "../../types";
+} from "../../../../lib/redux/slices/question-api";
 import QuestionElement from "./QuestionElement";
 import {
   GenerateQuestionFormData,
@@ -26,8 +25,9 @@ import {
   initialFormData,
 } from "./utils";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
-import { ErrorResponseType } from "@/modules/common/types";
 import FileUploader from "@/modules/common/components/FileUploader";
+import { ICreateQuestionDTO } from "@/lib/redux/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const GenerateQuestion = () => {
   const { quizId } = useLocalSearchParams<{
@@ -133,7 +133,7 @@ const GenerateQuestion = () => {
       setData(result);
     } catch (error) {
       console.error("Error generating questions:", error);
-      toastErrorHandler(error as ErrorResponseType, {
+      toastErrorHandler(error as FetchBaseQueryError, {
         text2: "Failed to generate questions. Please try again.",
       });
     }
@@ -149,7 +149,7 @@ const GenerateQuestion = () => {
       router.back();
     } catch (error) {
       console.error("Error creating questions:", error);
-      toastErrorHandler(error as ErrorResponseType, {
+      toastErrorHandler(error as FetchBaseQueryError, {
         text2: "Failed to create questions. Please try again.",
       });
     }

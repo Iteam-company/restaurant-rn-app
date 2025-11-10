@@ -4,7 +4,7 @@ import QuizResultList from "@/modules/quiz/components/quizResult/QuizResultList"
 
 const QuizResultScreen = () => {
   return (
-    <Wrapper paddingOff>
+    <Wrapper>
       <QuizResultList />
     </Wrapper>
   );

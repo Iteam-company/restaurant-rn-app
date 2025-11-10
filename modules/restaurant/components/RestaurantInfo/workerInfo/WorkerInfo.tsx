@@ -1,5 +1,5 @@
+import { useGetUserByIdQuery } from "@/lib/redux/slices/user-api";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
-import { useGetUserByIdQuery } from "@/modules/common/redux/slices/user-api";
 import { useLocalSearchParams } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
