@@ -3,7 +3,7 @@ import CreateRestaurant from "@/modules/restaurant/components/CreateRestaurant/C
 
 const CreateRestaurantScreen = () => {
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper>
       <CreateRestaurant />
     </Wrapper>
   );

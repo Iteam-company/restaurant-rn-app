@@ -3,7 +3,7 @@ import EditQuiz from "@/modules/quiz/components/EditQuiz/EditQuiz";
 
 const EditQuizScreen = () => {
   return (
-    <Wrapper paddingOff headerTitle={"Edit Quiz"}>
+    <Wrapper headerTitle={"Edit Quiz"}>
       <EditQuiz />
     </Wrapper>
   );

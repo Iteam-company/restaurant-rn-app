@@ -1,5 +1,5 @@
+import { ICreateQuestionDTO } from "@/lib/redux/types";
 import * as yup from "yup";
-import { ICreateQuestionDTO } from "../../types";
 
 export interface GenerateQuestionFormData {
   count: number;

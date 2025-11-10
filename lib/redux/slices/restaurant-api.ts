@@ -1,13 +1,12 @@
-// src/modules/common/redux/apis/restaurant-api.ts
-import { workerApi } from "@/modules/common/redux/slices/worker-api";
-import { TagTypes } from "@/modules/common/redux/utils/api-config";
+import { workerApi } from "./worker-api";
 import {
   CreateRestaurantRequest,
   CreateRestaurantResponse,
   DeleteWorker,
   RestaurantInfo,
-} from "@/modules/common/types/restaurant.types";
-import { UserInfo } from "@/modules/common/types/user.types";
+  UserInfo,
+  TagTypes,
+} from "../types";
 
 export const restaurantApi = workerApi
   .enhanceEndpoints({
@@ -21,7 +20,7 @@ export const restaurantApi = workerApi
           url: `/restaurant/${id}`,
           method: "GET",
         }),
-        providesTags: (result, error, id) => [
+        providesTags: (_, __, id) => [
           { type: TagTypes.RESTAURANT, id },
           { type: TagTypes.RESTAURANT, id: "LIST" },
         ],
@@ -38,10 +37,10 @@ export const restaurantApi = workerApi
         providesTags: (result) => [
           { type: TagTypes.RESTAURANT, id: "LIST" },
           ...(Array.isArray(result)
-            ? result?.map(({ id }) => ({
+            ? (result?.map(({ id }) => ({
                 type: TagTypes.RESTAURANT,
                 id,
-              })) ?? []
+              })) ?? [])
             : [
                 {
                   type: TagTypes.RESTAURANT,

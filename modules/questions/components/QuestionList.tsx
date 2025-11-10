@@ -2,7 +2,7 @@ import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { useGlobalSearchParams } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
-import { useGetQuestionsQuery } from "../redux/slices/question-api";
+import { useGetQuestionsQuery } from "../../../lib/redux/slices/question-api";
 import QuestionItem from "./QuestionItem.tsx/QuestionItem";
 
 const QuestionList = () => {

@@ -10,7 +10,7 @@ export default function Signin() {
   }, []);
 
   return (
-    <Wrapper centered>
+    <Wrapper>
       <SignInForm />
     </Wrapper>
   );

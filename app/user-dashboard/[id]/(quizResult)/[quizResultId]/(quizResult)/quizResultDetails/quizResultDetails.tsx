@@ -4,7 +4,7 @@ import { QuizResultDetails } from "@/modules/quiz/components/quizResult/QuizResu
 
 const QuizResult = () => {
   return (
-    <Wrapper paddingOff>
+    <Wrapper>
       <QuizResultDetails />
     </Wrapper>
   );

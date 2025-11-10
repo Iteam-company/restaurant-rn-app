@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore } from "redux-persist";
 
-import { authApi } from "@/modules/auth/redux/slices/auth-api";
+import { authApi } from "@/lib/redux/slices/auth-api";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { workerApi } from "../slices/worker-api";
 
@@ -17,6 +17,6 @@ const store = configureStore({
 });
 
 setupListeners(store.dispatch);
-const persistor = persistStore(store);
+const persister = persistStore(store);
 
-export { persistor, store };
+export { persister, store };

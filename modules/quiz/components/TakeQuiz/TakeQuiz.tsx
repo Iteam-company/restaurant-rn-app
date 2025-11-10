@@ -1,5 +1,5 @@
 import InformationDialog from "@/modules/common/components/InformationDialog";
-import { useGetQuestionsQuery } from "@/modules/questions/redux/slices/question-api";
+import { useGetQuestionsQuery } from "@/lib/redux/slices/question-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -12,9 +12,9 @@ import {
   useTheme,
 } from "react-native-paper";
 import { useTimer } from "react-timer-hook";
-import { useCreateQuizResultMutation } from "../../redux/slices/quiz-api";
+import { useCreateQuizResultMutation } from "../../../../lib/redux/slices/quiz-api";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
-import { ErrorResponseType } from "@/modules/common/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const TakeQuiz = () => {
   const {
@@ -70,7 +70,7 @@ const TakeQuiz = () => {
         })
         .catch((error) => {
           console.log(error);
-          toastErrorHandler(error as ErrorResponseType, {
+          toastErrorHandler(error as FetchBaseQueryError, {
             text2: "Something went wrong, try to take quiz again!",
           });
         });

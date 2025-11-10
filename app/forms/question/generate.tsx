@@ -3,7 +3,7 @@ import GenerateQuestion from "@/modules/questions/components/GenerateQuestion/Ge
 
 const GenerateQuestionsPage = () => {
   return (
-    <Wrapper paddingOff headerTitle={"Generate Questions"}>
+    <Wrapper headerTitle={"Generate Questions"}>
       <GenerateQuestion />
     </Wrapper>
   );

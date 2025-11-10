@@ -1,6 +1,4 @@
-import { statusIcons } from "@/modules/common/utils/menuUtils";
-import { useGetQuizResultQuery } from "@/modules/quiz/redux/slices/quiz-api";
-import { DifficultyLevelEnum, StatusEnum } from "@/modules/quiz/types";
+import { useGetQuizResultQuery } from "@/lib/redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -13,6 +11,11 @@ import {
 } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import { USER_ROLE } from "@/modules/common/constants/api";
+import {
+  DifficultyLevelEnum,
+  StatusEnum,
+  statusIcons,
+} from "@/lib/redux/types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface QuizResultDetailsProps {

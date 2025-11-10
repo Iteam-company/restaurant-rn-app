@@ -1,4 +1,4 @@
-import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
+import { useValidateTokenQuery } from "@/lib/redux/slices/auth-api";
 import Wrapper from "@/modules/common/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
@@ -13,7 +13,7 @@ export default function User() {
   const { data: currentUser } = useValidateTokenQuery();
 
   return (
-    <Wrapper centered>
+    <Wrapper>
       <CurrentUserInfo />
       {currentUser && (
         <FAB

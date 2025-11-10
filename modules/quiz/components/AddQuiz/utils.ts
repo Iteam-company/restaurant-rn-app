@@ -1,5 +1,5 @@
+import { DifficultyLevelEnum, StatusEnum } from "@/lib/redux/types";
 import * as yup from "yup";
-import { DifficultyLevelEnum, StatusEnum } from "../../types";
 
 export const initialValues = {
   title: "",

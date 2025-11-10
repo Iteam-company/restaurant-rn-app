@@ -1,7 +1,7 @@
-import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
+import { useValidateTokenQuery } from "@/lib/redux/slices/auth-api";
+import { UserROLES } from "@/lib/redux/types";
 import { USER_ROLE } from "@/modules/common/constants/api";
 import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
-import { UserROLES } from "@/modules/common/types/user.types";
 import { Slot, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useEffect } from "react";

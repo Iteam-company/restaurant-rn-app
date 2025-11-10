@@ -1,4 +1,4 @@
-import { UserROLES, UserType } from "@/modules/common/types/user.types";
+import { UserROLES, UserType } from "@/lib/redux/types";
 import * as Yup from "yup";
 
 export const initialValues: Partial<UserType> = {

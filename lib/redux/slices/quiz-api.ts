@@ -1,19 +1,19 @@
-import { workerApi } from "@/modules/common/redux/slices/worker-api";
-import { TagTypes } from "@/modules/common/redux/utils/api-config";
-import { ICreateQuestionDTO } from "@/modules/questions/types";
+import { workerApi } from "./worker-api";
 import {
   ICreateQuizDTO,
   IQuizInfo,
   IQuizResultDto,
+  TagTypes,
+  ICreateQuestionDTO,
   IQuizResultInfo,
-} from "../../types";
+} from "../types";
 
 export const quizApi = workerApi
   .enhanceEndpoints({ addTagTypes: [TagTypes.QUIZ, TagTypes.QUIZ_RESULT] })
   .injectEndpoints({
     overrideExisting: true,
     endpoints: (builder) => ({
-      getQuizes: builder.query<IQuizInfo[], void>({
+      getQuizzes: builder.query<IQuizInfo[], void>({
         query: () => ({
           url: "/quiz",
           method: "GET",
@@ -187,7 +187,7 @@ export const quizApi = workerApi
 export const {
   useGetQuizQuery,
   useGetQuizByRestaurantQuery,
-  useGetQuizesQuery,
+  useGetQuizzesQuery,
   useCreateQuizMutation,
   useUpdateQuizMutation,
   useDeleteQuizMutation,

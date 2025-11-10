@@ -22,7 +22,7 @@ const Question = () => {
   const onStateChange = ({ open }: { open: boolean }) => setOpen(open);
 
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper>
       <QuestionList />
       <FAB.Group
         visible={true}

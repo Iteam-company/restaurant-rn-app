@@ -13,7 +13,7 @@ export default function HomeScreen() {
   );
 
   return (
-    <Wrapper centered>
+    <Wrapper>
       <ActivityIndicator animating />
     </Wrapper>
   );

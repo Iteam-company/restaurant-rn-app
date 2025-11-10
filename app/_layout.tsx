@@ -2,7 +2,7 @@ import OfflineScreen from "@/modules/common/components/Offline/OfflineScreen";
 import ToastInit from "@/modules/common/components/Toast/ToastInit";
 import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
 import { useIsOnline } from "@/modules/common/hooks/useIsOnline";
-import { store } from "@/modules/common/redux/store/store";
+import { store } from "@/lib/redux/store/store";
 import {
   createNavigationContainerRef,
   ThemeProvider,

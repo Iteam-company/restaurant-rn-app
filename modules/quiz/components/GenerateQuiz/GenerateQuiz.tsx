@@ -1,5 +1,5 @@
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
-import { useGenerateQuizzesMutation } from "@/modules/quiz/redux/slices/quiz-api";
+import { useGenerateQuizzesMutation } from "@/lib/redux/slices/quiz-api";
 import * as DocumentPicker from "expo-document-picker";
 import { useCallback } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";

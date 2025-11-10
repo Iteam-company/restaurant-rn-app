@@ -9,15 +9,15 @@ import { Dropdown } from "react-native-paper-dropdown";
 import {
   useGetQuizQuery,
   useUpdateQuizMutation,
-} from "../../redux/slices/quiz-api";
+} from "../../../../lib/redux/slices/quiz-api";
 import {
   difficultyLevelItem,
   initialValues as secondaryInitialValues,
   statusItem,
   validationSchema,
 } from "../AddQuiz/utils";
-import { ErrorResponseType } from "@/modules/common/types";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const EditQuiz = () => {
   const { quizId } = useGlobalSearchParams<{
@@ -48,7 +48,7 @@ const EditQuiz = () => {
         }).unwrap();
         router.back();
       } catch (e) {
-        const error = e as ErrorResponseType;
+        const error = e as FetchBaseQueryError;
         toastErrorHandler(error);
       }
     },

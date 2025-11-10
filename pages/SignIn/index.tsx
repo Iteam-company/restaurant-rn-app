@@ -1,9 +1,8 @@
 import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
-import { RTKMutationPayloadType } from "@/modules/common/types";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { ActivityIndicator, View } from "react-native";
-import { useSigninMutation } from "../../modules/auth/redux/slices/auth-api";
+import { useSigninMutation } from "../../lib/redux/slices/auth-api";
 import { validationSchema, initialValues, phoneRegex } from "./utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,8 +17,7 @@ export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { setToken, setRefreshToken } = useAuthToken();
 
-  const [signIn, { isLoading, error }] =
-    useSigninMutation<RTKMutationPayloadType>();
+  const [signIn, { isLoading, error }] = useSigninMutation();
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleBlur } =
     useFormik({
@@ -86,15 +84,7 @@ export default function SignInForm() {
           <ErrorText error={errors.password} touched={touched.password} />
         </View>
 
-        <ErrorText
-          error={
-            error?.status === 401
-              ? `Password or ${
-                  phoneRegex.test(values.identifier) ? "email" : "phone number"
-                } is incorrect`
-              : undefined
-          }
-        />
+        <ErrorText error={error} />
 
         <Button
           onPress={() => {

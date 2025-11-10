@@ -3,7 +3,7 @@ import useDebounce from "@/modules/common/hooks/useDebounce";
 import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Searchbar } from "react-native-paper";
-import { useSearchQuizResultQuery } from "../../redux/slices/quiz-api";
+import { useSearchQuizResultQuery } from "../../../../lib/redux/slices/quiz-api";
 import QuizResultItemComponent from "./QuizResultItem/QuizResultItem";
 
 const QuizResultList = () => {

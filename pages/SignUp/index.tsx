@@ -5,12 +5,7 @@ import {
   initialValues,
   validationSchema,
 } from "@/modules/common/utils/createUserSchema";
-import { UserROLES } from "@/modules/common/types/user.types";
-import {
-  ErrorResponseType,
-  RTKMutationPayloadType,
-} from "@/modules/common/types";
-import { useSignupMutation } from "../../modules/auth/redux/slices/auth-api";
+import { useSignupMutation } from "../../lib/redux/slices/auth-api";
 import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,10 +16,11 @@ import ErrorText from "@/components/error-text";
 import { Button } from "@/components/ui/button";
 import { router } from "expo-router";
 import { Eye, EyeOff } from "lucide-react-native";
+import { UserROLES } from "@/lib/redux/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 export default function SignUp() {
-  const [signUp, { isLoading, error }] =
-    useSignupMutation<RTKMutationPayloadType>();
+  const [signUp, { isLoading, error }] = useSignupMutation();
 
   const [showPassword, setShowPassword] = useState(false);
   const { setToken, setRefreshToken } = useAuthToken();
@@ -46,7 +42,7 @@ export default function SignUp() {
             }
           }
         } catch (e) {
-          const error = e as ErrorResponseType;
+          const error = e as FetchBaseQueryError;
           toastErrorHandler(error);
         }
       },
@@ -134,13 +130,7 @@ export default function SignUp() {
           <ErrorText error={errors.password} touched={touched.password} />
         </View>
 
-        <ErrorText
-          error={
-            error?.status === 401
-              ? `Failed to sign up, please try later`
-              : undefined
-          }
-        />
+        <ErrorText error={error} />
 
         <Button
           onPress={() => {

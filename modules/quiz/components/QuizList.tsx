@@ -1,12 +1,11 @@
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
-import { statusIcons } from "@/modules/common/utils/menuUtils";
 import { useGlobalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Chip, Title, useTheme } from "react-native-paper";
-import { useGetQuizByRestaurantQuery } from "../redux/slices/quiz-api";
-import { DifficultyLevelEnum, StatusEnum } from "../types";
+import { useGetQuizByRestaurantQuery } from "../../../lib/redux/slices/quiz-api";
 import QuizItem from "./QuizItem/QuizItem";
+import { DifficultyLevelEnum, StatusEnum, statusIcons } from "@/lib/redux/types";
 
 const QuizList = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();

@@ -19,14 +19,17 @@ import {
   QuizSchema,
   statusItem,
 } from "./utils";
-import { useGenerateQuestionsMutation } from "@/modules/questions/redux/slices/question-api";
-import { ICreateQuestionDTO } from "@/modules/questions/types";
+import { useGenerateQuestionsMutation } from "@/lib/redux/slices/question-api";
 import Toast from "react-native-toast-message";
-import { DifficultyLevelEnum, StatusEnum } from "../../types";
 import { router, useLocalSearchParams } from "expo-router";
-import { useCreateQuizMutation } from "../../redux/slices/quiz-api";
+import { useCreateQuizMutation } from "../../../../lib/redux/slices/quiz-api";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
-import { ErrorResponseType } from "@/modules/common/types";
+import {
+  DifficultyLevelEnum,
+  ICreateQuestionDTO,
+  StatusEnum,
+} from "@/lib/redux/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 type Props = {
   valuesForGeneratingQuestion: GenerateQuizInitialValuesType;
@@ -83,17 +86,18 @@ const QuizQuestionEdit: FC<Props> = ({
 
         if (data) {
           router.replace({
-            pathname: "/restaurant/[id]/(quiz)/[quizId]/(questions)",
+            pathname:
+              "/admin-dashboard/(tabs)/restaurants/[id]/(quiz)/[quizId]/(questions)",
             params: { id: restaurantId, quizId: data?.id || 0 },
           });
         } else {
           router.replace({
-            pathname: "/restaurant/[id]/(quiz)",
+            pathname: "/admin-dashboard/(tabs)/restaurants/[id]/(quiz)",
             params: { id: restaurantId },
           });
         }
       } catch (e) {
-        toastErrorHandler(e as ErrorResponseType);
+        toastErrorHandler(e as FetchBaseQueryError);
       }
     },
     validationSchema: QuizSchema,

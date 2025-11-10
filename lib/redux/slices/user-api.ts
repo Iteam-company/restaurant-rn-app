@@ -1,6 +1,4 @@
-import { UserInfo, SearchUser } from "../../types/user.types";
-import { UpdateUserInfoI } from "../../types/restaurant.types";
-import { TagTypes } from "../utils/api-config";
+import { SearchUser, TagTypes, UpdateUserInfoI, UserInfo } from "../types";
 import { workerApi } from "./worker-api";
 
 export const userApi = workerApi

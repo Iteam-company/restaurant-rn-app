@@ -1,30 +1,27 @@
-import { useSignupMutation } from "@/modules/auth/redux/slices/auth-api";
+import { useSignupMutation } from "@/lib/redux/slices/auth-api";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
-import {
-  ErrorResponseType,
-  RTKMutationPayloadType,
-} from "@/modules/common/types";
-import { UserROLES, UserRolesArray } from "@/modules/common/types/user.types";
 import { capitalizeFirstLetter } from "@/modules/common/utils";
 import {
   initialValues,
   validationSchema,
 } from "@/modules/common/utils/createUserSchema";
-import { useAddWorkerMutation } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { useAddWorkerMutation } from "@/lib/redux/slices/restaurant-api";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { Button, Surface, Text, TextInput } from "react-native-paper";
+import { Button, Surface, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { UserROLES, UserRolesArray } from "@/lib/redux/types";
+import ErrorText from "@/components/error-text";
 
 export default function AddWorker() {
   const router = useRouter();
   const { restaurantId: id } = useLocalSearchParams<{ restaurantId: string }>();
 
-  const [signUp, { isLoading, error }] =
-    useSignupMutation<RTKMutationPayloadType>();
+  const [signUp, { isLoading, error }] = useSignupMutation();
   const [addWorkerToRestaurant] = useAddWorkerMutation();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -52,7 +49,7 @@ export default function AddWorker() {
           }
         } catch (e: any) {
           console.error("Failed to create user:", e);
-          toastErrorHandler(error as ErrorResponseType, {
+          toastErrorHandler(error as FetchBaseQueryError, {
             text1: "Failed to create user",
             text2: `${e.data.message}\n\nPlease try again later`,
           });
@@ -143,9 +140,7 @@ export default function AddWorker() {
             error={touched.role && !!errors.role}
           />
 
-          <Text style={styles.errorText}>
-            {error?.status === 401 && `Failed to sign up, please try later`}
-          </Text>
+          <ErrorText error={error} />
         </Surface>
 
         <Button

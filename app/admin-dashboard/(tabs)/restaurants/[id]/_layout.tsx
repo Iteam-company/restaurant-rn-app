@@ -1,6 +1,6 @@
 import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
 import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
-import { useGetRestaurantQuery } from "@/modules/restaurant/redux/slices/restaurant-api";
+import { useGetRestaurantQuery } from "@/lib/redux/slices/restaurant-api";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router, Stack, Tabs, useGlobalSearchParams } from "expo-router";
 import { Platform } from "react-native";
