@@ -1,57 +1,58 @@
+import { cn } from "@/lib/utils";
 import { router } from "expo-router";
 import { PropsWithChildren } from "react";
-import { ScrollView, StyleSheet, View, ViewStyle } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ClassNameValue } from "tailwind-merge";
 
 type WrapperProps = PropsWithChildren & {
-  centered?: boolean;
-  paddingOff?: boolean;
-  marginTop?: boolean;
+  className?: ClassNameValue;
   headerTitle?: string | null;
   isScrollable?: boolean;
 };
 
 export default function Wrapper({
   children,
-  centered = false,
-  paddingOff = false,
-  marginTop = false,
+  className,
   headerTitle = null,
   isScrollable = false,
 }: WrapperProps) {
   const { colors } = useTheme();
-  const insets = useSafeAreaInsets();
 
-  const containerStyle: ViewStyle = {
-    ...styles.container,
-    ...(centered && styles.centered),
-    ...(paddingOff ? { paddingHorizontal: 10 } : { padding: 10 }),
-    ...(marginTop ? { marginTop: insets.top } : {}),
-    backgroundColor: colors.background,
-  };
-
-  const Container = isScrollable ? ScrollView : View;
-
-  return (
-    <Container
-      style={!isScrollable && containerStyle}
-      contentContainerStyle={containerStyle}
+  return isScrollable ? (
+    <ScrollView
+      className={cn(`flex-1 bg-background px-4`, className)}
+      contentContainerStyle={styles.centered}
     >
       {headerTitle && (
         <Appbar.Header
           statusBarHeight={0}
-          style={{
-            backgroundColor: colors.background,
-            ...styles.header,
-          }}
+          style={{ backgroundColor: colors.background, ...styles.header }}
         >
           <Appbar.BackAction iconColor="white" onPress={() => router.back()} />
           <Appbar.Content title={headerTitle} titleStyle={{ color: "white" }} />
         </Appbar.Header>
       )}
       {children}
-    </Container>
+    </ScrollView>
+  ) : (
+    <View
+      className={cn(
+        `flex-1 bg-background justify-center items-center px-4`,
+        className
+      )}
+    >
+      {headerTitle && (
+        <Appbar.Header
+          statusBarHeight={0}
+          style={{ backgroundColor: colors.background, ...styles.header }}
+        >
+          <Appbar.BackAction iconColor="white" onPress={() => router.back()} />
+          <Appbar.Content title={headerTitle} titleStyle={{ color: "white" }} />
+        </Appbar.Header>
+      )}
+      {children}
+    </View>
   );
 }
 
@@ -60,14 +61,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
   },
-  container: {
-    width: "100%",
-    minHeight: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
   centered: {
-    alignItems: "center",
+    flexGrow: 1,
     justifyContent: "center",
+    alignItems: "center",
   },
 });
