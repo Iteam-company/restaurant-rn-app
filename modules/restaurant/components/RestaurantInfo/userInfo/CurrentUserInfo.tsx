@@ -19,7 +19,7 @@ import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
 const CurrentUserInfo = () => {
   const { colors } = useTheme();
   const { data } = useGetCurrentUserQuery();
-  const { setToken } = useAuthToken();
+  const { setToken, setRefreshToken } = useAuthToken();
 
   if (!data) return null;
 
@@ -55,9 +55,10 @@ const CurrentUserInfo = () => {
 
   async function handleLogOut() {
     setToken(null);
+    setRefreshToken(null);
     await SecureStore.deleteItemAsync(USER_ROLE);
 
-    router.push("/auth/(tabs)/signin");
+    router.push("/auth/signin");
   }
 
   return (
