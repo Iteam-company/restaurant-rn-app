@@ -9,7 +9,7 @@ export default function Signup() {
   }, []);
 
   return (
-    <Wrapper centered isScrollable>
+    <Wrapper isScrollable>
       <SignUpForm />
     </Wrapper>
   );
