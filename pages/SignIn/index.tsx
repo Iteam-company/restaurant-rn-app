@@ -9,11 +9,11 @@ import { validationSchema, initialValues, phoneRegex } from "./utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import ErrorText from "@/components/error-text";
-import { Icon } from "react-native-paper";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { router } from "expo-router";
+import { Eye, EyeOff } from "lucide-react-native";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -82,11 +82,7 @@ export default function SignInForm() {
                 className="absolute right-1"
                 onPress={() => setShowPassword(!showPassword)}
               >
-                <Icon
-                  size={20}
-                  color="black"
-                  source={!showPassword ? "eye-off" : "eye"}
-                />
+                {showPassword ? <Eye /> : <EyeOff />}
               </Button>
             </View>
             <ErrorText error={errors.password} touched={touched.password} />
