@@ -352,7 +352,7 @@ const EditWorker = () => {
               userId: data?.id ?? "",
               restaurantId: restaurantId,
             });
-          router.push("/auth/(tabs)/signin");
+          router.push("/auth/signin");
         }}
         text={`Are you sure you want to delete ${data?.username} ? This action cannot be undone.`}
         close={() => {
