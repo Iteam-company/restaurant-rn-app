@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import { PropsWithChildren } from "react";
-import { StyleSheet, View, ViewStyle } from "react-native";
+import { ScrollView, StyleSheet, View, ViewStyle } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -9,6 +9,7 @@ type WrapperProps = PropsWithChildren & {
   paddingOff?: boolean;
   marginTop?: boolean;
   headerTitle?: string | null;
+  isScrollable?: boolean;
 };
 
 export default function Wrapper({
@@ -17,6 +18,7 @@ export default function Wrapper({
   paddingOff = false,
   marginTop = false,
   headerTitle = null,
+  isScrollable = false,
 }: WrapperProps) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -29,8 +31,13 @@ export default function Wrapper({
     backgroundColor: colors.background,
   };
 
+  const Container = isScrollable ? ScrollView : View;
+
   return (
-    <View style={containerStyle}>
+    <Container
+      style={!isScrollable && containerStyle}
+      contentContainerStyle={containerStyle}
+    >
       {headerTitle && (
         <Appbar.Header
           statusBarHeight={0}
@@ -44,7 +51,7 @@ export default function Wrapper({
         </Appbar.Header>
       )}
       {children}
-    </View>
+    </Container>
   );
 }
 
