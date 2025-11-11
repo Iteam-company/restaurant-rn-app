@@ -6,7 +6,7 @@ import {
   useGetCurrentUserQuery,
   useGetUserByIdQuery,
 } from "@/lib/redux/slices/user-api";
-import { FC, useCallback, useMemo } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import * as Linking from "expo-linking";
 import UserAvatar from "./UserAvatar";
+import Loader from "@/components/loader";
 
 const InfoBlock = ({
   value,
@@ -41,6 +42,8 @@ const InfoBlock = ({
 type Props = { userId?: string };
 
 const UserProfile: FC<Props> = ({ userId }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { data: userById } = useGetUserByIdQuery(userId!, { skip: !userId });
   const { data: currentUser } = useGetCurrentUserQuery(undefined, {
     skip: !!userId,
@@ -53,6 +56,12 @@ const UserProfile: FC<Props> = ({ userId }) => {
 
   const { setToken, setRefreshToken } = useAuthToken();
 
+  const handleOpenURI = useCallback(async (uri: string) => {
+    setIsLoading(true);
+    await Linking.openURL(uri);
+    setIsLoading(false);
+  }, []);
+
   const handleLogOut = useCallback(async () => {
     setToken(null);
     setRefreshToken(null);
@@ -64,42 +73,44 @@ const UserProfile: FC<Props> = ({ userId }) => {
   if (!user) return null;
 
   return (
-    <Card className="w-full py-4 gap-4">
-      <CardHeader className="px-4">
-        <View className="flex-row gap-2">
-          <UserAvatar userId={userId} size={50} />
-          <View className="h-full flex">
-            <Text>{`${user.firstName} ${user.lastName}`}</Text>
-            <View className="flex flex-row gap-2 w-min">
-              <Badge>
-                <Text>{user.role}</Text>
-              </Badge>
+    <Loader isLoading={isLoading}>
+      <Card className="w-full py-4 gap-4">
+        <CardHeader className="px-4">
+          <View className="flex-row gap-2">
+            <UserAvatar userId={userId} size={50} />
+            <View className="h-full flex">
+              <Text>{`${user.firstName} ${user.lastName}`}</Text>
+              <View className="flex flex-row gap-2 w-min">
+                <Badge>
+                  <Text>{user.role}</Text>
+                </Badge>
+              </View>
             </View>
           </View>
-        </View>
-      </CardHeader>
-      <Separator />
-      <CardContent className="flex px-4">
-        <InfoBlock
-          title="Email: "
-          value={user.email}
-          onPress={() => () => Linking.openURL(`mailto:${user.email}`)}
-        />
+        </CardHeader>
+        <Separator />
+        <CardContent className="flex px-4">
+          <InfoBlock
+            title="Email: "
+            value={user.email}
+            onPress={() => handleOpenURI(`mailto:${user.email}`)}
+          />
 
-        <InfoBlock
-          title="Phone number: "
-          value={user.phoneNumber}
-          onPress={() => () => Linking.openURL(`tel:${user.phoneNumber}`)}
-        />
-      </CardContent>
-      {userId && (
-        <CardContent className="px-4">
-          <Button onPress={handleLogOut}>
-            <Text>Log out</Text>
-          </Button>
+          <InfoBlock
+            title="Phone number: "
+            value={user.phoneNumber}
+            onPress={() => handleOpenURI(`tel:${user.phoneNumber}`)}
+          />
         </CardContent>
-      )}
-    </Card>
+        {userId && (
+          <CardContent className="px-4">
+            <Button onPress={handleLogOut}>
+              <Text>Log out</Text>
+            </Button>
+          </CardContent>
+        )}
+      </Card>
+    </Loader>
   );
 };
 
