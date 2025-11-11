@@ -1,8 +1,7 @@
-import React from "react";
 import Wrapper from "@/components/Wrapper";
 import QuizResultList from "@/modules/quiz/components/quizResult/QuizResultList";
 
-const QuizResultScreen = () => {
+const QuizResult = () => {
   return (
     <Wrapper>
       <QuizResultList />
@@ -10,4 +9,4 @@ const QuizResultScreen = () => {
   );
 };
 
-export default QuizResultScreen;
+export default QuizResult;

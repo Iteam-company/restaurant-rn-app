@@ -73,7 +73,7 @@ const EditRestaurant = () => {
           ) : (
             <Avatar.Image
               size={120}
-              source={require("@/assets/images/mock/premium_photo-1661883237884-263e8de8869b.jpg")}
+              source={require("@/assets/images/mock/restaurant-mock.jpg")}
             />
           )}
           <IconButton

@@ -1,4 +1,4 @@
-import Wrapper from "@/modules/common/components/Wrapper";
+import Wrapper from "@/components/Wrapper";
 import EditWorker from "@/modules/restaurant/components/RestaurantInfo/editWorker/EditWorker";
 
 const EditUserScreen = () => {

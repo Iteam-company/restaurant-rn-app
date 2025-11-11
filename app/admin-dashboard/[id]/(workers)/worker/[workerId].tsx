@@ -1,32 +1,34 @@
-import { useValidateTokenQuery } from "@/lib/redux/slices/auth-api";
 import Wrapper from "@/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
-import CurrentUserInfo from "@/pages/User/UserProfile";
+import WorkerInfo from "@/modules/restaurant/components/RestaurantInfo/workerInfo/WorkerInfo";
+import { useLocalSearchParams } from "expo-router";
 import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function User() {
+const WorkerInfoPage = () => {
+  const { id: restaurantId, workerId } = useLocalSearchParams<{
+    id: string;
+    workerId: string;
+  }>();
   const insets = useSafeAreaInsets();
-
-  const { data: currentUser } = useValidateTokenQuery();
 
   return (
     <Wrapper>
-      <CurrentUserInfo />
-      {currentUser && (
-        <FAB
-          icon="pencil"
-          style={[styles.fab, getFabUiSettings(insets)]}
-          onPress={() => {
-            navigateToEditUser(currentUser?.id || 0);
-          }}
-        />
-      )}
+      <WorkerInfo />
+      <FAB
+        icon="pencil"
+        style={[styles.fab, getFabUiSettings(insets)]}
+        onPress={() => {
+          navigateToEditUser(workerId, restaurantId);
+        }}
+      />
     </Wrapper>
   );
-}
+};
+
+export default WorkerInfoPage;
 
 const styles = StyleSheet.create({
   container: {

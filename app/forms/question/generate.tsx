@@ -1,4 +1,4 @@
-import Wrapper from "@/modules/common/components/Wrapper";
+import Wrapper from "@/components/Wrapper";
 import GenerateQuestion from "@/modules/questions/components/GenerateQuestion/GenerateQuestion";
 
 const GenerateQuestionsPage = () => {

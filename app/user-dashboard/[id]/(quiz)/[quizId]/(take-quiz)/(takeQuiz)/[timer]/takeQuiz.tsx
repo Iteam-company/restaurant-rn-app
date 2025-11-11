@@ -1,5 +1,5 @@
 import React from "react";
-import Wrapper from "@/modules/common/components/Wrapper";
+import Wrapper from "@/components/Wrapper";
 import TakeQuiz from "@/modules/quiz/components/TakeQuiz/TakeQuiz";
 
 const TakeQuizPage = () => {

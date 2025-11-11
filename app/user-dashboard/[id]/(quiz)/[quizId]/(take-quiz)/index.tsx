@@ -1,4 +1,4 @@
-import Wrapper from "@/modules/common/components/Wrapper";
+import Wrapper from "@/components/Wrapper";
 import { QuizDetails } from "@/modules/quiz/components/QuizDetails/QuizDetails";
 
 export default function TakeQuizPage() {

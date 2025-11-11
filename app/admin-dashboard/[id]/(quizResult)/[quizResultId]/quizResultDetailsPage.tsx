@@ -1,13 +1,11 @@
-import React from "react";
 import Wrapper from "@/components/Wrapper";
 import { QuizResultDetails } from "@/modules/quiz/components/quizResult/QuizResultDetails/QuizResultDetails";
 
-const QuizResult = () => {
+const QuizResultDetailsPage = () => {
   return (
     <Wrapper>
       <QuizResultDetails />
     </Wrapper>
   );
 };
-
-export default QuizResult;
+export default QuizResultDetailsPage;
