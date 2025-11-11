@@ -18,12 +18,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MenuIcon } from "lucide-react-native";
 import { Text } from "@/components/ui/text";
+import { useTheme } from "@react-navigation/native";
 
 type Params = {
   quiz: IQuizInfo;
 };
 
 const QuizItem = ({ quiz }: Params) => {
+  const { colors } = useTheme();
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
   const router = useRouter();
 
@@ -57,7 +59,7 @@ const QuizItem = ({ quiz }: Params) => {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <MenuIcon size={20} />
+                <MenuIcon size={20} color={colors.text} />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
