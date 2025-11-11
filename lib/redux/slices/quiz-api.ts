@@ -6,6 +6,7 @@ import {
   TagTypes,
   ICreateQuestionDTO,
   IQuizResultInfo,
+  IQuizSearchDTO,
 } from "../types";
 
 export const quizApi = workerApi
@@ -38,6 +39,22 @@ export const quizApi = workerApi
             id,
           })) ?? []),
         ],
+      }),
+      getQuizSearch: builder.query<IQuizInfo[], IQuizSearchDTO>({
+        query: (body) => ({
+          url: "/quiz/search",
+          method: "GET",
+          params: body,
+        }),
+        providesTags: (result) =>
+          result
+            ? [
+                ...result.map((quiz) => ({
+                  type: TagTypes.QUIZ,
+                  id: quiz.id,
+                })),
+              ]
+            : [{ type: TagTypes.QUIZ, id: "LIST" }],
       }),
       getQuiz: builder.query<IQuizInfo, string>({
         query: (id: string) => ({
@@ -187,6 +204,7 @@ export const quizApi = workerApi
 export const {
   useGetQuizQuery,
   useGetQuizByRestaurantQuery,
+  useGetQuizSearchQuery,
   useGetQuizzesQuery,
   useCreateQuizMutation,
   useUpdateQuizMutation,

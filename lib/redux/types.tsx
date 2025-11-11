@@ -136,6 +136,13 @@ export interface IQuizInfo {
   questions: IQuestionInfo[];
 }
 
+export interface IQuizSearchDTO {
+  restaurantId: string;
+  search?: string;
+  limit?: number;
+  page?: number;
+}
+
 export interface ICreateQuizDTO {
   title: string;
   difficultyLevel: DifficultyLevelEnum;
