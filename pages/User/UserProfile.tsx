@@ -41,14 +41,10 @@ const InfoBlock = ({
 type Props = { userId?: string };
 
 const UserProfile: FC<Props> = ({ userId }) => {
-  const { data: userById, isLoading: isLoadingById } = useGetUserByIdQuery(
-    userId!,
-    { skip: !userId }
-  );
-  const { data: currentUser, isLoading: isLoadingCurrent } =
-    useGetCurrentUserQuery(undefined, {
-      skip: !!userId,
-    });
+  const { data: userById } = useGetUserByIdQuery(userId!, { skip: !userId });
+  const { data: currentUser } = useGetCurrentUserQuery(undefined, {
+    skip: !!userId,
+  });
 
   const user = useMemo(
     () => (userId ? userById : currentUser),
@@ -64,8 +60,6 @@ const UserProfile: FC<Props> = ({ userId }) => {
 
     router.push("/auth/signin");
   }, [setToken, setRefreshToken]);
-
-  const isLoading = isLoadingById || isLoadingCurrent;
 
   if (!user) return null;
 
