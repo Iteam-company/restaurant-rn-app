@@ -11,6 +11,7 @@ const RestaurantList = () => {
 
   return (
     <FlatList
+      className="w-full"
       contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName="gap-6"
       data={Array.isArray(data) ? data : []}
