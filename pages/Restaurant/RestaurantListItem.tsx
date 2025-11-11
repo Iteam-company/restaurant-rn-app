@@ -79,7 +79,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
             </Text>
           </View>
           <View className="flex flex-row items-center">
-            <Text>{workersCount}</Text>
+            <Text variant="lead">{workersCount}</Text>
             <UserIcon size={25} />
           </View>
         </CardHeader>

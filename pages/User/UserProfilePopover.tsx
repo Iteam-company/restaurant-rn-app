@@ -6,13 +6,16 @@ import {
 import UserAvatar from "./UserAvatar";
 import UserProfile from "./UserProfile";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useIos26 from "@/lib/hook/useIos26";
 
 const UserProfilePopover = () => {
   const insets = useSafeAreaInsets();
+  const { isIOS26 } = useIos26();
+
   return (
     <Popover>
       <PopoverTrigger>
-        <UserAvatar size={35} contentClassName="bg-transparent" />
+        <UserAvatar size={35} contentClassName={isIOS26 && "bg-transparent"} />
       </PopoverTrigger>
       <PopoverContent
         side="top"
