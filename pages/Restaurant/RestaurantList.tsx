@@ -7,13 +7,16 @@ import { Text } from "@/components/ui/text";
 import { RestaurantListItem } from "./RestaurantListItem";
 
 const RestaurantList = () => {
-  const { data, isLoading } = useGetRestaurantsQuery();
+  const { data, isLoading, refetch, isFetching } = useGetRestaurantsQuery();
 
   return (
     <FlatList
       contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName="gap-6"
       data={Array.isArray(data) ? data : []}
+      keyExtractor={(item) => item.id.toString()}
+      onRefresh={() => refetch()}
+      refreshing={isFetching}
       ListEmptyComponent={() =>
         isLoading && <ActivityIndicator color={"#7c8ebf"} />
       }
