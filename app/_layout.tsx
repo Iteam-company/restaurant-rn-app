@@ -3,6 +3,7 @@ import ToastInit from "@/modules/common/components/Toast/ToastInit";
 import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
 import { useIsOnline } from "@/modules/common/hooks/useIsOnline";
 import { store } from "@/lib/redux/store/store";
+import { theme } from "@/modules/common/theme/theme";
 import {
   createNavigationContainerRef,
   ThemeProvider,
@@ -12,7 +13,8 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { PaperProvider } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { PortalHost } from "@rn-primitives/portal";
 import { NAV_THEME } from "@/lib/theme";
@@ -42,18 +44,18 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <ThemeProvider value={NAV_THEME[colorScheme || "light"]}>
-        <AuthTokenProvider>
-          <SafeAreaProvider>
-            <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ThemeProvider value={NAV_THEME[colorScheme || "light"]}>
+          <PaperProvider theme={theme}>
+            <AuthTokenProvider>
               <NetworkGate />
               <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
               <PortalHost />
               <ToastInit />
-            </SafeAreaView>
-          </SafeAreaProvider>
-        </AuthTokenProvider>
-      </ThemeProvider>
+            </AuthTokenProvider>
+          </PaperProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
     </Provider>
   );
 }

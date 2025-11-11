@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import Wrapper from "@/modules/common/components/Wrapper";
+import Wrapper from "@/components/Wrapper";
 import SignInForm from "@/pages/SignIn";
 import { resetStore } from "@/modules/common/constants/resetStore";
 

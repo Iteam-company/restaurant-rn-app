@@ -1,4 +1,4 @@
-import Wrapper from "@/modules/common/components/Wrapper";
+import Wrapper from "@/components/Wrapper";
 import useDebounce from "@/modules/common/hooks/useDebounce";
 import { navigateToCreateUser } from "@/modules/common/utils/flowNavigation";
 import Feather from "@expo/vector-icons/Feather";
@@ -59,7 +59,7 @@ const Workers = () => {
                   onPress={() => {
                     router.push({
                       pathname:
-                        "/admin-dashboard/(tabs)/restaurants/[id]/(workers)/worker/[workerId]",
+                        "/admin-dashboard/[id]/(workers)/worker/[workerId]",
                       params: { id: restaurantId, workerId: el.id },
                     });
                   }}

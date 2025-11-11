@@ -1,4 +1,4 @@
-import Wrapper from "@/modules/common/components/Wrapper";
+import Wrapper from "@/components/Wrapper";
 import CreateRestaurant from "@/modules/restaurant/components/CreateRestaurant/CreateRestaurant";
 
 const CreateRestaurantScreen = () => {
