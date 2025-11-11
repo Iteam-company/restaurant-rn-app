@@ -1,13 +1,11 @@
 import { Text } from "@/components/ui/text";
 import useIos26 from "@/lib/hook/useIos26";
 import { useGetRestaurantQuery } from "@/lib/redux/slices/restaurant-api";
-import { useTheme } from "@react-navigation/native";
 import { Stack, Tabs, useLocalSearchParams } from "expo-router";
 import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 import { ArchiveIcon, CircleQuestionMark, Users } from "lucide-react-native";
 
 export default function RestaurantPageLayout() {
-  const { colors } = useTheme();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data } = useGetRestaurantQuery(id);
   const { isIOS26 } = useIos26();
@@ -23,7 +21,6 @@ export default function RestaurantPageLayout() {
       {isIOS26 ? (
         <NativeTabs
           minimizeBehavior="onScrollDown"
-          backgroundColor={isIOS26 ? undefined : colors.card}
           disableTransparentOnScrollEdge
         >
           <NativeTabs.Trigger name="(workers)/index">
