@@ -1,8 +1,12 @@
-import Workers from "@/modules/restaurant/components/RestaurantInfo/workers/Workers";
-import React from "react";
+import Wrapper from "@/components/Wrapper";
+import Workers from "@/pages/User/WorkersList";
 
 const WorkersPage = () => {
-  return <Workers />;
+  return (
+    <Wrapper>
+      <Workers />;
+    </Wrapper>
+  );
 };
 
 export default WorkersPage;

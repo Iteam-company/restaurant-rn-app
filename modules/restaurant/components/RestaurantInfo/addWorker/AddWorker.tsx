@@ -41,7 +41,7 @@ export default function AddWorker() {
               restaurantId: parseInt(id),
             }).unwrap();
             router.push({
-              pathname: "/admin-dashboard/(tabs)/restaurants/[id]/(workers)",
+              pathname: "/admin-dashboard/[id]/(workers)",
               params: {
                 id,
               },
