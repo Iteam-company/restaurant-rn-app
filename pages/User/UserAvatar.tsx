@@ -6,13 +6,21 @@ import {
   useGetUserByIdQuery,
 } from "@/lib/redux/slices/user-api";
 import { FC, useMemo } from "react";
+import { ClassNameValue } from "tailwind-merge";
 
 type Props = {
   userId?: string;
   size?: number;
+  className?: ClassNameValue;
+  contentClassName?: ClassNameValue;
 };
 
-const UserAvatar: FC<Props> = ({ userId, size = 30 }) => {
+const UserAvatar: FC<Props> = ({
+  userId,
+  size = 30,
+  className,
+  contentClassName,
+}) => {
   const { data: userById, isLoading: isLoadingById } = useGetUserByIdQuery(
     userId!,
     { skip: !userId }
@@ -33,9 +41,13 @@ const UserAvatar: FC<Props> = ({ userId, size = 30 }) => {
     <Avatar
       alt={`${user?.username} icon`}
       style={{ width: size, height: size }}
+      className={className?.toString()}
     >
-      <AvatarImage source={{ uri: user?.icon }} />
-      <AvatarFallback>
+      <AvatarImage
+        source={{ uri: user?.icon }}
+        className={contentClassName?.toString()}
+      />
+      <AvatarFallback className={contentClassName?.toString()}>
         {isLoading ? (
           <Loader />
         ) : (
