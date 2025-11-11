@@ -12,7 +12,7 @@ const UserProfilePopover = () => {
   return (
     <Popover>
       <PopoverTrigger>
-        <UserAvatar />
+        <UserAvatar size={35} contentClassName="bg-transparent" />
       </PopoverTrigger>
       <PopoverContent
         side="top"
