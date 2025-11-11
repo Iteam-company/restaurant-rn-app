@@ -14,6 +14,7 @@ const RestaurantList = () => {
       className="w-full"
       contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName="gap-6"
+      showsVerticalScrollIndicator={false}
       data={Array.isArray(data) ? data : []}
       keyExtractor={(item) => item.id.toString()}
       onRefresh={() => refetch()}

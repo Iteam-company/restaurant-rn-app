@@ -5,7 +5,6 @@ import { ClassNameValue } from "tailwind-merge";
 
 type WrapperProps = PropsWithChildren & {
   className?: ClassNameValue;
-  headerTitle?: string | null;
   isScrollable?: boolean;
 };
 

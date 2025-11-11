@@ -3,7 +3,7 @@ import AddWorker from "@/modules/restaurant/components/RestaurantInfo/addWorker/
 
 const CreateUserScreen = () => {
   return (
-    <Wrapper headerTitle={"Create and add new User"}>
+    <Wrapper>
       <AddWorker />
     </Wrapper>
   );

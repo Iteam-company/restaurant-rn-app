@@ -3,7 +3,7 @@ import GenerateQuiz from "@/modules/quiz/components/GenerateQuiz/GenerateQuiz";
 
 const GenerateQuizPage = () => {
   return (
-    <Wrapper headerTitle={"Generate Quiz"}>
+    <Wrapper>
       <GenerateQuiz />
     </Wrapper>
   );

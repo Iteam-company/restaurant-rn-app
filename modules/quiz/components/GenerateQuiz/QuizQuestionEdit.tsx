@@ -86,13 +86,12 @@ const QuizQuestionEdit: FC<Props> = ({
 
         if (data) {
           router.replace({
-            pathname:
-              "/admin-dashboard/(tabs)/restaurants/[id]/(quiz)/[quizId]/(questions)",
+            pathname: "/admin-dashboard/[id]/(quiz)/[quizId]/(questions)",
             params: { id: restaurantId, quizId: data?.id || 0 },
           });
         } else {
           router.replace({
-            pathname: "/admin-dashboard/(tabs)/restaurants/[id]/(quiz)",
+            pathname: "/admin-dashboard/[id]/(quiz)",
             params: { id: restaurantId },
           });
         }

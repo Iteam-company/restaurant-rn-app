@@ -3,7 +3,7 @@ import EditQuestion from "@/modules/questions/components/EditQuestion/EditQuesti
 
 const EditQuestionScreen = () => {
   return (
-    <Wrapper headerTitle={"Edit Question"}>
+    <Wrapper>
       <EditQuestion />
     </Wrapper>
   );

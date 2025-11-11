@@ -3,7 +3,7 @@ import AddQuiz from "@/modules/quiz/components/AddQuiz/AddQuiz";
 
 const CreateQuizScreen = () => {
   return (
-    <Wrapper headerTitle={"Add New Quiz"}>
+    <Wrapper>
       <AddQuiz />
     </Wrapper>
   );

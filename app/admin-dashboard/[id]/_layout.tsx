@@ -1,3 +1,4 @@
+import { Text } from "@/components/ui/text";
 import useIos26 from "@/lib/hook/useIos26";
 import { useGetRestaurantQuery } from "@/lib/redux/slices/restaurant-api";
 import { useTheme } from "@react-navigation/native";
@@ -13,7 +14,11 @@ export default function RestaurantPageLayout() {
 
   return (
     <>
-      <Stack.Screen options={{ headerTitle: data?.name }} />
+      <Stack.Screen
+        options={{
+          headerTitle: () => <Text variant="large">{data?.name}</Text>,
+        }}
+      />
 
       {isIOS26 ? (
         <NativeTabs
@@ -21,7 +26,7 @@ export default function RestaurantPageLayout() {
           backgroundColor={isIOS26 ? undefined : colors.card}
           disableTransparentOnScrollEdge
         >
-          <NativeTabs.Trigger name="(workers)">
+          <NativeTabs.Trigger name="(workers)/index">
             <Icon sf="person.2" />
             <Label>Workers</Label>
           </NativeTabs.Trigger>
@@ -37,7 +42,7 @@ export default function RestaurantPageLayout() {
       ) : (
         <Tabs screenOptions={{ headerShown: false }}>
           <Tabs.Screen
-            name="(workers)"
+            name="(workers)/index"
             options={{
               tabBarLabel: "Workers",
               tabBarIcon: (props) => <Users {...props} />,
