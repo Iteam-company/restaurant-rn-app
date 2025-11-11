@@ -4,12 +4,14 @@ import { View } from "react-native";
 import { useGetUserByIdQuery } from "@/lib/redux/slices/user-api";
 import { Text } from "@/components/ui/text";
 import { Badge } from "@/components/ui/badge";
+import { useTheme } from "@react-navigation/native";
 
 type Props = {
   userId: string;
 };
 
 const UserItem: FC<Props> = ({ userId }) => {
+  const { colors } = useTheme();
   const { data } = useGetUserByIdQuery(userId);
 
   return (
@@ -17,7 +19,7 @@ const UserItem: FC<Props> = ({ userId }) => {
       <UserProfilePopover
         userId={userId}
         size={50}
-        contentClassName={`bg-[#EEE]`}
+        contentClassName={`border-[${colors.border}]`}
       />
       <View>
         <Text>

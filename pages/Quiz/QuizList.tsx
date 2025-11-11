@@ -45,6 +45,7 @@ const QuizList = () => {
   return (
     <FlatList
       data={filteredData}
+      contentInsetAdjustmentBehavior="automatic"
       contentContainerClassName="py-4 gap-4"
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}

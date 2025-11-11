@@ -5,7 +5,7 @@ import { FC, useState } from "react";
 import { Image, View } from "react-native";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
-import { MenuIcon, UserIcon } from "lucide-react-native";
+import { MenuIcon, Users } from "lucide-react-native";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "expo-router";
@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme } from "@react-navigation/native";
 
 interface RestaurantListItemProps {
   id: number;
@@ -33,6 +34,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
   workersCount,
   image,
 }) => {
+  const { colors } = useTheme();
   const router = useRouter();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const insets = useSafeAreaInsets();
@@ -80,9 +82,9 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
               {address}
             </Text>
           </View>
-          <View className="flex flex-row items-center">
-            <Text variant="lead">{workersCount}</Text>
-            <UserIcon size={25} />
+          <View className="flex flex-row gap-1 items-center">
+            <Text variant="small">{workersCount}</Text>
+            <Users size={22} color={colors.text} />
           </View>
         </CardHeader>
         <CardContent className="flex flex-row justify-between">
@@ -100,7 +102,7 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
-                <MenuIcon size={20} />
+                <MenuIcon size={20} color={colors.text} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent insets={insets}>
