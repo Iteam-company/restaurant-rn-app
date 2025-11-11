@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import QuizList from "@/modules/quiz/components/QuizList";
+import QuizList from "@/pages/Quiz/QuizList";
 
 const RestaurantQuiz = () => {
   return (

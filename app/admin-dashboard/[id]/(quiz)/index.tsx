@@ -4,7 +4,7 @@ import {
   navigateToCreateQuiz,
   navigateToGenerateQuiz,
 } from "@/modules/common/utils/flowNavigation";
-import QuizList from "@/modules/quiz/components/QuizList";
+import QuizList from "@/pages/Quiz/QuizList";
 import { useGlobalSearchParams } from "expo-router";
 import React from "react";
 import { FAB } from "react-native-paper";

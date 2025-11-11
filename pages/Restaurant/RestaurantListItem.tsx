@@ -3,7 +3,7 @@ import { navigateToEditRestaurant } from "@/modules/common/utils/flowNavigation"
 import { useDeleteRestaurantMutation } from "@/lib/redux/slices/restaurant-api";
 import { FC, useState } from "react";
 import { Image, View } from "react-native";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { MenuIcon, UserIcon } from "lucide-react-native";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -73,7 +73,9 @@ export const RestaurantListItem: FC<RestaurantListItemProps> = ({
         </AspectRatio>
         <CardHeader className="flex flex-row justify-between">
           <View>
-            <Text variant="h4">{name}</Text>
+            <CardTitle ellipsizeMode="tail" numberOfLines={1}>
+              {name}
+            </CardTitle>
             <Text variant="muted" className="text-muted-foreground">
               {address}
             </Text>

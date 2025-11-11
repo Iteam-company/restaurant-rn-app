@@ -1,3 +1,10 @@
+import {
+  CircleCheckBigIcon,
+  LucideIcon,
+  PauseIcon,
+  RefreshCwIcon,
+} from "lucide-react-native";
+
 export const TagTypes = {
   USER: "User",
   RESTAURANT: "Restaurant",
@@ -107,10 +114,10 @@ export enum StatusEnum {
   NOT_STARTED = "not-started",
 }
 
-export const statusIcons: Record<StatusEnum, string> = {
-  [StatusEnum.COMPLETED]: "check-circle",
-  [StatusEnum.IN_PROGRESS]: "autorenew",
-  [StatusEnum.NOT_STARTED]: "pause-circle",
+export const statusIcons: Record<StatusEnum, LucideIcon> = {
+  [StatusEnum.COMPLETED]: CircleCheckBigIcon,
+  [StatusEnum.IN_PROGRESS]: RefreshCwIcon,
+  [StatusEnum.NOT_STARTED]: PauseIcon,
 };
 
 export enum DifficultyLevelEnum {
