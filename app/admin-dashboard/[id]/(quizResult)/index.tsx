@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import QuizResultList from "@/modules/quiz/components/quizResult/QuizResultList";
+import QuizResultList from "@/pages/QuizResult/QuizResultList";
 
 const QuizResult = () => {
   return (
