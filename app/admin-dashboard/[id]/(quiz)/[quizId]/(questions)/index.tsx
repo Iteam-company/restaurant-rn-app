@@ -4,7 +4,7 @@ import {
   navigateToCreateQuestion,
   navigateToGenerateQuestions,
 } from "@/modules/common/utils/flowNavigation";
-import QuestionList from "@/modules/questions/components/QuestionList";
+import QuestionList from "@/pages/Question/QuestionList";
 import { useGlobalSearchParams } from "expo-router";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
