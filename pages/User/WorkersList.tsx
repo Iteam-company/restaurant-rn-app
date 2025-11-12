@@ -1,7 +1,7 @@
 import useDebounce from "@/modules/common/hooks/useDebounce";
 import { useGlobalSearchParams } from "expo-router";
 import { useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList } from "react-native";
 import { useSearchUsersQuery } from "@/lib/redux/slices/user-api";
 import { Input } from "@/components/ui/input";
 import UserItem from "./UserItem";
