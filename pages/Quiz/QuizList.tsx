@@ -8,6 +8,7 @@ import Chip from "@/components/chip";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/modules/common/hooks/useDebounce";
 import { Separator } from "@/components/ui/separator";
+import QuizItemSkeleton from "../Skeleton/QuizItem";
 
 const QuizList = () => {
   const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
@@ -76,6 +77,14 @@ const QuizList = () => {
         showsVerticalScrollIndicator={false}
         onRefresh={() => refetch()}
         refreshing={isLoading || isFetching}
+        ListEmptyComponent={() =>
+          isLoading && (
+            <>
+              <QuizItemSkeleton />
+              <QuizItemSkeleton />
+            </>
+          )
+        }
         ListHeaderComponent={() => (
           <View className="flex flex-row flex-wrap gap-1">
             {Object.values(StatusEnum).map((status) => (
