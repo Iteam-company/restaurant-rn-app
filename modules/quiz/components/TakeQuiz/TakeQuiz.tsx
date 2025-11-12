@@ -38,14 +38,14 @@ const TakeQuiz = () => {
   >([]);
   const [value, setValue] = useState<number[]>([]);
 
-  const addMintes = (date: Date, minutes: number) => {
+  const addMinutes = (date: Date, minutes: number) => {
     const result = new Date(date);
     result.setMinutes(result.getMinutes() + minutes);
     return result;
   };
 
   const { minutes, seconds } = useTimer({
-    expiryTimestamp: addMintes(new Date(), Number(timer)),
+    expiryTimestamp: addMinutes(new Date(), Number(timer)),
     onExpire: () => setIsDialog(true),
   });
 
@@ -63,8 +63,7 @@ const TakeQuiz = () => {
         .unwrap()
         .then((quizResult) => {
           router.push({
-            pathname:
-              "/user-dashboard/[id]/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
+            pathname: "/user-dashboard/[id]/(quizResult)",
             params: { id: restaurantId, quizResultId: quizResult.id },
           });
         })
