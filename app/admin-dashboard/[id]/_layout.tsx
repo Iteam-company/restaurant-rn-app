@@ -53,7 +53,7 @@ export default function RestaurantPageLayout() {
             }}
           />
           <Tabs.Screen
-            name="(quizResult)"
+            name="(quizResult)/index"
             options={{
               tabBarLabel: "Quiz Result",
               tabBarIcon: (props) => <ArchiveIcon {...props} />,

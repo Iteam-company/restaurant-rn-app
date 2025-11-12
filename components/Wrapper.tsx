@@ -25,7 +25,7 @@ export default function Wrapper({
   ) : (
     <View
       className={cn(
-        `h-full flex bg-background justify-center items-center px-4`,
+        `h-full w-screen flex bg-background justify-center items-center px-4`,
         className
       )}
     >

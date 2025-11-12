@@ -13,35 +13,44 @@ type Props = {
   icon?: LucideIcon;
   iconSize?: number;
   selected?: boolean;
-  value: DifficultyLevelEnum | StatusEnum;
+  value: DifficultyLevelEnum | StatusEnum | number | string;
 } & PressableProps &
   ViewProps;
 
-const Chip: FC<Props> = ({
+const Chip: FC<Props> = (props) => {
+  return (
+    <Pressable {...props}>
+      <ChipContent {...props} />
+    </Pressable>
+  );
+};
+
+const getColor = (value: DifficultyLevelEnum) => {
+  switch (value) {
+    case DifficultyLevelEnum.EASY:
+      return "green";
+    case DifficultyLevelEnum.MEDIUM:
+      return "orange";
+    case DifficultyLevelEnum.HARD:
+      return "red";
+  }
+};
+
+const ChipContent: FC<Props> = ({
   value,
+  selected = true,
   icon: Icon = statusIcons[value as StatusEnum],
   iconSize,
-  selected = true,
   ...props
 }) => {
   const { colors } = useTheme();
 
-  const getColor = (value: DifficultyLevelEnum) => {
-    switch (value) {
-      case DifficultyLevelEnum.EASY:
-        return "green";
-      case DifficultyLevelEnum.MEDIUM:
-        return "orange";
-      case DifficultyLevelEnum.HARD:
-        return "red";
-    }
-  };
-
-  return (
-    <Pressable {...props}>
-      {Object.values(DifficultyLevelEnum).includes(
-        value as DifficultyLevelEnum
-      ) && (
+  switch (true) {
+    case Object.values(DifficultyLevelEnum).includes(
+      value as DifficultyLevelEnum
+    ):
+      const item = value as DifficultyLevelEnum;
+      return (
         <View
           className="bg-transparent border rounded-full px-2 pb-1 pt-1.5"
           style={{
@@ -52,12 +61,14 @@ const Chip: FC<Props> = ({
           {...props}
         >
           <Text variant="small">
-            {value[0].toUpperCase()}
-            {value.slice(1)}
+            {item[0].toUpperCase()}
+            {item.slice(1)}
           </Text>
         </View>
-      )}
-      {Object.values(StatusEnum).includes(value as StatusEnum) && (
+      );
+
+    case Object.values(StatusEnum).includes(value as StatusEnum):
+      return (
         <View
           className="flex flex-row gap-1 bg-transparent border rounded-full px-2 pb-1 pt-1.5"
           style={{
@@ -80,9 +91,15 @@ const Chip: FC<Props> = ({
             {value}
           </Text>
         </View>
-      )}
-    </Pressable>
-  );
+      );
+    default:
+      return (
+        <View className="flex flex-row gap-1 bg-transparent border rounded-full px-2 pb-1 pt-1.5">
+          {Icon && <Icon size={iconSize || 12} />}
+          <Text variant="small">{value}</Text>;
+        </View>
+      );
+  }
 };
 
 export default Chip;
