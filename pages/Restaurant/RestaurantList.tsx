@@ -1,10 +1,11 @@
 import { navigateToCreateRestaurant } from "@/modules/common/utils/flowNavigation";
 import { useGetRestaurantsQuery } from "@/lib/redux/slices/restaurant-api";
-import { ActivityIndicator, FlatList } from "react-native";
+import { FlatList } from "react-native";
 
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { RestaurantListItem } from "./RestaurantListItem";
+import RestaurantItemSkeleton from "../Skeleton/RestaurantItem";
 
 const RestaurantList = () => {
   const { data, isLoading, refetch, isFetching } = useGetRestaurantsQuery();
@@ -20,7 +21,12 @@ const RestaurantList = () => {
       onRefresh={() => refetch()}
       refreshing={isFetching}
       ListEmptyComponent={() =>
-        isLoading && <ActivityIndicator color={"#7c8ebf"} />
+        isLoading && (
+          <>
+            <RestaurantItemSkeleton />
+            <RestaurantItemSkeleton />
+          </>
+        )
       }
       renderItem={({ item }) => (
         <RestaurantListItem
@@ -34,7 +40,10 @@ const RestaurantList = () => {
       )}
       ListFooterComponent={
         <>
-          <Button onPress={() => navigateToCreateRestaurant()}>
+          <Button
+            disabled={isLoading}
+            onPress={() => navigateToCreateRestaurant()}
+          >
             <Text>Add new Restaurant</Text>
           </Button>
         </>
