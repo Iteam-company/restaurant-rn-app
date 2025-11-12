@@ -7,6 +7,7 @@ import { DifficultyLevelEnum, StatusEnum } from "@/lib/redux/types";
 import Chip from "@/components/chip";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/modules/common/hooks/useDebounce";
+import { Separator } from "@/components/ui/separator";
 
 const QuizList = () => {
   const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
@@ -55,8 +56,8 @@ const QuizList = () => {
   };
 
   return (
-    <View className="flex gap-4 py-2">
-      <View className="w-screen px-2 box">
+    <View className="py-4">
+      <View className="w-screen px-4 box">
         <Input
           className="w-full"
           placeholder="Search"
@@ -64,33 +65,38 @@ const QuizList = () => {
           onChangeText={handleChangeSearch}
         />
       </View>
-      <View className="flex flex-row flex-wrap gap-1">
-        {Object.values(StatusEnum).map((status) => (
-          <Chip
-            key={status}
-            selected={selectedStatus.includes(status)}
-            onPress={() => toggleStatus(status)}
-            value={status}
-          />
-        ))}
+      <Separator className="w-screen mt-2" />
 
-        {Object.values(DifficultyLevelEnum).map((level) => (
-          <Chip
-            key={level}
-            selected={selectedDifficultyLevel.includes(level)}
-            onPress={() => toggleDifficultyLevel(level)}
-            value={level}
-          />
-        ))}
-      </View>
       <FlatList
         data={filteredData}
+        className="w-screen"
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerClassName="py-4 gap-4"
+        contentContainerClassName="py-4 gap-4 px-4"
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         onRefresh={() => refetch()}
         refreshing={isLoading || isFetching}
+        ListHeaderComponent={() => (
+          <View className="flex flex-row flex-wrap gap-1">
+            {Object.values(StatusEnum).map((status) => (
+              <Chip
+                key={status}
+                selected={selectedStatus.includes(status)}
+                onPress={() => toggleStatus(status)}
+                value={status}
+              />
+            ))}
+
+            {Object.values(DifficultyLevelEnum).map((level) => (
+              <Chip
+                key={level}
+                selected={selectedDifficultyLevel.includes(level)}
+                onPress={() => toggleDifficultyLevel(level)}
+                value={level}
+              />
+            ))}
+          </View>
+        )}
         renderItem={({ item }) => <QuizItem quiz={item} />}
       />
     </View>
