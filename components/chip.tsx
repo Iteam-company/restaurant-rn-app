@@ -96,7 +96,7 @@ const ChipContent: FC<Props> = ({
       return (
         <View className="flex flex-row gap-1 bg-transparent border rounded-full px-2 pb-1 pt-1.5">
           {Icon && <Icon size={iconSize || 12} />}
-          <Text variant="small">{value}</Text>;
+          <Text variant="small">{value}</Text>
         </View>
       );
   }
