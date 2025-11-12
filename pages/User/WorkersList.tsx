@@ -1,6 +1,4 @@
-import Wrapper from "@/components/Wrapper";
 import useDebounce from "@/modules/common/hooks/useDebounce";
-
 import { useGlobalSearchParams } from "expo-router";
 import { useState } from "react";
 import { FlatList, View } from "react-native";
@@ -29,7 +27,7 @@ const Workers = () => {
   };
 
   return (
-    <Wrapper>
+    <>
       <View className="w-screen p-4 box">
         <Input
           placeholder="Search"
@@ -48,7 +46,7 @@ const Workers = () => {
         onRefresh={() => refetch()}
         renderItem={({ item }) => <UserItem userId={item.id.toString()} />}
       />
-    </Wrapper>
+    </>
   );
 };
 
