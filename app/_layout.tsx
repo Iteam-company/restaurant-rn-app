@@ -21,6 +21,7 @@ import { NAV_THEME } from "@/lib/theme";
 
 import "../global.css";
 import { useColorScheme } from "react-native";
+import { UserValidationProvider } from "@/lib/hook/useValidateUser.tsx";
 
 SplashScreen.preventAutoHideAsync();
 export const navigationRef = createNavigationContainerRef();
@@ -44,18 +45,20 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <ThemeProvider value={NAV_THEME[colorScheme || "light"]}>
-          <PaperProvider theme={theme}>
-            <AuthTokenProvider>
-              <NetworkGate />
-              <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-              <PortalHost />
-              <ToastInit />
-            </AuthTokenProvider>
-          </PaperProvider>
-        </ThemeProvider>
-      </SafeAreaProvider>
+      <AuthTokenProvider>
+        <SafeAreaProvider>
+          <ThemeProvider value={NAV_THEME[colorScheme || "light"]}>
+            <UserValidationProvider>
+              <PaperProvider theme={theme}>
+                <NetworkGate />
+                <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+                <PortalHost />
+                <ToastInit />
+              </PaperProvider>
+            </UserValidationProvider>
+          </ThemeProvider>
+        </SafeAreaProvider>
+      </AuthTokenProvider>
     </Provider>
   );
 }

@@ -102,7 +102,7 @@ const UserProfile: FC<Props> = ({ userId }) => {
             onPress={() => handleOpenURI(`tel:${user.phoneNumber}`)}
           />
         </CardContent>
-        {userId && (
+        {!userId && (
           <CardContent className="px-4">
             <Button onPress={handleLogOut}>
               <Text>Log out</Text>
