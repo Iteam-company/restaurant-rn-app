@@ -31,7 +31,7 @@ export default function RestaurantPageLayout() {
             <Icon sf="questionmark.circle" />
             <Label>Quizzes</Label>
           </NativeTabs.Trigger>
-          <NativeTabs.Trigger name="(quizResult)">
+          <NativeTabs.Trigger name="(quizResult)/index">
             <Icon sf="archivebox" />
             <Label>Quiz Result</Label>
           </NativeTabs.Trigger>
