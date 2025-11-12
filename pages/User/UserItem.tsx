@@ -5,6 +5,7 @@ import { useGetUserByIdQuery } from "@/lib/redux/slices/user-api";
 import { Text } from "@/components/ui/text";
 import { Badge } from "@/components/ui/badge";
 import { useTheme } from "@react-navigation/native";
+import UserItemSkeleton from "../Skeleton/UserItem";
 
 type Props = {
   userId: string;
@@ -12,9 +13,11 @@ type Props = {
 
 const UserItem: FC<Props> = ({ userId }) => {
   const { colors } = useTheme();
-  const { data } = useGetUserByIdQuery(userId);
+  const { data, isLoading } = useGetUserByIdQuery(userId);
 
-  return (
+  return isLoading ? (
+    <UserItemSkeleton />
+  ) : (
     <View className="flex flex-row gap-2">
       <UserProfilePopover
         userId={userId}

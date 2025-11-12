@@ -1,4 +1,3 @@
-import Loader from "@/components/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Text } from "@/components/ui/text";
 import {
@@ -7,6 +6,7 @@ import {
 } from "@/lib/redux/slices/user-api";
 import { FC, useMemo } from "react";
 import { ClassNameValue } from "tailwind-merge";
+import UserAvatarSkeleton from "../Skeleton/UserAvatar";
 
 type Props = {
   userId?: string;
@@ -37,7 +37,9 @@ const UserAvatar: FC<Props> = ({
 
   const isLoading = isLoadingById || isLoadingCurrent;
 
-  return (
+  return isLoading ? (
+    <UserAvatarSkeleton size={size} />
+  ) : (
     <Avatar
       alt={`${user?.username} icon`}
       style={{ width: size, height: size }}
@@ -48,14 +50,10 @@ const UserAvatar: FC<Props> = ({
         className={contentClassName?.toString()}
       />
       <AvatarFallback className={contentClassName?.toString()}>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <Text>
-            {user?.firstName[0].toUpperCase()}
-            {user?.lastName[0].toUpperCase()}
-          </Text>
-        )}
+        <Text>
+          {user?.firstName[0].toUpperCase()}
+          {user?.lastName[0].toUpperCase()}
+        </Text>
       </AvatarFallback>
     </Avatar>
   );

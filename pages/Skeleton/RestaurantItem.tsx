@@ -4,10 +4,18 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "@react-navigation/native";
 import { MenuIcon, Users } from "lucide-react-native";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 const RestaurantItemSkeleton = () => {
+  const [mounted, setMounted] = useState(false);
   const { colors } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <Card className="pt-0">
