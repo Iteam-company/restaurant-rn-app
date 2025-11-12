@@ -4,7 +4,7 @@ import Workers from "@/pages/User/WorkersList";
 const WorkersPage = () => {
   return (
     <Wrapper>
-      <Workers />;
+      <Workers />
     </Wrapper>
   );
 };
