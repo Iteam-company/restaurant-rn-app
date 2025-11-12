@@ -32,8 +32,8 @@ const QuizResultList = () => {
         data={quizResults}
         contentInsetAdjustmentBehavior="automatic"
         keyExtractor={(item) => item.id.toString()}
-        className="py-2"
-        contentContainerClassName="gap-6"
+        className="py-4"
+        contentContainerClassName="gap-4"
         onRefresh={() => refetch()}
         refreshing={isLoading || isFetching}
         renderItem={({ item }) => <QuizResultItemComponent quizResult={item} />}

@@ -5,6 +5,7 @@ import { FlatList, View } from "react-native";
 import { useSearchUsersQuery } from "@/lib/redux/slices/user-api";
 import { Input } from "@/components/ui/input";
 import UserItem from "./UserItem";
+import { Separator } from "@/components/ui/separator";
 
 const Workers = () => {
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
@@ -28,16 +29,16 @@ const Workers = () => {
 
   return (
     <>
-      <View className="w-screen p-4 box">
-        <Input
-          placeholder="Search"
-          onChangeText={handleSearch}
-          value={searchQuery}
-        />
-      </View>
+      <Input
+        className="mt-4 mb-2"
+        placeholder="Search"
+        onChangeText={handleSearch}
+        value={searchQuery}
+      />
+      <Separator className="w-screen" />
       <FlatList
-        className="w-screen"
-        contentContainerClassName="px-4 gap-3"
+        className="w-full py-4"
+        contentContainerClassName="gap-3"
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
         data={foundedUsers}
