@@ -25,7 +25,7 @@ const Chip: FC<Props> = (props) => {
   );
 };
 
-const getColor = (value: DifficultyLevelEnum) => {
+export const getDifficultyLevelColor = (value: DifficultyLevelEnum) => {
   switch (value) {
     case DifficultyLevelEnum.EASY:
       return "green";
@@ -55,7 +55,7 @@ const ChipContent: FC<Props> = ({
           className="bg-transparent border rounded-full px-2 pb-1 pt-1.5"
           style={{
             borderColor: selected
-              ? getColor(value as DifficultyLevelEnum)
+              ? getDifficultyLevelColor(value as DifficultyLevelEnum)
               : undefined,
           }}
           {...props}

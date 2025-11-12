@@ -5,6 +5,7 @@ import { useSearchQuizResultQuery } from "../../lib/redux/slices/quiz-api";
 import QuizResultItemComponent from "./QuizResultItem";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import QuizResultSkeleton from "../Skeleton/QuizResult";
 
 const QuizResultList = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -32,10 +33,18 @@ const QuizResultList = () => {
         data={quizResults}
         contentInsetAdjustmentBehavior="automatic"
         keyExtractor={(item) => item.id.toString()}
-        className="py-4"
+        className="py-4 w-full"
         contentContainerClassName="gap-4"
         onRefresh={() => refetch()}
         refreshing={isLoading || isFetching}
+        ListEmptyComponent={() => (
+          <>
+            <QuizResultSkeleton />
+            <QuizResultSkeleton />
+            <QuizResultSkeleton />
+            <QuizResultSkeleton />
+          </>
+        )}
         renderItem={({ item }) => <QuizResultItemComponent quizResult={item} />}
       />
     </>
