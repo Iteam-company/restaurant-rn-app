@@ -7,12 +7,14 @@ import {
 import { FC, useMemo } from "react";
 import { ClassNameValue } from "tailwind-merge";
 import UserAvatarSkeleton from "../Skeleton/UserAvatar";
+import { ImageSourcePropType } from "react-native";
 
 type Props = {
   userId?: string;
   size?: number;
   className?: ClassNameValue;
   contentClassName?: ClassNameValue;
+  source?: ImageSourcePropType;
 };
 
 const UserAvatar: FC<Props> = ({
@@ -20,6 +22,7 @@ const UserAvatar: FC<Props> = ({
   size = 30,
   className,
   contentClassName,
+  source,
 }) => {
   const { data: userById, isLoading: isLoadingById } = useGetUserByIdQuery(
     userId!,
@@ -46,7 +49,7 @@ const UserAvatar: FC<Props> = ({
       className={className?.toString()}
     >
       <AvatarImage
-        source={{ uri: user?.icon }}
+        source={source || { uri: user?.icon }}
         className={contentClassName?.toString()}
       />
       <AvatarFallback className={contentClassName?.toString()}>

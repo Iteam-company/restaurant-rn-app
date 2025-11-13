@@ -16,6 +16,7 @@ import * as Linking from "expo-linking";
 import UserAvatar from "./UserAvatar";
 import Loader from "@/components/loader";
 import UserRoleBadge from "@/components/user-role-badge";
+import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
 
 const InfoBlock = ({
   value,
@@ -85,6 +86,26 @@ const UserProfile: FC<Props> = ({ userId }) => {
               </View>
             </View>
           </View>
+          {!userId && (
+            <View className="flex-row flex-wrap gap-3 py-0.5">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onPress={() => navigateToEditUser(user.id)}
+              >
+                <Text>Edit</Text>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onPress={handleLogOut}
+              >
+                <Text>Sign Out</Text>
+              </Button>
+            </View>
+          )}
         </CardHeader>
         <Separator />
         <CardContent className="flex px-4">
@@ -100,13 +121,6 @@ const UserProfile: FC<Props> = ({ userId }) => {
             onPress={() => handleOpenURI(`tel:${user.phoneNumber}`)}
           />
         </CardContent>
-        {!userId && (
-          <CardContent className="px-4">
-            <Button onPress={handleLogOut}>
-              <Text>Log out</Text>
-            </Button>
-          </CardContent>
-        )}
       </Card>
     </Loader>
   );
