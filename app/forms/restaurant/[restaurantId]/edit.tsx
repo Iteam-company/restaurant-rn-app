@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import EditRestaurant from "@/modules/restaurant/components/EditRestaurant/EditRestaurant";
+import EditRestaurant from "@/pages/Forms/Restaurant/EditRestaurant";
 
 const EditRestaurantScreen = () => {
   return (

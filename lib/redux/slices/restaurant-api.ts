@@ -53,10 +53,10 @@ export const restaurantApi = workerApi
         RestaurantInfo,
         { values: Partial<RestaurantInfo>; id: string }
       >({
-        query: (restaurantInfo) => ({
-          url: `/restaurant/${restaurantInfo.id}`,
+        query: ({ values, id }) => ({
+          url: `/restaurant/${id}`,
           method: "PATCH",
-          body: restaurantInfo,
+          body: values,
         }),
         invalidatesTags: (result, error, { id }) => [
           { type: TagTypes.RESTAURANT, id },

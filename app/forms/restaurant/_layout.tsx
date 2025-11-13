@@ -18,7 +18,7 @@ export default function RestaurantIdLayout() {
         }}
       />
       <Stack.Screen
-        name="[userId]/edit"
+        name="[restaurantId]/edit"
         options={{
           headerTitle: "Edit Restaurant",
           headerBackVisible: true,
