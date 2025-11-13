@@ -7,7 +7,7 @@ import { MenuIcon, Users } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
-const RestaurantItemSkeleton = () => {
+const RestaurantCardSkeleton = () => {
   const [mounted, setMounted] = useState(false);
   const { colors } = useTheme();
 
@@ -48,4 +48,4 @@ const RestaurantItemSkeleton = () => {
   );
 };
 
-export default RestaurantItemSkeleton;
+export default RestaurantCardSkeleton;

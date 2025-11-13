@@ -4,7 +4,7 @@ import * as SecureStore from "expo-secure-store";
 import { USER_ROLE } from "@/modules/common/constants/api";
 import { MenuIcon } from "lucide-react-native";
 
-const QuizResultSkeleton = () => {
+const QuizResultCardSkeleton = () => {
   return (
     <Card className="gap-2 w-full">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -26,4 +26,4 @@ const QuizResultSkeleton = () => {
   );
 };
 
-export default QuizResultSkeleton;
+export default QuizResultCardSkeleton;

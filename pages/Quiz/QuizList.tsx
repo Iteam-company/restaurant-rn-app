@@ -8,7 +8,7 @@ import Chip from "@/components/chip";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/modules/common/hooks/useDebounce";
 import { Separator } from "@/components/ui/separator";
-import QuizItemSkeleton from "../Skeleton/QuizItem";
+import QuizCardSkeleton from "../Skeleton/QuizCard";
 
 const QuizList = () => {
   const { id: restaurantId } = useLocalSearchParams<{ id: string }>();
@@ -80,8 +80,8 @@ const QuizList = () => {
         ListEmptyComponent={() =>
           isLoading && (
             <>
-              <QuizItemSkeleton />
-              <QuizItemSkeleton />
+              <QuizCardSkeleton />
+              <QuizCardSkeleton />
             </>
           )
         }

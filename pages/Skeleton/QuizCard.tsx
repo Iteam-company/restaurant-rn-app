@@ -7,7 +7,7 @@ import { MenuIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
-const QuizItemSkeleton = () => {
+const QuizCardSkeleton = () => {
   const [mounted, setMounted] = useState(false);
   const { colors } = useTheme();
 
@@ -34,4 +34,4 @@ const QuizItemSkeleton = () => {
   );
 };
 
-export default QuizItemSkeleton;
+export default QuizCardSkeleton;
