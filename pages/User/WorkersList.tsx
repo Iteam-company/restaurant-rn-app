@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FlatList } from "react-native";
 import { useSearchUsersQuery } from "@/lib/redux/slices/user-api";
 import { Input } from "@/components/ui/input";
-import UserItem from "./UserItem";
+import UserCard from "./UserCard";
 import { Separator } from "@/components/ui/separator";
 
 const Workers = () => {
@@ -45,7 +45,7 @@ const Workers = () => {
         refreshing={isLoading || isFetching}
         keyExtractor={(item) => item.id.toString()}
         onRefresh={() => refetch()}
-        renderItem={({ item }) => <UserItem userId={item.id.toString()} />}
+        renderItem={({ item }) => <UserCard userId={item.id.toString()} />}
       />
     </>
   );
