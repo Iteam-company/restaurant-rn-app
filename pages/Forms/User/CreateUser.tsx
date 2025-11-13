@@ -98,18 +98,6 @@ export default function CreateUser() {
           <ErrorText error={errors.lastName} touched={touched.lastName} />
         </View>
         <View>
-          <Label>Phone Number</Label>
-          <Input
-            placeholder="Phone Number"
-            value={values.phoneNumber}
-            onChangeText={(text) => setFieldValue("phoneNumber", text)}
-            onBlur={handleBlur("phoneNumber")}
-            keyboardType="number-pad"
-            autoComplete="tel-device"
-          />
-          <ErrorText error={errors.phoneNumber} touched={touched.phoneNumber} />
-        </View>
-        <View>
           <Label>Email</Label>
           <Input
             placeholder="Email"
@@ -121,6 +109,18 @@ export default function CreateUser() {
             autoComplete="email"
           />
           <ErrorText error={errors.email} touched={touched.email} />
+        </View>
+        <View>
+          <Label>Phone Number</Label>
+          <Input
+            placeholder="Phone Number"
+            value={values.phoneNumber}
+            onChangeText={(text) => setFieldValue("phoneNumber", text)}
+            onBlur={handleBlur("phoneNumber")}
+            keyboardType="number-pad"
+            autoComplete="tel-device"
+          />
+          <ErrorText error={errors.phoneNumber} touched={touched.phoneNumber} />
         </View>
         <View className="relative">
           <Label>Password</Label>

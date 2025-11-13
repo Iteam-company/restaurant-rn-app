@@ -40,7 +40,7 @@ export const ConfirmationDialog: FC<
       {children && <DialogTrigger>{children}</DialogTrigger>}
       <DialogContent>
         <DialogHeader>
-          <Text variant="large">{title}</Text>
+          <Text variant="large">{title || "Are you sure?"}</Text>
         </DialogHeader>
         <Text className="mr-4">{text}</Text>
         <DialogFooter className="flex flex-row justify-end">

@@ -12,7 +12,7 @@ const Loader: FC<PropsWithChildren<Props>> = ({
 }) => {
   if (children)
     return (
-      <View className="relative">
+      <View className="relative w-full">
         {children}
         {isLoading && (
           <View className="absolute flex h-full w-full items-center justify-center rounded-xl bg-[#00000033] transition-colors duration-300">

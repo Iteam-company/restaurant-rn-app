@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import EditWorker from "@/modules/restaurant/components/RestaurantInfo/editWorker/EditWorker";
+import EditWorker from "@/pages/Forms/User/EditWorker";
 
 const EditUserScreen = () => {
   return (
