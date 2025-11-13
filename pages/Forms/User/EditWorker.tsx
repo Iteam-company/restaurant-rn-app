@@ -164,7 +164,11 @@ const EditWorker = () => {
           <Loader isLoading={isLoadingUser || isLoadingCurrentUser}>
             <CardHeader className="items-center">
               <View className="relative w-20">
-                <UserAvatar userId={workerId} size={80} />
+                <UserAvatar
+                  userId={workerId}
+                  size={80}
+                  source={data && { uri: data.icon }}
+                />
                 <View className="absolute right-0 bottom-0">
                   <CameraIcon
                     size={24}

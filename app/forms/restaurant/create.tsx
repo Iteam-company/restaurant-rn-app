@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import CreateRestaurant from "@/modules/restaurant/components/CreateRestaurant/CreateRestaurant";
+import CreateRestaurant from "@/pages/Forms/Restaurant/CreateRestaurant";
 
 const CreateRestaurantScreen = () => {
   return (
