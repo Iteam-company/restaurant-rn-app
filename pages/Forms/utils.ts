@@ -1,4 +1,5 @@
-import { UserROLES, UserType } from "@/lib/redux/types";
+import { Option } from "@/components/ui/select";
+import { UserInfo, UserROLES, UserType } from "@/lib/redux/types";
 import * as Yup from "yup";
 
 export const createUserInitialValues: Partial<UserType> = {
@@ -24,3 +25,21 @@ export const createUserValidationSchema = Yup.object().shape({
     .oneOf(Object.values(UserROLES), "Invalid role")
     .required("Role is required"),
 });
+
+export const createRestaurantValidationSchema = Yup.object().shape({
+  restaurantName: Yup.string().required("Restaurant name is required"),
+  address: Yup.string().required("Address is required"),
+});
+
+export const createRestaurantInitialValues = {
+  restaurantName: "",
+  address: "",
+  image: undefined,
+};
+
+export const getOptions = (owners: UserInfo[]): Option[] => {
+  return owners.map((elem) => ({
+    label: `${elem.firstName} ${elem.lastName}`,
+    value: `${elem.id}`,
+  }));
+};

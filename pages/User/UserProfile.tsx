@@ -40,9 +40,9 @@ const InfoBlock = ({
   );
 };
 
-type Props = { userId?: string };
+type Props = { userId?: string; onClosePopover?: () => void };
 
-const UserProfile: FC<Props> = ({ userId }) => {
+const UserProfile: FC<Props> = ({ userId, onClosePopover }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { data: userById } = useGetUserByIdQuery(userId!, { skip: !userId });
@@ -64,12 +64,18 @@ const UserProfile: FC<Props> = ({ userId }) => {
   }, []);
 
   const handleLogOut = useCallback(async () => {
+    onClosePopover?.();
     setToken(null);
     setRefreshToken(null);
     await SecureStore.deleteItemAsync(USER_ROLE);
 
     router.push("/auth/signin");
-  }, [setToken, setRefreshToken]);
+  }, [setToken, setRefreshToken, onClosePopover]);
+
+  const handleEdit = useCallback(async () => {
+    onClosePopover?.();
+    navigateToEditUser(user?.id!);
+  }, [onClosePopover, user]);
 
   if (!user) return null;
 
@@ -92,7 +98,7 @@ const UserProfile: FC<Props> = ({ userId }) => {
                 variant="outline"
                 size="sm"
                 className="flex-1"
-                onPress={() => navigateToEditUser(user.id)}
+                onPress={handleEdit}
               >
                 <Text>Edit</Text>
               </Button>
