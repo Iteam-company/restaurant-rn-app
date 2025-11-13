@@ -1,7 +1,6 @@
 import { FC, PropsWithChildren } from "react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -44,11 +43,10 @@ export const ConfirmationDialog: FC<
         </DialogHeader>
         <Text className="mr-4">{text}</Text>
         <DialogFooter className="flex flex-row justify-end">
-          <DialogClose>
-            <Button>
-              <Text>{cancelButtonText || "Cancel"}</Text>
-            </Button>
-          </DialogClose>
+          <Button onPress={() => onOpenChange?.(false)}>
+            <Text>{cancelButtonText || "Cancel"}</Text>
+          </Button>
+
           <Button variant="destructive" onPress={action}>
             <Text>{confirmButtonText || "Delete"}</Text>
           </Button>

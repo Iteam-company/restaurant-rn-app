@@ -168,6 +168,7 @@ const EditWorker = () => {
                 <View className="absolute right-0 bottom-0">
                   <CameraIcon
                     size={24}
+                    color={colors.text}
                     fill={colors.background}
                     onPress={async () => {
                       const formData = await handleFile();
