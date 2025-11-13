@@ -10,12 +10,12 @@ import { FC, useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import * as Linking from "expo-linking";
 import UserAvatar from "./UserAvatar";
 import Loader from "@/components/loader";
+import UserRoleBadge from "@/components/user-role-badge";
 
 const InfoBlock = ({
   value,
@@ -81,9 +81,7 @@ const UserProfile: FC<Props> = ({ userId }) => {
             <View className="h-full flex">
               <Text>{`${user.firstName} ${user.lastName}`}</Text>
               <View className="flex flex-row gap-2 w-min">
-                <Badge>
-                  <Text>{user.role}</Text>
-                </Badge>
+                <UserRoleBadge value={user.role} />
               </View>
             </View>
           </View>
