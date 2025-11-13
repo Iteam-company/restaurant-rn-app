@@ -87,6 +87,7 @@ export default function SignInForm() {
         <ErrorText error={error} />
 
         <Button
+          disabled={isLoading}
           onPress={() => {
             handleSubmit();
           }}

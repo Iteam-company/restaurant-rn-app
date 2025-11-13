@@ -15,7 +15,7 @@ export default function Wrapper({
 }: WrapperProps) {
   return isScrollable ? (
     <ScrollView
-      className={cn(`h-full flex bg-background px-4`, className)}
+      className={cn(`h-full flex bg-background p-4`, className)}
       contentContainerStyle={styles.centered}
       showsVerticalScrollIndicator={false}
       contentInsetAdjustmentBehavior="always"

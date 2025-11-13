@@ -19,22 +19,25 @@ interface ConfirmationDialogProps {
 }
 
 export const ConfirmationDialog: FC<
-  PropsWithChildren<ConfirmationDialogProps>
+  PropsWithChildren<
+    ConfirmationDialogProps & {
+      open?: boolean;
+      onOpenChange?: (open: boolean) => void;
+    }
+  >
 > = ({
-  title = "Confirm Deletion",
-  text = "Are you sure? This action cannot be undone.",
-  confirmButtonText = "Delete",
-  cancelButtonText = "Cancel",
+  open,
+  onOpenChange,
+  title,
+  text,
+  confirmButtonText,
+  cancelButtonText,
   action,
   children,
 }) => {
-  const confirmAction = () => {
-    action();
-  };
-
   return (
-    <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {children && <DialogTrigger>{children}</DialogTrigger>}
       <DialogContent>
         <DialogHeader>
           <Text variant="large">{title}</Text>
@@ -43,11 +46,11 @@ export const ConfirmationDialog: FC<
         <DialogFooter className="flex flex-row justify-end">
           <DialogClose>
             <Button>
-              <Text>{cancelButtonText}</Text>
+              <Text>{cancelButtonText || "Cancel"}</Text>
             </Button>
           </DialogClose>
-          <Button variant="destructive" onPress={confirmAction}>
-            <Text>{confirmButtonText}</Text>
+          <Button variant="destructive" onPress={action}>
+            <Text>{confirmButtonText || "Delete"}</Text>
           </Button>
         </DialogFooter>
       </DialogContent>

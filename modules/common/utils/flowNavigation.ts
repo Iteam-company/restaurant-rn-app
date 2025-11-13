@@ -87,7 +87,7 @@ export const navigateToFlow = (
     }
   });
 
-  console.log(url, searchParams, "~~~navigateToFlow");
+  // console.log(url, searchParams, "~~~navigateToFlow");
   router.push({
     pathname: url as any,
     params: searchParams,
@@ -105,7 +105,7 @@ export const navigateToEditUser = (
   });
 };
 
-export const navigateToCreateUser = (restaurantId?: string) => {
+export const navigateToCreateUser = (restaurantId: string) => {
   navigateToFlow(FlowType.USER, { restaurantId, action: ActionType.CREATE });
 };
 

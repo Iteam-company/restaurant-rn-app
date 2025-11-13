@@ -1,7 +1,7 @@
 import { UserROLES, UserType } from "@/lib/redux/types";
 import * as Yup from "yup";
 
-export const initialValues: Partial<UserType> = {
+export const createUserInitialValues: Partial<UserType> = {
   username: "",
   firstName: "",
   lastName: "",
@@ -11,10 +11,10 @@ export const initialValues: Partial<UserType> = {
   role: UserROLES.WAITER,
 };
 
-export const validationSchema = Yup.object().shape({
+export const createUserValidationSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
-  firstName: Yup.string().required("Name is required"),
-  lastName: Yup.string().required("Surname is required"),
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   phoneNumber: Yup.string().required("Phone number is required"),
   password: Yup.string()
