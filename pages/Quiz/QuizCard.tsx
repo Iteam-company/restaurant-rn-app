@@ -1,9 +1,7 @@
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { USER_ROLE } from "@/modules/common/constants/api";
 import { navigateToEditQuiz } from "@/modules/common/utils/flowNavigation";
 import { useGlobalSearchParams, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import { useState } from "react";
 import { Pressable, View } from "react-native";
 import { useDeleteQuizMutation } from "../../lib/redux/slices/quiz-api";
 import { IQuizInfo } from "@/lib/redux/types";
@@ -19,6 +17,7 @@ import {
 import { MenuIcon } from "lucide-react-native";
 import { Text } from "@/components/ui/text";
 import { useTheme } from "@react-navigation/native";
+import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 type Params = {
   quiz: IQuizInfo;
@@ -28,8 +27,6 @@ const QuizCard = ({ quiz }: Params) => {
   const { colors } = useTheme();
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
   const router = useRouter();
-
-  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 
   const [deleteQuiz] = useDeleteQuizMutation();
 
@@ -70,13 +67,14 @@ const QuizCard = ({ quiz }: Params) => {
                   >
                     <Text>Edit</Text>
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    variant="destructive"
-                    onPress={() => {
-                      setIsOpenDialog(true);
-                    }}
-                  >
-                    <Text>Delete</Text>
+                  <DropdownMenuItem variant="destructive">
+                    <ConfirmationDialog
+                      title="Delete this Quiz?"
+                      text={`Are you sure you want to delete "${quiz.title}"? This action cannot be undone.`}
+                      action={handleDeleteQuiz}
+                    >
+                      <Text>Delete</Text>
+                    </ConfirmationDialog>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
@@ -88,15 +86,6 @@ const QuizCard = ({ quiz }: Params) => {
             <Chip value={quiz.status} />
             <Chip value={quiz.difficultyLevel} />
           </View>
-          <ConfirmationDialog
-            title="Delete Menu?"
-            text={`Are you sure you want to delete ${quiz.title} ? This action cannot be undone.`}
-            action={handleDeleteQuiz}
-            close={() => {
-              setIsOpenDialog(false);
-            }}
-            isOpen={isOpenDialog}
-          />
         </CardContent>
       </Card>
     </Pressable>

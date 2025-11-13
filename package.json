@@ -22,6 +22,7 @@
     "@reduxjs/toolkit": "^2.5.0",
     "@rn-primitives/aspect-ratio": "^1.2.0",
     "@rn-primitives/avatar": "^1.2.0",
+    "@rn-primitives/dialog": "^1.2.0",
     "@rn-primitives/dropdown-menu": "^1.2.0",
     "@rn-primitives/label": "^1.2.0",
     "@rn-primitives/popover": "^1.2.0",

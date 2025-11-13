@@ -1,8 +1,6 @@
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { USER_ROLE } from "@/modules/common/constants/api";
 import { useDeleteQuizResultMutation } from "@/lib/redux/slices/quiz-api";
 import * as SecureStore from "expo-secure-store";
-import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { IQuizResultInfo } from "@/lib/redux/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,14 +15,13 @@ import {
 import { CalendarIcon, MenuIcon, TrophyIcon } from "lucide-react-native";
 import { Text } from "@/components/ui/text";
 import Chip from "@/components/chip";
+import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 interface Props {
   quizResult: IQuizResultInfo;
 }
 
 export const QuizResultCard = ({ quizResult }: Props) => {
-  const [isOpenDialog, setIsOpenDialog] = useState(false);
-
   const [removeQuizResult, { isLoading }] = useDeleteQuizResultMutation();
 
   const date = new Date(quizResult.ratingDate);
@@ -43,11 +40,13 @@ export const QuizResultCard = ({ quizResult }: Props) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    variant="destructive"
-                    onPress={() => setIsOpenDialog(true)}
-                  >
-                    <Text>Remove</Text>
+                  <DropdownMenuItem variant="destructive">
+                    <ConfirmationDialog
+                      title="Remove this Quiz Result?"
+                      action={() => removeQuizResult(quizResult.id)}
+                    >
+                      <Text>Remove</Text>
+                    </ConfirmationDialog>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>
@@ -74,13 +73,6 @@ export const QuizResultCard = ({ quizResult }: Props) => {
             />
           </View>
         </CardContent>
-        <ConfirmationDialog
-          title="Remove Quiz Result?"
-          text="Are you sure?"
-          action={() => removeQuizResult(quizResult.id)}
-          close={() => setIsOpenDialog(false)}
-          isOpen={isOpenDialog}
-        />
       </Card>
     </Loader>
   );
