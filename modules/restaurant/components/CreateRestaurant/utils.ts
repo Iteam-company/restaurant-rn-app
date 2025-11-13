@@ -1,4 +1,4 @@
-import { UserInfo } from "@/modules/common/types/user.types";
+import { UserInfo } from "@/lib/redux/types";
 import { Option } from "react-native-paper-dropdown";
 import * as Yup from "yup";
 

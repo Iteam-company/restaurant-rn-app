@@ -1,4 +1,4 @@
-import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
+import { useValidateTokenQuery } from "@/lib/redux/slices/auth-api";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import { useRouter } from "expo-router";
 import { useFormik } from "formik";
@@ -16,13 +16,13 @@ import {
   useCreateRestaurantMutation,
   useGetOwnersQuery,
   useUploadRestaurantImageMutation,
-} from "../../redux/slices/restaurant-api";
+} from "../../../../lib/redux/slices/restaurant-api";
 import { getOptions, initialValues, validationSchema } from "./utils";
 
 import { handleFile } from "@/modules/common/utils/handleFile";
 import { Dropdown } from "react-native-paper-dropdown";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
-import { ErrorResponseType } from "@/modules/common/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 export default function CreateRestaurant() {
   const { colors } = useTheme();
@@ -45,7 +45,7 @@ export default function CreateRestaurant() {
     }
     if (isError) {
       console.error("Error creating restaurant:", error);
-      toastErrorHandler(error as ErrorResponseType);
+      toastErrorHandler(error as FetchBaseQueryError);
     }
   }, [isSuccess, isError, data, error]);
 
@@ -88,7 +88,7 @@ export default function CreateRestaurant() {
           ) : (
             <Avatar.Image
               size={120}
-              source={require("@/assets/images/mock/premium_photo-1661883237884-263e8de8869b.jpg")}
+              source={require("@/assets/images/mock/restaurant-mock.jpg")}
             />
           )}
           <IconButton

@@ -1,8 +1,8 @@
-import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
-import Wrapper from "@/modules/common/components/Wrapper";
+import { useValidateTokenQuery } from "@/lib/redux/slices/auth-api";
+import Wrapper from "@/components/Wrapper";
 import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
-import CurrentUserInfo from "@/modules/restaurant/components/RestaurantInfo/userInfo/CurrentUserInfo";
+import CurrentUserInfo from "@/pages/User/UserProfile";
 import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -13,7 +13,7 @@ export default function User() {
   const { data: currentUser } = useValidateTokenQuery();
 
   return (
-    <Wrapper centered>
+    <Wrapper>
       <CurrentUserInfo />
       {currentUser && (
         <FAB

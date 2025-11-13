@@ -1,5 +1,4 @@
-import { statusIcons } from "@/modules/common/utils/menuUtils";
-import { useGetQuestionsQuery } from "@/modules/questions/redux/slices/question-api";
+import { useGetQuestionsQuery } from "@/lib/redux/slices/question-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
@@ -9,8 +8,12 @@ import {
   Chip,
   Title,
 } from "react-native-paper";
-import { useGetQuizQuery } from "../../redux/slices/quiz-api";
-import { DifficultyLevelEnum, StatusEnum } from "../../types";
+import { useGetQuizQuery } from "../../../../lib/redux/slices/quiz-api";
+import {
+  DifficultyLevelEnum,
+  StatusEnum,
+  statusIcons,
+} from "@/lib/redux/types";
 
 export const QuizDetails = () => {
   const { id: restaurantId, quizId } = useGlobalSearchParams<{

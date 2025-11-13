@@ -1,16 +1,16 @@
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import VariantsCreator from "@/modules/common/components/VariantsCreator";
-import { useGetQuizByRestaurantQuery } from "@/modules/quiz/redux/slices/quiz-api";
+import { useGetQuizByRestaurantQuery } from "@/lib/redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import { useCallback } from "react";
 import { ScrollView } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
-import { useCreateQuestionMutation } from "../../redux/slices/question-api";
+import { useCreateQuestionMutation } from "../../../../lib/redux/slices/question-api";
 import { initialValues, quizItems, validationSchema } from "./utils";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
-import { ErrorResponseType } from "@/modules/common/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const AddQuestion = () => {
   const { id: restaurantId, quizId } = useGlobalSearchParams<{
@@ -39,7 +39,7 @@ const AddQuestion = () => {
           });
           router.back();
         } catch (e) {
-          toastErrorHandler(e as ErrorResponseType);
+          toastErrorHandler(e as FetchBaseQueryError);
         }
       },
     });

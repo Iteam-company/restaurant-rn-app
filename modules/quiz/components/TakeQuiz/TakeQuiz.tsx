@@ -1,5 +1,5 @@
 import InformationDialog from "@/modules/common/components/InformationDialog";
-import { useGetQuestionsQuery } from "@/modules/questions/redux/slices/question-api";
+import { useGetQuestionsQuery } from "@/lib/redux/slices/question-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -12,9 +12,9 @@ import {
   useTheme,
 } from "react-native-paper";
 import { useTimer } from "react-timer-hook";
-import { useCreateQuizResultMutation } from "../../redux/slices/quiz-api";
+import { useCreateQuizResultMutation } from "../../../../lib/redux/slices/quiz-api";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
-import { ErrorResponseType } from "@/modules/common/types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const TakeQuiz = () => {
   const {
@@ -38,14 +38,14 @@ const TakeQuiz = () => {
   >([]);
   const [value, setValue] = useState<number[]>([]);
 
-  const addMintes = (date: Date, minutes: number) => {
+  const addMinutes = (date: Date, minutes: number) => {
     const result = new Date(date);
     result.setMinutes(result.getMinutes() + minutes);
     return result;
   };
 
   const { minutes, seconds } = useTimer({
-    expiryTimestamp: addMintes(new Date(), Number(timer)),
+    expiryTimestamp: addMinutes(new Date(), Number(timer)),
     onExpire: () => setIsDialog(true),
   });
 
@@ -63,14 +63,13 @@ const TakeQuiz = () => {
         .unwrap()
         .then((quizResult) => {
           router.push({
-            pathname:
-              "/user-dashboard/[id]/(quizResult)/[quizResultId]/(quizResult)/quizResultDetails/quizResultDetails",
+            pathname: "/user-dashboard/[id]/(quizResult)",
             params: { id: restaurantId, quizResultId: quizResult.id },
           });
         })
         .catch((error) => {
           console.log(error);
-          toastErrorHandler(error as ErrorResponseType, {
+          toastErrorHandler(error as FetchBaseQueryError, {
             text2: "Something went wrong, try to take quiz again!",
           });
         });

@@ -1,7 +1,5 @@
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { navigateToEditQuestion } from "@/modules/common/utils/flowNavigation";
 import { useGlobalSearchParams } from "expo-router";
-import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
   ActivityIndicator,
@@ -13,7 +11,8 @@ import {
 import {
   useDeleteQuestionMutation,
   useGetOneQuestionQuery,
-} from "../../redux/slices/question-api";
+} from "../../../../lib/redux/slices/question-api";
+import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 const QuestionItemInfo = () => {
   const {
@@ -25,7 +24,6 @@ const QuestionItemInfo = () => {
     quizId: string;
     questionId: string;
   }>();
-  const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
   const { colors } = useTheme();
 
   const [removeQuestion] = useDeleteQuestionMutation();
@@ -63,25 +61,18 @@ const QuestionItemInfo = () => {
         >
           Edit
         </Button>
-        <Button
-          mode="outlined"
-          labelStyle={{ color: colors.error }}
-          onPress={() => setIsOpenDialog(true)}
-        >
-          Delete
+        <Button mode="outlined" labelStyle={{ color: colors.error }}>
+          <ConfirmationDialog
+            title="Delete this Question?"
+            text={`Are you sure you want to delete "${data?.text}"? This action cannot be undone.`}
+            action={async () => {
+              await removeQuestion(data?.id || 0);
+            }}
+          >
+            Delete
+          </ConfirmationDialog>
         </Button>
       </View>
-      <ConfirmationDialog
-        title="Delete Question?"
-        text={`Are you sure you want to delete "${data?.text}"? This action cannot be undone.`}
-        action={async () => {
-          await removeQuestion(data?.id || 0);
-        }}
-        close={() => {
-          setIsOpenDialog(false);
-        }}
-        isOpen={isOpenDialg}
-      />
     </ScrollView>
   );
 };
