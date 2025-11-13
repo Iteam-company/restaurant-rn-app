@@ -5,7 +5,7 @@ import { FlatList } from "react-native";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { RestaurantCard } from "./RestaurantCard";
-import RestaurantItemSkeleton from "../Skeleton/RestaurantItem";
+import RestaurantCardSkeleton from "../Skeleton/RestaurantCard";
 
 const RestaurantList = () => {
   const { data, isLoading, refetch, isFetching } = useGetRestaurantsQuery();
@@ -23,8 +23,8 @@ const RestaurantList = () => {
       ListEmptyComponent={() =>
         isLoading && (
           <>
-            <RestaurantItemSkeleton />
-            <RestaurantItemSkeleton />
+            <RestaurantCardSkeleton />
+            <RestaurantCardSkeleton />
           </>
         )
       }

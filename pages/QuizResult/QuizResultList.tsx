@@ -5,7 +5,7 @@ import { useSearchQuizResultQuery } from "../../lib/redux/slices/quiz-api";
 import { QuizResultCard } from "./QuizResultCard";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import QuizResultSkeleton from "../Skeleton/QuizResult";
+import QuizResultCardSkeleton from "../Skeleton/QuizResultCard";
 
 const QuizResultList = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -39,10 +39,10 @@ const QuizResultList = () => {
         refreshing={isLoading || isFetching}
         ListEmptyComponent={() => (
           <>
-            <QuizResultSkeleton />
-            <QuizResultSkeleton />
-            <QuizResultSkeleton />
-            <QuizResultSkeleton />
+            <QuizResultCardSkeleton />
+            <QuizResultCardSkeleton />
+            <QuizResultCardSkeleton />
+            <QuizResultCardSkeleton />
           </>
         )}
         renderItem={({ item }) => <QuizResultCard quizResult={item} />}
