@@ -4,7 +4,7 @@ import { FlatList } from "react-native";
 
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { RestaurantListItem } from "./RestaurantListItem";
+import { RestaurantCard } from "./RestaurantCard";
 import RestaurantItemSkeleton from "../Skeleton/RestaurantItem";
 
 const RestaurantList = () => {
@@ -29,7 +29,7 @@ const RestaurantList = () => {
         )
       }
       renderItem={({ item }) => (
-        <RestaurantListItem
+        <RestaurantCard
           id={item.id}
           key={item.id}
           address={item.address}

@@ -2,7 +2,7 @@ import useDebounce from "@/modules/common/hooks/useDebounce";
 import { useState } from "react";
 import { FlatList, View } from "react-native";
 import { useSearchQuizResultQuery } from "../../lib/redux/slices/quiz-api";
-import QuizResultItemComponent from "./QuizResultItem";
+import { QuizResultCard } from "./QuizResultCard";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import QuizResultSkeleton from "../Skeleton/QuizResult";
@@ -45,7 +45,7 @@ const QuizResultList = () => {
             <QuizResultSkeleton />
           </>
         )}
-        renderItem={({ item }) => <QuizResultItemComponent quizResult={item} />}
+        renderItem={({ item }) => <QuizResultCard quizResult={item} />}
       />
     </>
   );

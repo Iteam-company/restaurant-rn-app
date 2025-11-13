@@ -24,7 +24,7 @@ type Params = {
   quiz: IQuizInfo;
 };
 
-const QuizItem = ({ quiz }: Params) => {
+const QuizCard = ({ quiz }: Params) => {
   const { colors } = useTheme();
   const { id: restaurantId } = useGlobalSearchParams<{ id: string }>();
   const router = useRouter();
@@ -103,4 +103,4 @@ const QuizItem = ({ quiz }: Params) => {
   );
 };
 
-export default QuizItem;
+export default QuizCard;
