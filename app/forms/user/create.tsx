@@ -1,10 +1,10 @@
 import Wrapper from "@/components/Wrapper";
-import AddWorker from "@/modules/restaurant/components/RestaurantInfo/addWorker/AddWorker";
+import CreateUser from "@/pages/Forms/User/CreateUser";
 
 const CreateUserScreen = () => {
   return (
-    <Wrapper>
-      <AddWorker />
+    <Wrapper isScrollable>
+      <CreateUser />
     </Wrapper>
   );
 };

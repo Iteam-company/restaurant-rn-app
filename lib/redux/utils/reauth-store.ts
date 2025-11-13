@@ -25,15 +25,19 @@ export const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
+  if (
+    result.error &&
+    result.error.status === 401 &&
+    result.meta?.response?.url !== `${API_URL}/auth/refresh`
+  ) {
     const refreshToken = secureStorage.getRefreshToken();
-    
+
     if (refreshToken) {
       const refreshResult = await baseQuery(
-        { 
-          url: "/auth/refresh", 
+        {
+          url: "/auth/refresh",
           method: "POST",
-          body: { refresh_token: refreshToken }
+          body: { refresh_token: refreshToken },
         },
         api,
         extraOptions

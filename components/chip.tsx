@@ -5,7 +5,13 @@ import {
 } from "@/lib/redux/types";
 import { LucideIcon } from "lucide-react-native";
 import { FC } from "react";
-import { Pressable, PressableProps, ViewProps, View } from "react-native";
+import {
+  Pressable,
+  PressableProps,
+  ViewProps,
+  View,
+  ViewStyle,
+} from "react-native";
 import { Text } from "./ui/text";
 import { useTheme } from "@react-navigation/native";
 
@@ -45,6 +51,10 @@ const ChipContent: FC<Props> = ({
 }) => {
   const { colors } = useTheme();
 
+  const defaultStyles: ViewStyle = {
+    borderColor: colors.text,
+  };
+
   switch (true) {
     case Object.values(DifficultyLevelEnum).includes(
       value as DifficultyLevelEnum
@@ -53,11 +63,14 @@ const ChipContent: FC<Props> = ({
       return (
         <View
           className="bg-transparent border rounded-full px-2 pb-1 pt-1.5"
-          style={{
-            borderColor: selected
-              ? getDifficultyLevelColor(value as DifficultyLevelEnum)
-              : undefined,
-          }}
+          style={[
+            defaultStyles,
+            {
+              borderColor: selected
+                ? getDifficultyLevelColor(value as DifficultyLevelEnum)
+                : undefined,
+            },
+          ]}
           {...props}
         >
           <Text variant="small">
@@ -71,9 +84,12 @@ const ChipContent: FC<Props> = ({
       return (
         <View
           className="flex flex-row gap-1 bg-transparent border rounded-full px-2 pb-1 pt-1.5"
-          style={{
-            backgroundColor: selected ? colors.text : colors.background,
-          }}
+          style={[
+            defaultStyles,
+            {
+              backgroundColor: selected ? colors.text : colors.background,
+            },
+          ]}
           {...props}
         >
           {Icon && (
@@ -94,8 +110,11 @@ const ChipContent: FC<Props> = ({
       );
     default:
       return (
-        <View className="flex flex-row gap-1 bg-transparent border rounded-full px-2 pb-1 pt-1.5">
-          {Icon && <Icon size={iconSize || 12} />}
+        <View
+          style={[defaultStyles]}
+          className="flex flex-row gap-1 bg-transparent border rounded-full px-2 pb-1 pt-1.5"
+        >
+          {Icon && <Icon size={iconSize || 12} color={colors.text} />}
           <Text variant="small">{value}</Text>
         </View>
       );

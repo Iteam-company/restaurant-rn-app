@@ -16,12 +16,14 @@ import { CalendarIcon, MenuIcon, TrophyIcon } from "lucide-react-native";
 import { Text } from "@/components/ui/text";
 import Chip from "@/components/chip";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
+import { useTheme } from "@react-navigation/native";
 
 interface Props {
   quizResult: IQuizResultInfo;
 }
 
 export const QuizResultCard = ({ quizResult }: Props) => {
+  const { colors } = useTheme();
   const [removeQuizResult, { isLoading }] = useDeleteQuizResultMutation();
 
   const date = new Date(quizResult.ratingDate);
@@ -36,7 +38,7 @@ export const QuizResultCard = ({ quizResult }: Props) => {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <MenuIcon size={20} />
+                <MenuIcon size={20} color={colors.text} />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
