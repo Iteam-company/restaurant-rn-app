@@ -27,7 +27,7 @@ interface RestaurantListItemProps {
   address: string;
 }
 
-export const RestaurantListItem: FC<RestaurantListItemProps> = ({
+export const RestaurantCard: FC<RestaurantListItemProps> = ({
   id,
   address,
   name,

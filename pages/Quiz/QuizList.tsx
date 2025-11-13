@@ -2,7 +2,7 @@ import { useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 import { FlatList, View } from "react-native";
 import { useGetQuizSearchQuery } from "../../lib/redux/slices/quiz-api";
-import QuizItem from "./QuizItem";
+import QuizItem from "./QuizCard";
 import { DifficultyLevelEnum, StatusEnum } from "@/lib/redux/types";
 import Chip from "@/components/chip";
 import { Input } from "@/components/ui/input";

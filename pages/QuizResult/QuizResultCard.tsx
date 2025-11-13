@@ -22,7 +22,7 @@ interface Props {
   quizResult: IQuizResultInfo;
 }
 
-export const QuizResultItem = ({ quizResult }: Props) => {
+export const QuizResultCard = ({ quizResult }: Props) => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
 
   const [removeQuizResult, { isLoading }] = useDeleteQuizResultMutation();
@@ -104,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuizResultItem;
+export default QuizResultCard;
