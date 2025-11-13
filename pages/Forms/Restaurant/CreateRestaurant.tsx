@@ -153,15 +153,19 @@ export default function CreateRestaurant() {
         </CardContent>
         <CardContent className="gap-4">
           <Button
+            disabled={isLoading}
             onPress={() => {
-              if (selectedOwner.trim() === "" && currentUser?.role === "admin")
-                return;
+              if (selectedOwner.trim() === "") return;
               handleSubmit();
             }}
           >
             <Text>Submit</Text>
           </Button>
-          <Button variant="outline" onPress={() => router.back()}>
+          <Button
+            disabled={isLoading}
+            variant="outline"
+            onPress={() => router.back()}
+          >
             <Text>Back</Text>
           </Button>
         </CardContent>

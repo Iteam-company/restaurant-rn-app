@@ -31,6 +31,11 @@ export const createRestaurantValidationSchema = Yup.object().shape({
   address: Yup.string().required("Address is required"),
 });
 
+export const editRestaurantValidationSchema = Yup.object().shape({
+  name: Yup.string().required("Restaurant name is required"),
+  address: Yup.string().required("Address is required"),
+});
+
 export const createRestaurantInitialValues = {
   restaurantName: "",
   address: "",
