@@ -1,7 +1,5 @@
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { navigateToEditQuestion } from "@/modules/common/utils/flowNavigation";
 import { router, useGlobalSearchParams } from "expo-router";
-import { useState } from "react";
 import { Pressable } from "react-native";
 import { useDeleteQuestionMutation } from "../../lib/redux/slices/question-api";
 import { IQuestionInfo } from "@/lib/redux/types";
@@ -20,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Text } from "@/components/ui/text";
+import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 type Props = {
   question: IQuestionInfo;
@@ -30,7 +29,6 @@ const QuestionItem = ({ question }: Props) => {
     id: string;
     quizId: string;
   }>();
-  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 
   const [removeQuestion] = useDeleteQuestionMutation();
 
@@ -60,13 +58,16 @@ const QuestionItem = ({ question }: Props) => {
                 >
                   <Text>Edit</Text>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  variant="destructive"
-                  onPress={async () => {
-                    setIsOpenDialog(true);
-                  }}
-                >
-                  <Text>Delete</Text>
+                <DropdownMenuItem variant="destructive">
+                  <ConfirmationDialog
+                    title="Delete this Question?"
+                    text={`Are you sure you want to delete "${question.text}"? This action cannot be undone.`}
+                    action={async () => {
+                      await removeQuestion(question.id);
+                    }}
+                  >
+                    <Text>Delete</Text>
+                  </ConfirmationDialog>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
@@ -80,18 +81,6 @@ const QuestionItem = ({ question }: Props) => {
           <Chip
             icon={CheckCircleIcon}
             value={question.multipleCorrect ? "Multiple" : "Single"}
-          />
-
-          <ConfirmationDialog
-            title="Delete Question?"
-            text={`Are you sure you want to delete "${question.text}"? This action cannot be undone.`}
-            action={async () => {
-              await removeQuestion(question.id);
-            }}
-            close={() => {
-              setIsOpenDialog(false);
-            }}
-            isOpen={isOpenDialog}
           />
         </CardContent>
       </Card>

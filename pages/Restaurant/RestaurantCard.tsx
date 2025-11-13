@@ -1,7 +1,6 @@
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import { navigateToEditRestaurant } from "@/modules/common/utils/flowNavigation";
 import { useDeleteRestaurantMutation } from "@/lib/redux/slices/restaurant-api";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Image, View } from "react-native";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@react-navigation/native";
+import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 interface RestaurantListItemProps {
   id: number;
@@ -36,18 +36,13 @@ export const RestaurantCard: FC<RestaurantListItemProps> = ({
 }) => {
   const { colors } = useTheme();
   const router = useRouter();
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
   const insets = useSafeAreaInsets();
 
   const [deleteRestaurant] = useDeleteRestaurantMutation();
 
-  const handleDelete = () => {
-    setShowDeleteDialog(true);
-  };
-
   const confirmDelete = (restaurantId: number) => {
     deleteRestaurant(restaurantId);
-    setShowDeleteDialog(false);
   };
 
   const handleEdit = () => {
@@ -110,25 +105,21 @@ export const RestaurantCard: FC<RestaurantListItemProps> = ({
                 <DropdownMenuItem onPress={handleEdit}>
                   <Text>Edit</Text>
                 </DropdownMenuItem>
-                <DropdownMenuItem variant="destructive" onPress={handleDelete}>
-                  <Text>Delete</Text>
+                <DropdownMenuItem variant="destructive">
+                  <ConfirmationDialog
+                    text={`Are you sure you want to delete "${name}"? This action cannot be undone.`}
+                    action={() => {
+                      confirmDelete(id);
+                    }}
+                  >
+                    <Text>Delete</Text>
+                  </ConfirmationDialog>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         </CardContent>
       </Card>
-
-      <ConfirmationDialog
-        text={`Are you sure you want to delete ${name}? This action cannot be undone.`}
-        action={() => {
-          confirmDelete(id);
-        }}
-        close={() => {
-          setShowDeleteDialog(false);
-        }}
-        isOpen={showDeleteDialog}
-      />
     </>
   );
 };

@@ -1,4 +1,3 @@
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
@@ -36,6 +35,7 @@ import {
 } from "@/lib/redux/slices/user-api";
 import { UserROLES, UserRolesArray } from "@/lib/redux/types";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 interface WorkerFormData {
   firstName: string;
@@ -67,7 +67,6 @@ const initialValues: WorkerFormData = {
 const EditWorker = () => {
   const router = useRouter();
   const { colors } = useTheme();
-  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<UserROLES | null>(null);
   const {
     workerId: initialWorkerId,
@@ -327,36 +326,31 @@ const EditWorker = () => {
             >
               <Text>Save Changes</Text>
             </Button>
+
             <Button
               mode="contained-tonal"
-              onPress={() => {
-                setIsOpenDialog(true);
-              }}
               style={[styles.submitButton, { backgroundColor: colors.error }]}
               disabled={isUpdating}
             >
-              Delete User
+              <ConfirmationDialog
+                action={() => {
+                  if (isWaiter) removeCurrentUser();
+                  else
+                    removeWorker({
+                      userId: data?.id ?? "",
+                      restaurantId: restaurantId,
+                    });
+                  router.push("/auth/signin");
+                }}
+                text={`Are you sure you want to delete ${data?.username} ? This action cannot be undone.`}
+              >
+                Delete User
+              </ConfirmationDialog>
             </Button>
           </View>
           <TabBarOffset />
         </FormWrapper>
       </ScrollView>
-      <ConfirmationDialog
-        action={() => {
-          if (isWaiter) removeCurrentUser();
-          else
-            removeWorker({
-              userId: data?.id ?? "",
-              restaurantId: restaurantId,
-            });
-          router.push("/auth/signin");
-        }}
-        text={`Are you sure you want to delete ${data?.username} ? This action cannot be undone.`}
-        close={() => {
-          setIsOpenDialog(false);
-        }}
-        isOpen={isOpenDialog}
-      />
     </>
   );
 };

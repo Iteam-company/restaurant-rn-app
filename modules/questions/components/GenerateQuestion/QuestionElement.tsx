@@ -1,5 +1,5 @@
+import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { ICreateQuestionDTO } from "@/lib/redux/types";
-import { ConfirmationDialog } from "@/modules/common/components/ConfirmationDialog";
 import VariantsCreator from "@/modules/common/components/VariantsCreator";
 import { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -14,7 +14,6 @@ interface Props {
 
 const QuestionElement = ({ question, onChange, onDelete, disabled }: Props) => {
   const { colors } = useTheme();
-  const [isOpenDialg, setIsOpenDialog] = useState<boolean>(false);
   const [menuVisible, setMenuVisible] = useState(false);
 
   const openMenu = () => setMenuVisible(true);
@@ -56,21 +55,28 @@ const QuestionElement = ({ question, onChange, onDelete, disabled }: Props) => {
           }
           anchorPosition="bottom"
         >
-          <Menu.Item
-            disabled={disabled}
-            title="Delete"
-            leadingIcon="trash-can-outline"
-            titleStyle={{ color: colors.error }}
-            theme={{
-              colors: {
-                onSurfaceVariant: colors.error,
-              },
+          <ConfirmationDialog
+            title="Delete Question?"
+            text={`Are you sure you want to delete "${question.text}"? This action cannot be undone.`}
+            action={() => {
+              onDelete && onDelete();
             }}
-            onPress={async () => {
-              setIsOpenDialog(true);
-              closeMenu();
-            }}
-          />
+          >
+            <Menu.Item
+              disabled={disabled}
+              title="Delete"
+              leadingIcon="trash-can-outline"
+              titleStyle={{ color: colors.error }}
+              theme={{
+                colors: {
+                  onSurfaceVariant: colors.error,
+                },
+              }}
+              onPress={async () => {
+                closeMenu();
+              }}
+            />
+          </ConfirmationDialog>
         </Menu>
       </View>
       <VariantsCreator
@@ -92,18 +98,6 @@ const QuestionElement = ({ question, onChange, onDelete, disabled }: Props) => {
           />
         ))}
       </View> */}
-
-      <ConfirmationDialog
-        title="Delete Question?"
-        text={`Are you sure you want to delete "${question.text}"? This action cannot be undone.`}
-        action={() => {
-          onDelete && onDelete();
-        }}
-        close={() => {
-          setIsOpenDialog(false);
-        }}
-        isOpen={isOpenDialg}
-      />
     </View>
   );
 };
