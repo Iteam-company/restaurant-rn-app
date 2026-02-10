@@ -1,17 +1,7 @@
 import QuestionElement from "@/modules/questions/components/GenerateQuestion/QuestionElement";
 import { useFormik } from "formik";
 import { FC, useCallback, useState } from "react";
-import { View, StyleSheet } from "react-native";
-import {
-  Button,
-  Divider,
-  HelperText,
-  Text,
-  TextInput,
-  Title,
-  useTheme,
-} from "react-native-paper";
-import { Dropdown } from "react-native-paper-dropdown";
+import { View, ScrollView, ActivityIndicator } from "react-native";
 import {
   difficultyLevelItem,
   GenerateQuizInitialValuesType,
@@ -30,6 +20,19 @@ import {
   StatusEnum,
 } from "@/lib/redux/types";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Text } from "@/components/ui/text";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@rn-primitives/dropdown-menu/dist/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   valuesForGeneratingQuestion: GenerateQuizInitialValuesType;
@@ -40,15 +43,15 @@ const QuizQuestionEdit: FC<Props> = ({
   valuesForGeneratingQuestion,
   initialValues,
 }) => {
-  const { colors } = useTheme();
   const { restaurantId } = useLocalSearchParams<{ restaurantId: string }>();
+  const insets = useSafeAreaInsets();
   const [createQuiz, { isLoading: isCreatingQuiz }] = useCreateQuizMutation();
 
   const [generateMoreQuestion, { isLoading: isGeneratingQuestion }] =
     useGenerateQuestionsMutation();
 
   const [questions, setQuestions] = useState<ICreateQuestionDTO[]>(
-    initialValues.questions
+    initialValues.questions,
   );
 
   const handleGenerateMoreQuestions = useCallback(async () => {
@@ -110,156 +113,178 @@ const QuizQuestionEdit: FC<Props> = ({
         return newQuestions;
       });
     },
-    [setQuestions]
+    [setQuestions],
   );
 
   const handleQuestionDelete = useCallback(
     (index: number) => {
       setQuestions((prev) => prev.filter((_, i) => i !== index));
     },
-    [setQuestions]
+    [setQuestions],
   );
 
   return (
-    <>
-      <Title>Quiz Info</Title>
-      <Text
-        variant="bodyMedium"
-        style={{ marginVertical: 8, color: colors.secondary }}
-      >
-        Review and edit the generated quiz details below. You can modify the
-        title, difficulty, time limit, or status before creating it.
-      </Text>
-      <View
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.surface,
-            padding: 16,
-            gap: 8,
-          },
-        ]}
-      >
-        <TextInput
-          mode="outlined"
-          label="Title"
-          value={values.title}
-          onChangeText={(value) =>
-            setValues((prev) => ({ ...prev, title: value }))
-          }
-          error={!!errors.title}
-          left={<TextInput.Icon icon="pencil" />}
-          multiline
-        />
-        <HelperText
-          style={{ display: errors.title ? "contents" : "none" }}
-          type="error"
-          visible={!!errors.title}
-        >
-          {errors.title}
-        </HelperText>
+    <ScrollView
+      className="flex-1 bg-background"
+      contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
+    >
+      <View className="p-4 gap-6">
+        <View className="gap-2">
+          <Text className="text-2xl font-bold text-foreground">Quiz Info</Text>
+          <Text className="text-muted-foreground">
+            Review and edit the generated quiz details below.
+          </Text>
 
-        <Dropdown
-          label="Difficulty Level"
-          mode="outlined"
-          value={values.difficultyLevel}
-          options={difficultyLevelItem}
-          onSelect={(value) =>
-            setValues((prev) => ({
-              ...prev,
-              difficultyLevel: value as DifficultyLevelEnum,
-            }))
-          }
-        />
+          <Card>
+            <CardContent className="p-4 gap-4">
+              <View className="gap-1.5">
+                <Label nativeID="title-input">Title</Label>
+                <Input
+                  accessibilityLabel="Title"
+                  placeholder="Enter quiz title"
+                  value={values.title}
+                  onChangeText={(value) =>
+                    setValues((prev) => ({ ...prev, title: value }))
+                  }
+                  className={errors.title ? "border-destructive" : ""}
+                />
+                {errors.title && (
+                  <Text className="text-sm text-destructive">
+                    {errors.title}
+                  </Text>
+                )}
+              </View>
 
-        <Dropdown
-          label="Status"
-          mode="outlined"
-          value={values.status}
-          options={statusItem}
-          onSelect={(value) =>
-            setValues((prev) => ({ ...prev, status: value as StatusEnum }))
-          }
-        />
+              <View className="gap-1.5">
+                <Label>Difficulty Level</Label>
+                <Select
+                  value={{
+                    value: values.difficultyLevel,
+                    label: values.difficultyLevel,
+                  }}
+                  onValueChange={(option) =>
+                    option &&
+                    setValues((prev) => ({
+                      ...prev,
+                      difficultyLevel: option.value as DifficultyLevelEnum,
+                    }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select difficulty" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {difficultyLevelItem.map((item) => (
+                      <SelectItem
+                        key={item.value}
+                        label={item.label}
+                        value={item.value}
+                      />
+                    ))}
+                  </SelectContent>
+                </Select>
+              </View>
 
-        <TextInput
-          mode="outlined"
-          label="Time limit (minutes)"
-          keyboardType="numeric"
-          value={`${values.timeLimit}`}
-          onChangeText={(text) =>
-            setValues((prev) => ({
-              ...prev,
-              timeLimit: parseInt(text) || 0,
-            }))
-          }
-          error={!!errors.timeLimit}
-          left={<TextInput.Icon icon="timer" />}
-        />
-        <HelperText
-          style={{ display: errors.title ? "contents" : "none" }}
-          type="error"
-          visible={!!errors.timeLimit}
-        >
-          {errors.timeLimit}
-        </HelperText>
-      </View>
+              <View className="gap-1.5">
+                <Label>Status</Label>
+                <Select
+                  value={{ value: values.status, label: values.status }}
+                  onValueChange={(option) =>
+                    option &&
+                    setValues((prev) => ({
+                      ...prev,
+                      status: option.value as StatusEnum,
+                    }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {statusItem.map((item) => (
+                      <SelectItem
+                        key={item.value}
+                        label={item.label}
+                        value={item.value}
+                      />
+                    ))}
+                  </SelectContent>
+                </Select>
+              </View>
 
-      <View style={styles.container}>
-        <Title style={{ marginBottom: 8 }}>Generated Questions</Title>
-        <Text
-          variant="bodyMedium"
-          style={{ marginVertical: 8, color: colors.secondary }}
-        >
-          Review and edit the generated questions below. You can modify the
-          text, variants, or correct answers. Delete any questions you
-          don&apos;t want to include.
-        </Text>
-        {questions.map((question, index) => (
-          <View key={`question-wrap-${index}`}>
-            <QuestionElement
-              key={`question-${index}-${question?.text?.slice(0, 20)}`}
-              disabled={isCreatingQuiz || isGeneratingQuestion}
-              question={question}
-              onChange={(value) => handleQuestionChange(value, index)}
-              onDelete={() => handleQuestionDelete(index)}
-            />
-            {index !== values.questions.length - 1 && (
-              <Divider style={{ marginVertical: 8 }} />
-            )}
+              <View className="gap-1.5">
+                <Label>Time limit (minutes)</Label>
+                <Input
+                  keyboardType="numeric"
+                  placeholder="e.g. 30"
+                  value={values.timeLimit.toString()}
+                  onChangeText={(text) =>
+                    setValues((prev) => ({
+                      ...prev,
+                      timeLimit: parseInt(text) || 0,
+                    }))
+                  }
+                  className={errors.timeLimit ? "border-destructive" : ""}
+                />
+                {errors.timeLimit && (
+                  <Text className="text-sm text-destructive">
+                    {errors.timeLimit}
+                  </Text>
+                )}
+              </View>
+            </CardContent>
+          </Card>
+        </View>
+
+        <View className="gap-2">
+          <Text className="text-2xl font-bold text-foreground">
+            Generated Questions
+          </Text>
+          <Text className="text-muted-foreground">
+            Review, edit or delete generated questions.
+          </Text>
+
+          <View className="gap-4 mt-2">
+            {questions.map((question, index) => (
+              <View key={`question-wrap-${index}`}>
+                <QuestionElement
+                  key={`question-${index}-${question?.text?.slice(0, 10)}`}
+                  disabled={isCreatingQuiz || isGeneratingQuestion}
+                  question={question}
+                  onChange={(value) => handleQuestionChange(value, index)}
+                  onDelete={() => handleQuestionDelete(index)}
+                />
+                {index !== questions.length - 1 && <View className="h-2" />}
+              </View>
+            ))}
           </View>
-        ))}
-      </View>
+        </View>
 
-      <View style={styles.container}>
-        <Button
-          disabled={isCreatingQuiz || isGeneratingQuestion}
-          mode="contained-tonal"
-          onPress={() => handleGenerateMoreQuestions()}
-          loading={isGeneratingQuestion}
-        >
-          Generate More Questions
-        </Button>
-        <Button
-          disabled={isCreatingQuiz || isGeneratingQuestion}
-          mode="contained-tonal"
-          onPress={() => submitQuiz()}
-          loading={isCreatingQuiz}
-        >
-          Create Quiz
-        </Button>
+        <View className="gap-3 mt-4">
+          <Button
+            variant="secondary"
+            disabled={isCreatingQuiz || isGeneratingQuestion}
+            onPress={() => handleGenerateMoreQuestions()}
+            className="flex-row gap-2"
+          >
+            {isGeneratingQuestion && (
+              <ActivityIndicator color="black" size="small" />
+            )}
+            <Text>Generate More Questions</Text>
+          </Button>
+
+          <Button
+            disabled={isCreatingQuiz || isGeneratingQuestion}
+            onPress={() => submitQuiz()}
+            className="flex-row gap-2"
+          >
+            {isCreatingQuiz && <ActivityIndicator color="white" size="small" />}
+            <Text>Create Quiz</Text>
+          </Button>
+        </View>
       </View>
-    </>
+    </ScrollView>
   );
 };
 
 export default QuizQuestionEdit;
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    marginVertical: 16,
-    borderRadius: 24,
-    gap: 8,
-  },
-});

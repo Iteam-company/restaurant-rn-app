@@ -1,11 +1,9 @@
 import { View, StyleSheet } from 'react-native';
 import React, { PropsWithChildren } from 'react';
-import { useTheme } from 'react-native-paper';
 
 export default function FormWrapper({ children }: PropsWithChildren) {
-  const { colors } = useTheme();
   return (
-    <View style={{ ...styles.container, backgroundImage: colors.primary }}>
+    <View style={{ ...styles.container}}>
       {children}
     </View>
   );

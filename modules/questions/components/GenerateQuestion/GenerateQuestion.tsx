@@ -4,15 +4,7 @@ import { useGetQuizQuery } from "@/lib/redux/slices/quiz-api";
 import * as DocumentPicker from "expo-document-picker";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  HelperText,
-  TextInput,
-  Title,
-  useTheme,
-} from "react-native-paper";
+import { ScrollView, View } from "react-native";
 import * as yup from "yup";
 import {
   useCreateManyQuestionsMutation,
@@ -28,6 +20,12 @@ import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorH
 import FileUploader from "@/modules/common/components/FileUploader";
 import { ICreateQuestionDTO } from "@/lib/redux/types";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import Loader from "@/components/loader";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 
 const GenerateQuestion = () => {
   const { quizId } = useLocalSearchParams<{
@@ -38,7 +36,6 @@ const GenerateQuestion = () => {
     useState<GenerateQuestionFormData>(initialFormData);
   const [data, setData] = useState<ICreateQuestionDTO[] | undefined>(undefined);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const { colors } = useTheme();
 
   const [generateQuestion, { isLoading }] = useGenerateQuestionsMutation();
 
@@ -52,7 +49,7 @@ const GenerateQuestion = () => {
       setFormData((prev) => ({ ...prev, files }));
       setErrors((prev) => ({ ...prev, files: "" }));
     },
-    []
+    [],
   );
 
   const { handleFileSelect } = useFileSelect(handleFileSelection);
@@ -66,7 +63,7 @@ const GenerateQuestion = () => {
         return newData;
       });
     },
-    []
+    [],
   );
 
   const handleOnDelete = useCallback((index: number) => {
@@ -81,11 +78,11 @@ const GenerateQuestion = () => {
       setFormData((prev) => ({
         ...prev,
         files: prev.files.filter(
-          (f) => !(f.name === file.name && f.size === file.size)
+          (f) => !(f.name === file.name && f.size === file.size),
         ),
       }));
     },
-    []
+    [],
   );
 
   const handleFormChange = useCallback(
@@ -95,7 +92,7 @@ const GenerateQuestion = () => {
         setErrors((prev) => ({ ...prev, [field]: "" }));
       }
     },
-    [errors]
+    [errors],
   );
 
   const validateForm = useCallback(async () => {
@@ -144,7 +141,7 @@ const GenerateQuestion = () => {
 
     try {
       await createManyQuestion(
-        data.map((elem) => ({ ...elem, quizId: parseInt(quizId) }))
+        data.map((elem) => ({ ...elem, quizId: parseInt(quizId) })),
       );
       router.back();
     } catch (error) {
@@ -155,130 +152,116 @@ const GenerateQuestion = () => {
     }
   }, [data, createManyQuestion, quizId]);
 
-  if (isLoadingQuiz || !quiz)
-    return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
+  if (isLoadingQuiz || !quiz) return <Loader isLoading={true} />;
 
   return (
-    <ScrollView style={[{ width: "100%", paddingHorizontal: 10 }]}>
-      <View
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.surface,
-            padding: 16,
-          },
-        ]}
-      >
-        <Title>Generate Questions</Title>
-
-        <TextInput
-          mode="outlined"
-          label="Question count"
-          value={`${formData.count}`}
-          onChangeText={(value) => {
-            const numValue = parseInt(value);
-            if (!isNaN(numValue) && numValue > 0) {
-              handleFormChange("count", numValue);
-            } else if (value === "") {
-              handleFormChange("count", 0);
-            }
-          }}
-          error={!!errors.count}
-          keyboardType="numeric"
-        />
-        <HelperText
-          type="error"
-          visible={!!errors.count}
-          style={{ display: !!errors.count ? "flex" : "none" }}
-        >
-          {errors.count}
-        </HelperText>
-
-        <TextInput
-          mode="outlined"
-          label="Prompt (optional)"
-          value={formData.prompt || ""}
-          onChangeText={(value) => handleFormChange("prompt", value)}
-          error={!!errors.prompt}
-          multiline
-          numberOfLines={3}
-        />
-        <HelperText
-          type="error"
-          visible={!!errors.prompt}
-          style={{ display: !!errors.prompt ? "flex" : "none" }}
-        >
-          {errors.prompt}
-        </HelperText>
-
-        <FileUploader
-          data={formData.files}
-          onChange={handleFileSelect}
-          onChipClick={handleRemoveFile}
-          errors={errors.files}
-        />
-
-        <Button
-          disabled={isLoading}
-          mode="contained-tonal"
-          onPress={handleGenerateQuestions}
-          loading={isLoading}
-        >
-          Generate Questions
-        </Button>
-      </View>
-      {data && !isLoading && (
-        <View style={styles.container}>
-          {data?.map((elem, index) => (
-            <QuestionElement
-              key={`question-${index}-${elem.text?.slice(0, 20)}`}
-              question={elem}
-              onChange={(value) => handleOnChange(value, index)}
-              onDelete={() => handleOnDelete(index)}
-            />
-          ))}
-          <Button
-            mode="contained-tonal"
-            onPress={handleCreateQuestions}
-            loading={isCreating}
-          >
-            Create
-          </Button>
-        </View>
-      )}
-      <TabBarOffset />
-    </ScrollView>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
+    <ScrollView
+      className="w-full bg-background px-2"
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "center",
+      }}
+      showsVerticalScrollIndicator={false}
+    >
+      <Card>
+        {/* container: {
     width: "100%",
     marginVertical: 16,
     borderRadius: 24,
     gap: 8,
-  },
-  fileCard: {
-    marginVertical: 8,
-  },
-  fileTitle: {
-    marginBottom: 4,
-  },
-  fileSubtitle: {
-    marginBottom: 16,
-    opacity: 0.7,
-  },
-  uploadButton: {
-    marginBottom: 16,
-  },
-  fileList: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-  },
-  fileChip: {
-    marginBottom: 8,
-  },
-});
+  }, */}
+        <View className="p-4 w-full my-4 rounded-3xl gap-2">
+          <View className="mb-4 space-y-2">
+            <Label className="text-sm font-medium text-foreground">
+              Question count
+            </Label>
+            <Input
+              placeholder="Enter question count"
+              keyboardType="numeric"
+              value={`${formData.count}`}
+              onChangeText={(value: string) => {
+                const numValue = parseInt(value);
+                if (!isNaN(numValue) && numValue > 0) {
+                  handleFormChange("count", numValue);
+                } else if (value === "") {
+                  handleFormChange("count", 0);
+                }
+              }}
+              className={!!errors.count ? "border-red-500" : ""}
+            />
+            {!!errors.count && (
+              <Text className="text-xs text-red-500">{errors.count}</Text>
+            )}
+          </View>
+          <View className="mb-4 space-y-2">
+            <Label className="text-sm font-medium text-foreground">
+              Prompt (optional)
+            </Label>
+            <Input
+              placeholder="Enter prompt (optional)"
+              value={formData.prompt || ""}
+              onChangeText={(value) => handleFormChange("prompt", value)}
+              className={!!errors.prompt ? "border-red-500" : ""}
+            />
+            {!!errors.prompt && (
+              <Text className="text-xs text-red-500">{errors.prompt}</Text>
+            )}
+          </View>
+          <FileUploader
+            data={formData.files}
+            onChange={handleFileSelect}
+            onChipClick={handleRemoveFile}
+            errors={errors.files}
+          />
+          <Button onPress={handleGenerateQuestions} disabled={isLoading}>
+            {isCreating ? (
+              <Loader />
+            ) : (
+              <Text className="text-primary-foreground font-semibold">
+                Generate Questions
+              </Text>
+            )}
+          </Button>
+          <Button
+            disabled={isLoading}
+            variant="outline"
+            onPress={() => router.back()}
+          >
+            <Text>Back</Text>
+          </Button>
+        </View>
+        {data && !isLoading && (
+          <View className="w-full my-4 rounded-3xl gap-2">
+            {data?.map((elem, index) => (
+              <QuestionElement
+                key={`question-${index}-${elem.text?.slice(0, 20)}`}
+                question={elem}
+                onChange={(value) => handleOnChange(value, index)}
+                onDelete={() => handleOnDelete(index)}
+              />
+            ))}
+            <Button onPress={handleCreateQuestions} disabled={isCreating}>
+              {isCreating ? (
+                <Loader />
+              ) : (
+                <Text className="text-primary-foreground font-semibold">
+                  Submit
+                </Text>
+              )}
+            </Button>
+            <Button
+              disabled={isLoading}
+              variant="outline"
+              onPress={() => router.back()}
+            >
+              <Text>Back</Text>
+            </Button>
+          </View>
+        )}
+        <TabBarOffset />
+      </Card>
+    </ScrollView>
+  );
+};
 
 export default GenerateQuestion;

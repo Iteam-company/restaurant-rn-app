@@ -1,9 +1,20 @@
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Text } from "@/components/ui/text";
 import { ICreateQuestionDTO } from "@/lib/redux/types";
 import VariantsCreator from "@/modules/common/components/VariantsCreator";
+import { MoreVertical } from "lucide-react-native";
 import { useCallback, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { IconButton, Menu, TextInput, useTheme } from "react-native-paper";
+import { View } from "react-native";
 
 interface Props {
   question: ICreateQuestionDTO;
@@ -13,113 +24,96 @@ interface Props {
 }
 
 const QuestionElement = ({ question, onChange, onDelete, disabled }: Props) => {
-  const { colors } = useTheme();
-  const [menuVisible, setMenuVisible] = useState(false);
-
-  const openMenu = () => setMenuVisible(true);
-  const closeMenu = () => setMenuVisible(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const handleTextChange = useCallback(
     (text: string) => {
       onChange && onChange({ ...question, text });
     },
-    [onChange, question]
+    [onChange, question],
   );
 
   const handleOnChange = useCallback(
     (values: { variants: string[]; correct: number[] }) => {
       onChange && onChange({ ...question, ...values });
     },
-    [onChange, question]
+    [onChange, question],
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
-      <View style={styles.headerContainer}>
-        <View style={styles.titleContainer}>
-          <TextInput
-            mode="outlined"
-            label="Question Text"
-            value={question.text}
-            onChangeText={handleTextChange}
-            style={styles.textInput}
-            multiline
-            disabled={disabled}
-          />
+    <Card className="w-full mb-4">
+      <CardContent className="p-4 gap-4">
+        <View className="flex-row items-start gap-2">
+          <View className="flex-1 gap-1.5">
+            <Label className="text-muted-foreground">Question Text</Label>
+            <Input
+              value={question.text}
+              onChangeText={handleTextChange}
+              multiline
+              className="min-h-[50px] py-2 bg-background"
+              editable={!disabled}
+            />
+          </View>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={disabled}
+                className="mt-6"
+              >
+                <MoreVertical size={20} className="text-foreground" />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem
+                disabled={disabled}
+                onPress={() => setIsDeleteDialogOpen(true)}
+                className="flex-row gap-2"
+              >
+                <Text className="text-destructive font-medium">Delete</Text>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </View>
-        <Menu
-          visible={menuVisible}
-          onDismiss={closeMenu}
-          anchor={
-            <IconButton icon="dots-vertical" onPress={openMenu} size={20} />
-          }
-          anchorPosition="bottom"
-        >
+
+        {isDeleteDialogOpen && (
           <ConfirmationDialog
+            open={true}
+            onOpenChange={setIsDeleteDialogOpen}
             title="Delete Question?"
             text={`Are you sure you want to delete "${question.text}"? This action cannot be undone.`}
             action={() => {
               onDelete && onDelete();
+              setIsDeleteDialogOpen(false);
             }}
           >
-            <Menu.Item
-              disabled={disabled}
-              title="Delete"
-              leadingIcon="trash-can-outline"
-              titleStyle={{ color: colors.error }}
-              theme={{
-                colors: {
-                  onSurfaceVariant: colors.error,
-                },
-              }}
-              onPress={async () => {
-                closeMenu();
-              }}
-            />
+            <View />
           </ConfirmationDialog>
-        </Menu>
-      </View>
-      <VariantsCreator
-        disabled={disabled}
-        value={{ variants: question.variants, corrects: question.correct }}
-        onChange={handleOnChange}
-      />
-      {/* <View>
-        {question?.variants.map((elem, index) => (
-          <Checkbox.Item
-            key={index}
-            disabled={true}
-            label={elem}
-            status={
-              question.correct.findIndex((elem) => elem === index) !== -1
-                ? "checked"
-                : "unchecked"
-            }
-          />
-        ))}
-      </View> */}
-    </View>
+        )}
+        <VariantsCreator
+          disabled={disabled}
+          value={{ variants: question.variants, corrects: question.correct }}
+          onChange={handleOnChange}
+        />
+        {/* <View>
+          {question?.variants.map((elem, index) => (
+            <Checkbox.Item
+              key={index}
+              disabled={true}
+              label={elem}
+              status={
+                question.correct.findIndex((elem) => elem === index) !== -1
+                  ? "checked"
+                  : "unchecked"
+              }
+            />
+          ))}
+        </View> */}
+      </CardContent>
+    </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    borderRadius: 24,
-    padding: 16,
-    gap: 16,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 8,
-  },
-  titleContainer: {
-    flex: 1,
-  },
-  textInput: {
-    flex: 1,
-  },
-});
 
 export default QuestionElement;

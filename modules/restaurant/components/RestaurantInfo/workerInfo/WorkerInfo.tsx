@@ -1,166 +1,85 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Text } from "@/components/ui/text";
 import { useGetUserByIdQuery } from "@/lib/redux/slices/user-api";
 import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { useLocalSearchParams } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
 import {
-  Avatar,
-  Icon,
-  Surface,
-  Text,
-  Title,
-  useTheme,
-} from "react-native-paper";
+  BadgeCheck,
+  CreditCard,
+  LucideIcon,
+  Mail,
+  Phone,
+  User,
+} from "lucide-react-native";
+import { ScrollView, View } from "react-native";
 
 const UserInfo = () => {
-  const { colors } = useTheme();
   const { workerId } = useLocalSearchParams<{ workerId: string }>();
   const { data } = useGetUserByIdQuery(workerId);
 
   if (!data) return null;
 
   const InfoBlock = ({
-    icon,
+    icon: IconComponent,
     label,
     value,
   }: {
-    icon: string;
+    icon: LucideIcon;
     label: string;
     value: string;
   }) => (
-    <Surface style={styles.infoBlock}>
-      <View
-        style={[
-          styles.iconContainer,
-          { backgroundColor: colors.secondaryContainer },
-        ]}
-      >
-        <Icon source={icon} size={24} color={colors.primary} />
-      </View>
-      <View style={styles.textContainer}>
-        <Text
-          variant="labelLarge"
-          style={[styles.label, { color: colors.primary }]}
-        >
-          {label}
-        </Text>
-        <Text style={styles.value}>{value}</Text>
-      </View>
-    </Surface>
+    <Card className="mb-4">
+      <CardContent className="flex flex-row p-4 rounded-xl gap-4 items-center">
+        <View className="w-12 h-12 rounded-3xl flex justify-center items-center bg-primary">
+          <IconComponent size={24} className="text-primary" />
+        </View>
+        <View className="flex flex-1 gap-1">
+          <Text className="text-sm text-muted-foreground font-medium">
+            {label}
+          </Text>
+          <Text className="text-lg text-foreground font-semibold">{value}</Text>
+        </View>
+      </CardContent>
+    </Card>
   );
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Surface style={styles.headerSurface}>
-          <View style={styles.header}>
-            {data.icon ? (
-              <Avatar.Image size={100} source={{ uri: data.icon }} />
-            ) : (
-              <Avatar.Text
-                size={100}
-                label={`${data.firstName.charAt(0)}${data.lastName.charAt(0)}`}
-              />
-            )}
-            <Title
-              style={styles.name}
-            >{`${data.firstName} ${data.lastName}`}</Title>
-            <Surface
-              style={[
-                styles.roleContainer,
-                { backgroundColor: colors.secondaryContainer },
-              ]}
+    <ScrollView className="flex-1 bg-background">
+      <View className="p-4 gap-4">
+        <Card className="p-6">
+          <View className="items-center gap-3">
+            <Avatar alt="" className="w-24 h-24">
+              <AvatarImage source={{ uri: data.icon }} />
+              <AvatarFallback>
+                <Text className="text-2xl font-bold text-foreground">
+                  {data.firstName.charAt(0)}${data.lastName.charAt(0)}
+                </Text>
+              </AvatarFallback>
+            </Avatar>
+            <Text className="text-3xl font-bold text-center text-foreground">{`${data.firstName} ${data.lastName}`}</Text>
+            <Badge
+              variant="secondary"
+              className="flex-row gap-2 px-3 py-1.5 rounded-full"
             >
-              <Icon
-                source="badge-account-horizontal"
-                size={20}
-                color={colors.primary}
-              />
-              <Text style={styles.role}>{data.role}</Text>
-            </Surface>
+              <BadgeCheck size={16} className="text-primary" />
+              <Text className="text-base capitalize text-foreground">
+                {data.role}
+              </Text>
+            </Badge>
           </View>
-        </Surface>
-
-        <View style={styles.infoGrid}>
-          <InfoBlock icon="account" label="Username" value={data.username} />
-
-          <InfoBlock icon="email" label="Email" value={data.email} />
-
-          <InfoBlock icon="phone" label="Phone" value={data.phoneNumber} />
-
-          <InfoBlock
-            icon="card-account-details"
-            label="ID"
-            value={data.id.toString()}
-          />
+        </Card>
+        <View className="mt-2 gap-4">
+          <InfoBlock icon={User} label="Username" value={data.username} />
+          <InfoBlock icon={Mail} label="Email" value={data.email} />
+          <InfoBlock icon={Phone} label="Phone" value={data.phoneNumber} />
+          <InfoBlock icon={CreditCard} label="ID" value={data.id.toString()} />
         </View>
       </View>
       <TabBarOffset />
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    gap: 16,
-  },
-  headerSurface: {
-    padding: 24,
-    borderRadius: 12,
-    elevation: 4,
-  },
-  header: {
-    alignItems: "center",
-    gap: 12,
-  },
-  name: {
-    fontSize: 28,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  roleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    gap: 8,
-  },
-  role: {
-    fontSize: 16,
-    color: "#fff",
-    textTransform: "capitalize",
-  },
-  infoGrid: {
-    gap: 16,
-  },
-  infoBlock: {
-    flexDirection: "row",
-    padding: 16,
-    borderRadius: 12,
-    elevation: 2,
-    alignItems: "center",
-    gap: 16,
-  },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  textContainer: {
-    flex: 1,
-    gap: 4,
-  },
-  label: {
-    fontSize: 14,
-  },
-  value: {
-    fontSize: 18,
-    color: "#fff",
-  },
-});
 
 export default UserInfo;

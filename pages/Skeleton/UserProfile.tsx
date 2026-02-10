@@ -1,6 +1,5 @@
-import { CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { View } from "react-native";
-import { Card } from "react-native-paper";
 import UserAvatarSkeleton from "./UserAvatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";

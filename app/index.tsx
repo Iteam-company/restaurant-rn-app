@@ -1,10 +1,10 @@
-import { ActivityIndicator } from "react-native-paper";
+import Loader from "@/components/loader";
 import Wrapper from "@/components/Wrapper";
 
 export default function HomeScreen() {
   return (
     <Wrapper>
-      <ActivityIndicator animating />
+      <Loader isLoading={true} />
     </Wrapper>
   );
 }

@@ -3,14 +3,19 @@ import VariantsCreator from "@/modules/common/components/VariantsCreator";
 import { useGetQuizByRestaurantQuery } from "@/lib/redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
-import { useCallback } from "react";
-import { ScrollView } from "react-native";
-import { Button, TextInput } from "react-native-paper";
-import { Dropdown } from "react-native-paper-dropdown";
+import { useCallback, useMemo } from "react";
+import { ScrollView, View } from "react-native";
 import { useCreateQuestionMutation } from "../../../../lib/redux/slices/question-api";
 import { initialValues, quizItems, validationSchema } from "./utils";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import Loader from "@/components/loader";
 
 const AddQuestion = () => {
   const { id: restaurantId, quizId } = useGlobalSearchParams<{
@@ -18,9 +23,9 @@ const AddQuestion = () => {
     quizId: string;
   }>();
 
-  const { data: quizes, isLoading } = useGetQuizByRestaurantQuery(
+  const { data: quizzes, isLoading } = useGetQuizByRestaurantQuery(
     restaurantId,
-    { skip: !restaurantId }
+    { skip: !restaurantId },
   );
   const [createQuestion, { isLoading: isCreating }] =
     useCreateQuestionMutation();
@@ -49,45 +54,99 @@ const AddQuestion = () => {
       setFieldValue("variants", values.variants);
       setFieldValue("correct", values.correct);
     },
-    [setFieldValue]
+    [setFieldValue],
+  );
+
+  const options = useMemo(() => quizItems(quizzes || []), [quizzes]);
+
+  const currentQuizIdStr =
+    parseInt(quizId) !== -1 ? String(quizId) : String(values.quizId || "");
+
+  const currentQuizItem = options.find(
+    (item) => String(item.value) === currentQuizIdStr,
   );
 
   return (
-    <ScrollView style={[{ width: "100%" }]}>
-      <FormWrapper>
-        <TextInput
-          mode="outlined"
-          label="Question"
-          value={values.text}
-          onChangeText={(text) => setFieldValue("text", text)}
-          onBlur={handleBlur("text")}
-          error={!!(errors.text && touched.text)}
-          left={<TextInput.Icon icon="pencil" />}
-        />
-        <VariantsCreator
-          onChange={handleVariantsChange}
-          errorVariants={errors.variants}
-          touchedVariants={touched.variants}
-          errorCorrects={errors.correct}
-        />
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "center",
+      }}
+     className="w-full"
+    >
+      <Card>
+        <FormWrapper>
+          <View className="mb-4 space-y-2">
+            <Label className="text-sm font-medium text-foreground">
+              Question
+            </Label>
+            <Input
+              placeholder="Enter question text"
+              value={values.text}
+              onChangeText={(text) => setFieldValue("text", text)}
+              onBlur={handleBlur("text")}
+              className={errors.text && touched.text ? "border-red-500" : ""}
+            />
+            {errors.text && touched.text && (
+              <Text className="text-xs text-red-500">{errors.text}</Text>
+            )}
+          </View>
+          <VariantsCreator
+            onChange={handleVariantsChange}
+            errorVariants={errors.variants}
+            touchedVariants={touched.variants}
+            errorCorrects={errors.correct}
+          />
+          <View className="mb-6 gap-2">
+            <Label>Quiz</Label>
+            <Select
+              disabled={parseInt(quizId) !== -1}
+              value={currentQuizItem}
+              onValueChange={(option) => {
+                if (option) {
+                  setFieldValue("quizId", parseInt(option.value));
+                }
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a quiz" />
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((item) => (
+                  <SelectItem
+                    key={item.value}
+                    label={item.label}
+                    value={item.value}
+                  />
+                ))}
+              </SelectContent>
+            </Select>
 
-        <Dropdown
-          label={"Quiz"}
-          disabled={parseInt(quizId) !== -1}
-          mode="outlined"
-          value={`${parseInt(quizId) !== -1 ? quizId : values.quizId}`}
-          options={quizItems(quizes || [])}
-          onSelect={(value) => setFieldValue("quizId", value ? parseInt : 0)}
-          error={touched.quizId && !!errors.quizId}
-        />
-        <Button
-          loading={isLoading || isCreating}
-          mode="contained-tonal"
-          onPress={() => handleSubmit()}
-        >
-          Submit
-        </Button>
-      </FormWrapper>
+            {touched.quizId && errors.quizId && (
+              <Text className="text-xs text-red-500">{errors.quizId}</Text>
+            )}
+          </View>
+          <Button
+            onPress={() => handleSubmit()}
+            disabled={isLoading || isCreating}
+          >
+            {isCreating ? (
+              <Loader />
+            ) : (
+              <Text className="text-primary-foreground font-semibold">
+                Submit
+              </Text>
+            )}
+          </Button>
+          <Button
+            disabled={isLoading}
+            variant="outline"
+            onPress={() => router.back()}
+          >
+            <Text>Back</Text>
+          </Button>
+        </FormWrapper>
+      </Card>
     </ScrollView>
   );
 };

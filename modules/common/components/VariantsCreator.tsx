@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { Button, Checkbox, TextInput, useTheme } from "react-native-paper";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type VariantType = { text: string; isCorrect: boolean };
 
@@ -31,15 +34,14 @@ const VariantsCreator = ({
 }: Props) => {
   const [text, setText] = useState("");
   const [checkedItems, setCheckedItems] = useState<VariantType[]>(() =>
-    value ? parseValues(value) : []
+    value ? parseValues(value) : [],
   );
-  const { colors } = useTheme();
 
   const handleCheckboxChange = (text: string) => {
     setCheckedItems((prev) =>
       prev.map((elem) =>
-        text === elem.text ? { ...elem, isCorrect: !elem.isCorrect } : elem
-      )
+        text === elem.text ? { ...elem, isCorrect: !elem.isCorrect } : elem,
+      ),
     );
   };
 
@@ -61,7 +63,7 @@ const VariantsCreator = ({
     const resultIsCorrect: number[] = [];
 
     checkedItems.filter((elem, index) =>
-      elem.isCorrect ? resultIsCorrect.push(index) : false
+      elem.isCorrect ? resultIsCorrect.push(index) : false,
     );
 
     return { variants: resultVariants, correct: resultIsCorrect };
@@ -77,56 +79,70 @@ const VariantsCreator = ({
 
   return (
     <View>
-      <TextInput
-        disabled={disabled}
-        label="Variant Text"
-        value={text}
-        onChangeText={(text) => setText(text)}
-        error={!!(errorVariants && touchedVariants)}
-      />
+      <View className="mb-4 space-y-2">
+        <Label className="text-sm font-medium text-foreground">
+          Variant Text
+        </Label>
+        <Input
+          placeholder="Enter variant"
+          value={text}
+          onChangeText={(text: string) => setText(text)}
+          className={errorVariants && touchedVariants ? "border-red-500" : ""}
+        />
+        {errorVariants && touchedVariants && (
+          <Text className="text-xs text-red-500">
+            {Array.isArray(errorVariants) && errorVariants[0]}
+          </Text>
+        )}
+      </View>
       <Button
         disabled={disabled}
-        mode="outlined"
         style={{ marginVertical: 16 }}
         onPress={handleAddChecked}
+        className="text-white"
       >
-        Add variant
+        <Text className="text-primary-foreground font-semibold">
+          Add variant
+        </Text>
       </Button>
-
-      <View>
+      <View className="gap-3">
         {checkedItems.map((elem, index) => (
           <View
             key={elem.text}
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
+            className="flex-row items-center justify-between rounded-md border border-input bg-background p-3"
           >
-            <Checkbox.Item
-              disabled={disabled}
-              labelStyle={{ width: "65%" }}
-              label={elem.text}
-              status={elem.isCorrect ? "checked" : "unchecked"}
-              onPress={() => handleCheckboxChange(elem.text)}
-            />
+            <View className="flex-1 flex-row items-center gap-3 px-4">
+              <Checkbox
+                disabled={disabled}
+                checked={elem.isCorrect}
+                onCheckedChange={() => handleCheckboxChange(elem.text)}
+              />
+              <Text className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                {elem.text}
+              </Text>
+            </View>
             <Button
               disabled={disabled}
-              labelStyle={{ color: colors.error }}
               onPress={() => handleRemoveChecked(elem.text)}
             >
-              Remove
+              <Text className="text-primary-foreground font-semibold">
+                Remove
+              </Text>
             </Button>
           </View>
         ))}
         {errorVariants && touchedVariants && (
-          <Text style={{ color: colors.error }}>{errorVariants}</Text>
+          <Text className="text-xs text-red-500">
+            {Array.isArray(errorVariants) && errorVariants[0]}
+          </Text>
         )}
         {errorCorrects && touchedVariants && (
-          <Text style={{ color: colors.error }}>{errorCorrects}</Text>
+          <Text className="text-xs text-red-500">
+            {Array.isArray(errorCorrects) && errorCorrects[0]}
+          </Text>
         )}
       </View>
-      <Text style={{ marginVertical: 12, color: colors.secondary }}>
+      <Text className="text-sm" style={{ marginVertical: 12 }}>
         To add a new variant, write in the field and press the &quot;Add
         variant&quot; button. Your question will be created under the button. If
         the question is correct, check it.

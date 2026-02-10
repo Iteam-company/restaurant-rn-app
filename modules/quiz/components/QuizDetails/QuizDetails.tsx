@@ -1,19 +1,13 @@
 import { useGetQuestionsQuery } from "@/lib/redux/slices/question-api";
 import { router, useGlobalSearchParams } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Chip,
-  Title,
-} from "react-native-paper";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import { useGetQuizQuery } from "../../../../lib/redux/slices/quiz-api";
-import {
-  DifficultyLevelEnum,
-  StatusEnum,
-  statusIcons,
-} from "@/lib/redux/types";
+import { DifficultyLevelEnum, StatusEnum } from "@/lib/redux/types";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Text } from "@/components/ui/text";
+import { Activity, Clock, HelpCircle } from "lucide-react-native";
+import { Button } from "@/components/ui/button";
 
 export const QuizDetails = () => {
   const { id: restaurantId, quizId } = useGlobalSearchParams<{
@@ -41,47 +35,68 @@ export const QuizDetails = () => {
     return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Card>
-          <Card.Content>
-            <Title>{quiz?.title}</Title>
-            <View style={styles.detailsContainer}>
-              <Chip
-                icon="help-circle-outline"
-                mode="outlined"
-                style={styles.chip}
+    <ScrollView className="flex-1 bg-background">
+      <View className="p-4 gap-4 w-full">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="text-2xl">{quiz?.title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <View className="flex-row flex-wrap gap-2">
+              <Badge
+                variant="outline"
+                className="flex-row items-center gap-1.5 py-1.5 px-3"
               >
-                {questions?.length} Questions
-              </Chip>
-              <Chip icon="clock" mode="outlined" style={styles.chip}>
-                Time: {quiz?.timeLimit}
-              </Chip>
-              <Chip
-                mode="outlined"
-                style={[
-                  styles.chip,
-                  {
-                    borderColor: getColorForDifficulty(
-                      quiz?.difficultyLevel || DifficultyLevelEnum.EASY
+                <HelpCircle size={16} className="text-foreground" />
+                <Text className="text-sm font-medium">
+                  {questions?.length} Questions
+                </Text>
+              </Badge>
+              <Badge
+                variant="outline"
+                className="flex-row items-center gap-1.5 py-1.5 px-3"
+              >
+                <Clock size={16} className="text-foreground" />
+                <Text className="text-sm font-medium">
+                  Time: {quiz?.timeLimit}
+                </Text>
+              </Badge>
+              <Badge
+                variant="outline"
+                className="flex-row items-center gap-1.5 py-1.5 px-3"
+                style={{
+                  borderColor: getColorForDifficulty(
+                    quiz?.difficultyLevel || DifficultyLevelEnum.EASY,
+                  ),
+                }}
+              >
+                <Text
+                  className="text-sm font-medium uppercase"
+                  style={{
+                    color: getColorForDifficulty(
+                      quiz?.difficultyLevel || DifficultyLevelEnum.EASY,
                     ),
-                  },
-                ]}
+                  }}
+                >
+                  {quiz?.difficultyLevel}
+                </Text>
+              </Badge>
+              <Badge
+                variant="outline"
+                className="flex-row items-center gap-1.5 py-1.5 px-3"
               >
-                {quiz?.difficultyLevel}
-              </Chip>
-              <Chip
-                icon={statusIcons[quiz?.status || StatusEnum.NOT_STARTED]}
-                mode="outlined"
-                style={styles.chip}
-              >
-                {quiz?.status || "Active"}
-              </Chip>
+                <Activity size={16} className="text-foreground" />
+                <Text className="text-sm font-medium capitalize">
+                  {quiz?.status || "Active"}
+                </Text>
+              </Badge>
             </View>
-          </Card.Content>
+          </CardContent>
         </Card>
+
         <Button
-          mode="elevated"
+          className="w-full"
+          size="lg"
           disabled={quiz?.status !== StatusEnum.IN_PROGRESS}
           onPress={() =>
             router.push({
@@ -91,36 +106,23 @@ export const QuizDetails = () => {
             })
           }
         >
-          {quiz?.status === StatusEnum.IN_PROGRESS
-            ? "Start"
-            : "This quiz is not started or already completed"}
+          <Text>
+            {quiz?.status === StatusEnum.IN_PROGRESS
+              ? "Start"
+              : "This quiz is not started or already completed"}
+          </Text>
         </Button>
-        <Button mode="outlined" onPress={() => router.back()}>
-          Back
+        <Button
+          className="w-full"
+          size="lg"
+          variant="outline"
+          onPress={() => router.back()}
+        >
+          <Text>Back</Text>
         </Button>
       </View>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    paddingVertical: 16,
-    gap: 10,
-  },
-  contentContainer: {
-    paddingVertical: 16,
-    gap: 10,
-  },
-  detailsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    rowGap: 8,
-  },
-  chip: {
-    marginRight: 8,
-  },
-});
 
 export default QuizDetails;
