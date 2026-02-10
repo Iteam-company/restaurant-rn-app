@@ -1,20 +1,24 @@
 import { Slot, Stack, useRouter } from "expo-router";
-import { Appbar, useTheme } from "react-native-paper";
-import React from "react";
+import { View } from "react-native";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function QuizLayout() {
   const router = useRouter();
-  const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <Appbar.Header
-        statusBarHeight={0}
-        style={{ backgroundColor: colors.background }}
+      <View
+        className="bg-background flex-row items-center px-2 pb-2"
+        style={{ paddingTop: insets.top }}
       >
-        <Appbar.BackAction iconColor="white" onPress={() => router.back()} />
-      </Appbar.Header>
+        <Button variant="ghost" size="icon" onPress={() => router.back()}>
+          <ArrowLeft size={24} className="text-foreground" />
+        </Button>
+      </View>
       <Slot />
     </>
   );

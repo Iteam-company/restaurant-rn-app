@@ -1,8 +1,11 @@
 import * as DocumentPicker from "expo-document-picker";
-import { StyleSheet, View } from "react-native";
-import { Button, Chip, HelperText, Text } from "react-native-paper";
+import { View } from "react-native";
 import { useFileSelect } from "../hooks/useFileSelect";
 import { FC } from "react";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { FileText, Upload, X } from "lucide-react-native";
+import { Text } from "@/components/ui/text";
 
 type File = DocumentPicker.DocumentPickerAsset;
 
@@ -17,70 +20,63 @@ const FileUploader: FC<Props> = ({ data, onChange, errors, onChipClick }) => {
   const { handleFileSelect } = useFileSelect(onChange || (() => {}));
 
   return (
-    <View style={styles.fileCard}>
-      <Text variant="titleMedium" style={styles.fileTitle}>
-        Upload Files (Required)
-      </Text>
-      <Text variant="bodySmall" style={styles.fileSubtitle}>
-        Upload PDF, DOC, DOCX, or image files
-      </Text>
+    <View className="my-2 gap-4 justify-center">
+      <View className="gap-1">
+        <Label nativeID="file-upload-label" className="font-semibold">
+          Upload Files (Required)
+        </Label>
+        <Text className="text-sm text-muted-foreground">
+          Upload PDF, DOC, DOCX, or image files
+        </Text>
+      </View>
 
       <Button
-        mode="outlined"
+        variant="outline"
         onPress={handleFileSelect}
-        style={styles.uploadButton}
-        icon="upload"
+        className="w-full flex-row gap-2 border-dashed border-2"
       >
-        Select Files
+        <Upload size={18} className="text-foreground" />
+        <Text>Select Files</Text>
       </Button>
 
       {data.length > 0 && (
-        <View style={styles.fileList}>
-          {data.map((file) => (
-            <Chip
-              key={file.name}
-              mode="outlined"
-              onClose={() => onChipClick?.(file)}
-              style={styles.fileChip}
+        <View className="gap-2 mt-2">
+          {data.map((file, index) => (
+            <View
+              key={`${file.name}-${index}`}
+              className="flex-row items-center justify-between p-3 rounded-md border border-border bg-card"
             >
-              {file.name}
-            </Chip>
+              <View className="flex-row items-center gap-2 flex-1 mr-2">
+                <FileText size={16} className="text-muted-foreground" />
+                <Text
+                  className="text-sm font-medium text-foreground"
+                  numberOfLines={1}
+                  ellipsizeMode="middle"
+                >
+                  {file.name}
+                </Text>
+              </View>
+
+              <Button
+                size="icon"
+                variant="ghost"
+                className="h-8 w-8"
+                onPress={() => onChipClick?.(file)}
+              >
+                <X size={16} className="text-muted-foreground" />
+              </Button>
+            </View>
           ))}
         </View>
       )}
 
       {errors && (
-        <HelperText type="error" visible={!!errors}>
+        <Text className="text-xs font-medium text-destructive mt-1">
           {errors}
-        </HelperText>
+        </Text>
       )}
     </View>
   );
 };
 
 export default FileUploader;
-
-const styles = StyleSheet.create({
-  fileCard: {
-    marginVertical: 8,
-  },
-  fileTitle: {
-    marginBottom: 4,
-  },
-  fileSubtitle: {
-    marginBottom: 16,
-    opacity: 0.7,
-  },
-  uploadButton: {
-    marginBottom: 16,
-  },
-  fileList: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-  },
-  fileChip: {
-    width: "100%",
-    marginBottom: 8,
-  },
-});

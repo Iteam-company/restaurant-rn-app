@@ -1,10 +1,13 @@
+import ButtonBack from "@/components/button-back";
 import { Stack } from "expo-router";
 
 export default function QuestionIdLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        headerBackVisible: true,
+        headerLeft: () => <ButtonBack />,
         title: "Question Management",
         headerBackTitle: "Back",
       }}

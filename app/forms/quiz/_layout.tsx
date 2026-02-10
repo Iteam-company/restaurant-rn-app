@@ -1,12 +1,13 @@
+import ButtonBack from "@/components/button-back";
 import { Stack } from "expo-router";
 
 export default function QuizIdLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
-        title: "Quiz Management",
-        headerBackTitle: "Back",
+        headerShown: true,
+        headerBackVisible: true,
+        headerLeft: () => <ButtonBack />,
       }}
     >
       <Stack.Screen name="[quizId]/edit" options={{ title: "Edit Quiz" }} />

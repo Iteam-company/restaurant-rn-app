@@ -3,18 +3,16 @@ import { useGetQuestionsQuery } from "@/lib/redux/slices/question-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import {
-  ActivityIndicator,
-  Button,
-  Checkbox,
-  RadioButton,
-  Title,
-  useTheme,
-} from "react-native-paper";
 import { useTimer } from "react-timer-hook";
 import { useCreateQuizResultMutation } from "../../../../lib/redux/slices/quiz-api";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import Loader from "@/components/loader";
+import { cn } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const TakeQuiz = () => {
   const {
@@ -26,7 +24,6 @@ const TakeQuiz = () => {
     quizId: string;
     timer: string;
   }>();
-  const { colors } = useTheme();
 
   const [isDialog, setIsDialog] = useState(false);
   const [index, setIndex] = useState(0);
@@ -77,7 +74,7 @@ const TakeQuiz = () => {
   }, [createQuizResult, index, questions, quizId, restaurantId, result]);
 
   if (isLoadingQuestions || isLoading)
-    return <ActivityIndicator animating={true} color={"#7c8ebf"} />;
+    return <Loader isLoading={true} />;
 
   const currentQuestion = questions?.find((_, i) => i === index);
 
@@ -85,56 +82,52 @@ const TakeQuiz = () => {
     <ScrollView>
       <View style={[styles.timerContainer]}>
         <Text
-          style={[
-            styles.timerText,
-            {
-              color:
-                minutes === 0 && seconds < 30 ? colors.error : colors.secondary,
-            },
-          ]}
+          className={cn(
+            "text-right text-2xl font-medium",
+            minutes === 0 && seconds < 30
+              ? "text-destructive"
+              : "text-muted-foreground",
+          )}
         >{`${minutes}:${seconds}`}</Text>
       </View>
-      <View style={[styles.container, { backgroundColor: colors.surface }]}>
-        <Title>{currentQuestion?.text}</Title>
+      <View className="m-4 p-5 rounded-3xl gap-4 bg-card">
+        <Text>{currentQuestion?.text}</Text>
 
         {currentQuestion?.multipleCorrect ? (
           <View style={{ flexDirection: "column", alignItems: "center" }}>
-            {currentQuestion?.variants.map((elem, i) => (
-              <Checkbox.Item
-                key={i}
-                label={elem}
-                status={value.includes(i) ? "checked" : "unchecked"}
-                onPress={() =>
-                  setValue((prev) =>
-                    prev.includes(i)
-                      ? prev.filter((v) => v !== i)
-                      : [...prev, i]
-                  )
-                }
-                style={{ width: "100%" }}
-              />
-            ))}
+            {currentQuestion?.variants.map((elem, i) => {
+              const isChecked = value.includes(i);
+              const handleToggle = () => {
+                setValue((prev) =>
+                  prev.includes(i) ? prev.filter((v) => v !== i) : [...prev, i],
+                );
+              };
+              return (
+                <View key={i}>
+                  <Label className="flex-1 text-base">{elem}</Label>
+                  <Checkbox
+                    checked={isChecked}
+                    onCheckedChange={handleToggle}
+                  />
+                </View>
+              );
+            })}
           </View>
         ) : (
-          <RadioButton.Group
+          <RadioGroup
             value={String(value)}
             onValueChange={(newValue) => setValue([Number(newValue)])}
           >
-            <View style={{ flexDirection: "column", alignItems: "center" }}>
-              {currentQuestion?.variants.map((elem, i) => (
-                <RadioButton.Item
-                  key={i}
-                  label={elem}
-                  value={`${i}`}
-                  style={{ width: "100%" }}
-                />
-              ))}
-            </View>
-          </RadioButton.Group>
+            {currentQuestion?.variants.map((elem, i) => (
+              <View key={i}>
+                <Label>{elem}</Label>
+                <RadioGroupItem value={`${i}`} key={i}></RadioGroupItem>
+              </View>
+            ))}
+          </RadioGroup>
         )}
 
         <Button
-          mode="contained-tonal"
           onPress={() => {
             setIndex(index + 1);
             setResult((prev) => [

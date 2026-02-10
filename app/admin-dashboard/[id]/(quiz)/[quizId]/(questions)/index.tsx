@@ -1,5 +1,4 @@
 import Wrapper from "@/components/Wrapper";
-import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
 import {
   navigateToCreateQuestion,
   navigateToGenerateQuestions,
@@ -7,61 +6,93 @@ import {
 import QuestionList from "@/pages/Question/QuestionList";
 import { useGlobalSearchParams } from "expo-router";
 import { useState } from "react";
-import { StyleSheet } from "react-native";
-import { FAB } from "react-native-paper";
+import { LayoutAnimation, Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Text } from "@/components/ui/text";
+import { Button } from "@/components/ui/button";
+import { Minus, Plus, Sparkles } from "lucide-react-native";
 
 const Question = () => {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { id: restaurantId, quizId } = useGlobalSearchParams<{
     id: string;
     quizId: string;
   }>();
   const insets = useSafeAreaInsets();
 
-  const onStateChange = ({ open }: { open: boolean }) => setOpen(open);
+  const toggleMenu = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsOpen(!isOpen);
+  };
 
   return (
     <Wrapper>
       <QuestionList />
-      <FAB.Group
-        visible={true}
-        open={open}
-        style={[
-          styles.container,
-          getFabUiSettings(insets, { isFABGroup: true }),
-        ]}
-        icon={open ? "minus" : "plus"}
-        actions={[
-          {
-            icon: "plus",
-            label: "Add Question",
-            onPress: () => navigateToCreateQuestion(quizId, restaurantId),
-          },
-          {
-            icon: "lightbulb-outline",
-            label: "Generate Question",
-            onPress: () => navigateToGenerateQuestions(quizId, restaurantId),
-          },
-        ]}
-        onStateChange={onStateChange}
-        onPress={() => {
-          if (open) {
-            // Do something if the speed dial is open
-          }
-        }}
-      />
+      {isOpen && (
+        <Pressable
+          className="absolute inset-0 bg-black/20"
+          onPress={toggleMenu}
+        />
+      )}
+      <View
+        className="absolute right-6 flex-col items-end gap-4"
+        style={{ bottom: insets.bottom + 56 }}
+      >
+        {isOpen && (
+          <>
+            <View className="flex-row items-center gap-3">
+              <View className="bg-card px-3 py-1.5 rounded-md shadow-sm">
+                <Text className="font-medium">Generate Question</Text>
+              </View>
+
+              <Button
+                size="icon"
+                variant="secondary"
+                className="h-12 w-12 rounded-xl shadow-md"
+                onPress={() => {
+                  toggleMenu();
+                  navigateToGenerateQuestions(quizId, restaurantId);
+                }}
+              >
+                <Sparkles size={24} className="text-foreground" />
+              </Button>
+            </View>
+
+            <View className="flex-row items-center gap-3">
+              <View className="bg-card px-3 py-1.5 rounded-md shadow-sm">
+                <Text className="font-medium">Add Question</Text>
+              </View>
+
+              <Button
+                size="icon"
+                variant="secondary"
+                className="h-12 w-12 rounded-xl shadow-md"
+                onPress={() => {
+                  toggleMenu();
+                  navigateToCreateQuestion(quizId, restaurantId);
+                }}
+              >
+                <Plus size={28} className="text-foreground" />
+              </Button>
+            </View>
+          </>
+        )}
+
+        <Button
+          size="icon"
+          variant="secondary"
+          className="h-12 w-12 rounded-xl shadow-md"
+          onPress={toggleMenu}
+        >
+          {isOpen ? (
+            <Minus size={28} className="text-foreground" />
+          ) : (
+            <Plus size={28} className="text-foreground" />
+          )}
+        </Button>
+      </View>
     </Wrapper>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    margin: 0,
-  },
-});
 
 export default Question;

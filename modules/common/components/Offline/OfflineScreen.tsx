@@ -1,6 +1,7 @@
-import { theme } from "@/modules/common/theme/theme";
-import { StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { View } from "react-native";
+import { Text } from "@/components/ui/text";
+import { Button } from "@/components/ui/button";
+import { WifiOff } from "lucide-react-native";
 
 type OfflineScreenProps = {
   onRetry?: () => void;
@@ -8,39 +9,19 @@ type OfflineScreenProps = {
 
 export default function OfflineScreen({ onRetry }: OfflineScreenProps) {
   return (
-    <View style={styles.container}>
-      <Text variant="headlineMedium" style={styles.title}>
+    <View className="flex-1 bg-background items-center justify-center px-6">
+      <View className="mb-6 bg-secondary/30 p-6 rounded-full items-center justify-center">
+        <WifiOff size={48} className="text-muted-foreground" />
+      </View>
+      <Text className="text-2xl font-bold text-center mb-2 text-foreground">
         You are offline
       </Text>
-      <Text variant="bodyMedium" style={styles.subtitle}>
+      <Text className="text-base text-center mb-8 text-muted-foreground">
         Please check your internet connection and try again.
       </Text>
-      <Button mode="contained" onPress={onRetry} style={styles.button}>
-        Retry
+      <Button className="w-40" size="lg" onPress={onRetry}>
+        <Text>Retry</Text>
       </Button>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 24,
-  },
-  title: {
-    color: theme.colors.onSurface,
-    textAlign: "center",
-    marginBottom: 8,
-  },
-  subtitle: {
-    color: theme.colors.onSurfaceVariant,
-    textAlign: "center",
-    marginBottom: 24,
-  },
-  button: {
-    minWidth: 160,
-  },
-});

@@ -1,6 +1,13 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { Button, Dialog, Paragraph, Portal } from "react-native-paper";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Text } from "@/components/ui/text";
 
 interface InformationDialogProps {
   visible: boolean;
@@ -16,24 +23,20 @@ const InformationDialog: React.FC<InformationDialogProps> = ({
   onClose,
 }) => {
   return (
-    <Portal>
-      <Dialog visible={visible} onDismiss={onClose} style={styles.dialog}>
-        <Dialog.Title>{title}</Dialog.Title>
-        <Dialog.Content>
-          <Paragraph>{message}</Paragraph>
-        </Dialog.Content>
-        <Dialog.Actions>
-          <Button onPress={onClose}>OK</Button>
-        </Dialog.Actions>
-      </Dialog>
-    </Portal>
+    <AlertDialog open={visible} onOpenChange={(isOpen) => !isOpen && onClose()}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          {title && <AlertDialogTitle>{title}</AlertDialogTitle>}
+          <AlertDialogDescription>{message}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogAction onPress={onClose}>
+            <Text>OK</Text>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
-
-const styles = StyleSheet.create({
-  dialog: {
-    borderRadius: 14,
-  },
-});
 
 export default InformationDialog;

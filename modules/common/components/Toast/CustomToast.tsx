@@ -1,68 +1,55 @@
-import { ComponentProps, FC, useMemo } from "react";
-import { Text, TextStyle, View, ViewStyle } from "react-native";
-import { useTheme } from "react-native-paper";
-import { ToastConfig } from "react-native-toast-message";
+import { FC, useMemo } from "react";
+import { Pressable, View } from "react-native";
+import { ToastConfigParams } from "react-native-toast-message";
+import { cn } from "@/lib/utils";
+import { Text } from "@/components/ui/text";
 
-interface CustomToastStyles {
-  container: ViewStyle;
-  text1: TextStyle;
-  text2: TextStyle;
-}
+type CustomToastProps = ToastConfigParams<any>;
 
-const CustomToast: FC<ComponentProps<ToastConfig["success"]>> = ({
-  text1,
-  text1Style,
-  text2,
-  text2Style,
-  onPress,
-  type,
-}) => {
-  const { colors, fonts } = useTheme();
-
-  const styles = useMemo<CustomToastStyles>(() => {
-    const styles: CustomToastStyles = {
-      container: {
-        width: "90%",
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        borderRadius: 8,
-      },
-      text1: {},
-      text2: {},
-    };
-
+const CustomToast: FC<CustomToastProps> = ({ text1, text2, onPress, type }) => {
+  const config = useMemo(() => {
     switch (type) {
       case "success":
-        styles.container.backgroundColor = "#3A8B44";
-        styles.text1.color = colors.onPrimary;
-        styles.text2.color = colors.onPrimary;
-        break;
+        return {
+          containerClass: "bg-green-600 border-green-700",
+          textClass: "text-white",
+          subTextClass: "text-green-50",
+        };
       case "error":
-        styles.container.backgroundColor = colors.errorContainer;
-        styles.text1.color = colors.onPrimary;
-        styles.text2.color = colors.onPrimary;
-        break;
+        return {
+          containerClass: "bg-destructive border-destructive",
+          textClass: "text-destructive-foreground",
+          subTextClass: "text-destructive-foreground/90",
+        };
       case "info":
-        styles.container.backgroundColor = colors.surface;
-        styles.text1.color = colors.onPrimary;
-        styles.text2.color = colors.onPrimary;
-        break;
+      default:
+        return {
+          containerClass: "bg-card border-border",
+          textClass: "text-foreground",
+          subTextClass: "text-muted-foreground",
+        };
     }
-
-    return styles;
-  }, [type, colors]);
+  }, [type]);
 
   return (
-    <View style={[styles.container]} onTouchStart={onPress}>
-      {text1 && (
-        <Text style={[styles.text1, fonts.bodyMedium, text1Style]}>
-          {text1}
-        </Text>
+    <Pressable
+      onPress={onPress}
+      className={cn(
+        "w-[90%] flex-row items-center p-4 rounded-lg border shadow-sm gap-3",
+        config.containerClass,
       )}
-      {text2 && (
-        <Text style={[styles.text2, fonts.bodySmall, text2Style]}>{text2}</Text>
-      )}
-    </View>
+    >
+      <View className="flex-1 gap-0.5">
+        {text1 && (
+          <Text className={cn("font-semibold text-base", config.textClass)}>
+            {text1}
+          </Text>
+        )}
+        {text2 && (
+          <Text className={cn("text-sm", config.subTextClass)}>{text2}</Text>
+        )}
+      </View>
+    </Pressable>
   );
 };
 

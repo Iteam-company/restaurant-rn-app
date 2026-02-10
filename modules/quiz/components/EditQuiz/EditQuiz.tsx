@@ -1,11 +1,8 @@
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
-import { ScrollView, StyleSheet } from "react-native";
-
+import { ScrollView, View } from "react-native";
 import FormWrapper from "@/modules/common/components/FormWrapper";
 import { useEffect } from "react";
-import { ActivityIndicator, Button, TextInput } from "react-native-paper";
-import { Dropdown } from "react-native-paper-dropdown";
 import {
   useGetQuizQuery,
   useUpdateQuizMutation,
@@ -18,6 +15,13 @@ import {
 } from "../AddQuiz/utils";
 import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Loader from "@/components/loader";
 
 const EditQuiz = () => {
   const { quizId } = useGlobalSearchParams<{
@@ -75,64 +79,128 @@ const EditQuiz = () => {
     }
   }, [setValues, initialValues]);
 
-  if (!initialValues) return <ActivityIndicator size="large" />;
+  const currentDifficulty = difficultyLevelItem.find(
+    (item) => item.value === values.difficultyLevel,
+  );
+
+  const currentStatus = statusItem.find((item) => item.value === values.status);
+
+  if (!initialValues) return <Loader />;
 
   return (
-    <ScrollView style={[styles.container]}>
-      <FormWrapper>
-        <TextInput
-          mode="outlined"
-          label="Title"
-          value={values.title}
-          onChangeText={(text) => setFieldValue("title", text)}
-          onBlur={handleBlur("title")}
-          error={touched.title && !!errors.title}
-          left={<TextInput.Icon icon="pencil" />}
-        />
-        <Dropdown
-          label={"Difficulty Level"}
-          mode="outlined"
-          value={values.difficultyLevel}
-          options={difficultyLevelItem}
-          onSelect={(value) => setFieldValue("difficultyLevel", value)}
-          CustomMenuHeader={(props) => <></>}
-        />
-        <Dropdown
-          label={"Status"}
-          mode="outlined"
-          value={values.status}
-          options={statusItem}
-          onSelect={(value) => setFieldValue("status", value)}
-          CustomMenuHeader={(props) => <></>}
-        />
-        <TextInput
-          mode="outlined"
-          label={"Time limit"}
-          keyboardType="numeric"
-          value={`${values.timeLimit}`}
-          onChangeText={(text) =>
-            setFieldValue("timeLimit", parseInt(text) || 0)
-          }
-          onBlur={handleBlur("timeLimit")}
-          error={touched.timeLimit && !!errors.timeLimit}
-          left={<TextInput.Icon icon="timer" />}
-        />
-        <Button mode="contained-tonal" onPress={() => handleSubmit()}>
-          {isUpdatingQuiz ? (
-            <ActivityIndicator animating={true} color={"#7c8ebf"} />
-          ) : (
-            "Submit"
-          )}
-        </Button>
-      </FormWrapper>
+    <ScrollView
+      className="w-full bg-background"
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "center",
+      }}
+      showsVerticalScrollIndicator={false}
+    >
+      <Card>
+        <FormWrapper>
+          <View className="mb-4 space-y-2">
+            <Label className="text-sm font-medium text-foreground">Title</Label>
+            <Input
+              placeholder="Input title"
+              value={values.title}
+              onChangeText={(text) => setFieldValue("title", text)}
+              onBlur={handleBlur("title")}
+              className={
+                touched.title && !!errors.title ? "border-red-500" : ""
+              }
+            />
+            {touched.title && !!errors.title && (
+              <Text className="text-xs text-red-500">{errors.title}</Text>
+            )}
+          </View>
+          <View>
+            <Label>Difficulty Level</Label>
+            <Select
+              value={currentDifficulty}
+              onValueChange={(option) => {
+                if (option) {
+                  setFieldValue("difficultyLevel", option.value);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select difficulty" />
+              </SelectTrigger>
+              <SelectContent>
+                {difficultyLevelItem.map((item) => (
+                  <SelectItem
+                    label={item.label}
+                    value={item.value}
+                    key={item.value}
+                  />
+                ))}
+              </SelectContent>
+            </Select>
+          </View>
+          <View>
+            <Label>Status</Label>
+            <Select
+              value={currentStatus}
+              onValueChange={(option) => {
+                if (option) {
+                  setFieldValue("status", option.value);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                {statusItem.map((item) => (
+                  <SelectItem
+                    key={item.value}
+                    value={item.value}
+                    label={item.label}
+                  />
+                ))}
+              </SelectContent>
+            </Select>
+          </View>
+          <View className="mb-4 space-y-2">
+            <Label className="text-sm font-medium text-foreground">
+              Time limit
+            </Label>
+            <Input
+              keyboardType="numeric"
+              placeholder="Input time limit"
+              value={`${values.timeLimit}`}
+              onChangeText={(text) =>
+                setFieldValue("timeLimit", parseInt(text) || 0)
+              }
+              onBlur={handleBlur("timeLimit")}
+              className={
+                touched.timeLimit && !!errors.timeLimit ? "border-red-500" : ""
+              }
+            />
+            {touched.timeLimit && !!errors.timeLimit && (
+              <Text className="text-xs text-red-500">{errors.timeLimit}</Text>
+            )}
+          </View>
+          <Button onPress={() => handleSubmit()} disabled={isUpdatingQuiz}>
+            {isUpdatingQuiz ? (
+              <Loader isLoading={true} />
+            ) : (
+              <Text className="text-primary-foreground font-semibold">
+                Submit
+              </Text>
+            )}
+          </Button>
+          <Button
+            disabled={isUpdatingQuiz}
+            variant="outline"
+            onPress={() => router.back()}
+          >
+            <Text>Back</Text>
+          </Button>
+        </FormWrapper>
+      </Card>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-  },
-});
 
 export default EditQuiz;

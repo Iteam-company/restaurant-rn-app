@@ -2,17 +2,21 @@ import TabBarOffset from "@/modules/common/components/TabBarOffset";
 import { useGenerateQuizzesMutation } from "@/lib/redux/slices/quiz-api";
 import * as DocumentPicker from "expo-document-picker";
 import { useCallback } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, HelperText, TextInput, useTheme } from "react-native-paper";
+import { ScrollView, View } from "react-native";
 import { GenerateQuizInitialValues, GenerateQuizSchema } from "./utils";
 import FileUploader from "@/modules/common/components/FileUploader";
 import { useFormik } from "formik";
 import Toast from "react-native-toast-message";
 import QuizQuestionEdit from "./QuizQuestionEdit";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Loader from "@/components/loader";
+import { Text } from "@/components/ui/text";
+import { router } from "expo-router";
 
 const GenerateQuiz = () => {
-  const { colors } = useTheme();
-
   const [generateQuizzes, { data, isLoading: isGeneratingQuizzes }] =
     useGenerateQuizzesMutation();
 
@@ -38,7 +42,7 @@ const GenerateQuiz = () => {
     (files: DocumentPicker.DocumentPickerAsset[]) => {
       setGenerateQuizValues((prev) => ({ ...prev, files }));
     },
-    [setGenerateQuizValues]
+    [setGenerateQuizValues],
   );
 
   const handleRemoveFile = useCallback(
@@ -46,120 +50,103 @@ const GenerateQuiz = () => {
       setGenerateQuizValues((prev) => ({
         ...prev,
         files: prev.files.filter(
-          (f) => !(f.name === file.name && f.size === file.size)
+          (f) => !(f.name === file.name && f.size === file.size),
         ),
       }));
     },
-    [setGenerateQuizValues]
+    [setGenerateQuizValues],
   );
 
   return (
-    <ScrollView style={[{ width: "100%", paddingHorizontal: 10, gap: 16 }]}>
-      <View
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.surface,
-            padding: 16,
-            gap: 8,
-          },
-        ]}
-      >
-        <FileUploader
-          data={generateQuizValues.files}
-          onChange={handleFileSelection}
-          onChipClick={handleRemoveFile}
-          errors={generateQuizErrors.files?.toString()}
-        />
-
-        <View style={styles.fileCard}>
-          <TextInput
-            mode="outlined"
-            label="Prompt (optional)"
-            value={generateQuizValues.prompt || ""}
-            onChangeText={(value) =>
-              setGenerateQuizValues((prev) => ({ ...prev, prompt: value }))
-            }
-            error={!!generateQuizValues.prompt}
-            multiline
-            numberOfLines={3}
+    <ScrollView
+      className="w-full bg-background gap-4 px-3"
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "center",
+      }}
+      showsVerticalScrollIndicator={false}
+    >
+      <Card className="px-3">
+        <View className=" gap-2 w-full my-4 rounded-3xl">
+          <FileUploader
+            data={generateQuizValues.files}
+            onChange={handleFileSelection}
+            onChipClick={handleRemoveFile}
+            errors={generateQuizErrors.files?.toString()}
           />
-          {generateQuizErrors.prompt && (
-            <HelperText type="error" visible={!!generateQuizErrors.prompt}>
-              {generateQuizErrors.prompt}
-            </HelperText>
-          )}
+
+          <View className="my-2">
+            <View className="mb-4 space-y-2">
+              <Label className=" text-sm font-medium text-foreground">
+                Prompt (optional)
+              </Label>
+              <Input
+                placeholder="Enter prompt (optional)"
+                value={generateQuizValues.prompt || ""}
+                onChangeText={(value) =>
+                  setGenerateQuizValues((prev) => ({ ...prev, prompt: value }))
+                }
+                className={!!generateQuizValues.prompt ? "border-red-500" : ""}
+              />
+              {!!generateQuizValues.prompt && (
+                <Text className="text-xs text-red-500">
+                  {generateQuizValues.prompt}
+                </Text>
+              )}
+            </View>
+          </View>
+          <View className="my-2">
+            <View className="mb-4 space-y-2">
+              <Label className="text-sm font-medium text-foreground">
+                Count (optional)
+              </Label>
+              <Input
+                keyboardType="number-pad"
+                placeholder="Enter count (optional)"
+                value={generateQuizValues.count?.toString() || ""}
+                onChangeText={(value) =>
+                  setGenerateQuizValues((prev) => ({
+                    ...prev,
+                    count: parseInt(value) || 0,
+                  }))
+                }
+                className={!!generateQuizValues.count ? "border-red-500" : ""}
+              />
+              {!!generateQuizValues.count && (
+                <Text className="text-xs text-red-500">
+                  {generateQuizValues.count}
+                </Text>
+              )}
+            </View>
+          </View>
+          <Button
+            onPress={() => generateQuiz()}
+            disabled={isGeneratingQuizzes || !!data}
+          >
+            {isGeneratingQuizzes ? (
+              <Loader />
+            ) : (
+              <Text className="text-primary-foreground font-semibold">
+                Generate Questions
+              </Text>
+            )}
+          </Button>
+          <Button variant="outline" onPress={() => router.back()}>
+            <Text>Back</Text>
+          </Button>
         </View>
-        <View style={styles.fileCard}>
-          <TextInput
-            mode="outlined"
-            keyboardType="number-pad"
-            label="Count (optional)"
-            value={generateQuizValues.count?.toString() || ""}
-            onChangeText={(value) =>
-              setGenerateQuizValues((prev) => ({
-                ...prev,
-                count: parseInt(value) || 0,
-              }))
-            }
-            error={!!generateQuizValues.count}
-            multiline
-            numberOfLines={3}
+
+        {data && (
+          <QuizQuestionEdit
+            valuesForGeneratingQuestion={generateQuizValues}
+            initialValues={data}
           />
-          {generateQuizErrors.count && (
-            <HelperText type="error" visible={!!generateQuizErrors.count}>
-              {generateQuizErrors.count}
-            </HelperText>
-          )}
-        </View>
+        )}
 
-        <Button
-          disabled={isGeneratingQuizzes || !!data}
-          mode="outlined"
-          onPress={() => generateQuiz()}
-          loading={isGeneratingQuizzes}
-          icon="auto-fix"
-          style={{ marginTop: 8 }}
-        >
-          Generate with AI
-        </Button>
-      </View>
-
-      {data && (
-        <QuizQuestionEdit
-          valuesForGeneratingQuestion={generateQuizValues}
-          initialValues={data}
-        />
-      )}
-
-      <TabBarOffset />
+        <TabBarOffset />
+      </Card>
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    marginVertical: 16,
-    borderRadius: 24,
-    gap: 8,
-  },
-  fileCard: {
-    marginVertical: 8,
-  },
-  questionCard: {
-    width: "100%",
-    borderRadius: 24,
-    padding: 16,
-    gap: 16,
-    marginBottom: 16,
-  },
-  headerContainer: {
-    flexDirection: "row",
-  },
-  headerTitle: {
-    width: "85%",
-  },
-});
 
 export default GenerateQuiz;
