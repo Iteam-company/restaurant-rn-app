@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import { QuizDetails } from "@/modules/quiz/components/QuizDetails/QuizDetails";
+import { QuizDetails } from "@/pages/Quiz/components/QuizDetails/QuizDetails";
 
 export default function TakeQuizPage() {
   return (

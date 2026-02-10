@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import AddQuestion from "@/modules/questions/components/AddQuestion/AddQuestion";
+import AddQuestion from "@/pages/Question/components/AddQuestion/AddQuestion";
 
 const CreateQuestionScreen = () => {
   return (

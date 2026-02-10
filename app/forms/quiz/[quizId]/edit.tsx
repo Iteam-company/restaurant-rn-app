@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import EditQuiz from "@/modules/quiz/components/EditQuiz/EditQuiz";
+import EditQuiz from "@/pages/Quiz/components/EditQuiz/EditQuiz";
 
 const EditQuizScreen = () => {
   return (
