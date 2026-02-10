@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import QuestionItemInfo from "@/modules/questions/components/QuestionItemInfo/QuestionItemInfo";
+import QuestionItemInfo from "@/pages/Question/components/QuestionItemInfo/QuestionItemInfo";
 
 const QuestionItemInfoPage = () => {
   return (

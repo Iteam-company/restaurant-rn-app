@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import GenerateQuiz from "@/modules/quiz/components/GenerateQuiz/GenerateQuiz";
+import GenerateQuiz from "@/pages/Quiz/components/GenerateQuiz/GenerateQuiz";
 
 const GenerateQuizPage = () => {
   return (

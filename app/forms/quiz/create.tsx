@@ -1,5 +1,5 @@
 import Wrapper from "@/components/Wrapper";
-import AddQuiz from "@/modules/quiz/components/AddQuiz/AddQuiz";
+import AddQuiz from "@/pages/Quiz/components/AddQuiz/AddQuiz";
 
 const CreateQuizScreen = () => {
   return (

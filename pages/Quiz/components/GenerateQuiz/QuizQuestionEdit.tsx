@@ -1,4 +1,4 @@
-import QuestionElement from "@/modules/questions/components/GenerateQuestion/QuestionElement";
+import QuestionElement from "@/pages/Question/components/GenerateQuestion/QuestionElement";
 import { useFormik } from "formik";
 import { FC, useCallback, useState } from "react";
 import { View, ScrollView, ActivityIndicator } from "react-native";

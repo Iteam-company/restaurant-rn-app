@@ -1,6 +1,6 @@
 import React from "react";
 import Wrapper from "@/components/Wrapper";
-import TakeQuiz from "@/modules/quiz/components/TakeQuiz/TakeQuiz";
+import TakeQuiz from "@/pages/Quiz/components/TakeQuiz/TakeQuiz";
 
 const TakeQuizPage = () => {
   return (
