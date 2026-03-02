@@ -40,3 +40,5 @@ app-example
 
 # build ignores
 build-*.apk
+temp_auto_push.bat
+temp_interactive_push.bat
