@@ -1,22 +1,15 @@
-import { Slot, Stack, useRouter } from "expo-router";
-import { Appbar, useTheme } from "react-native-paper";
-import React from "react";
+import { Slot, Stack } from "expo-router";
 
 export default function QuizLayout() {
-  const router = useRouter();
-  const { colors } = useTheme();
-
   return (
-    <>
-      <Stack.Screen options={{ headerShown: false }} />
-      <Appbar.Header
-        statusBarHeight={0}
-        style={{ backgroundColor: colors.background }}
+    <Stack
+        screenOptions={{
+          title: "Quiz Result",
+          headerShown: true,
+          headerStyle: { backgroundColor: "white" },
+        }}
       >
-        <Appbar.BackAction iconColor="white" onPress={() => router.back()} />
-        <Appbar.Content title="Quiz Result" />
-      </Appbar.Header>
-      <Slot />
-    </>
+        <Slot />
+      </Stack>
   );
 }

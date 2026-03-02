@@ -1,10 +1,17 @@
-import { Slot } from "expo-router";
-import React from "react";
+import { Slot, Stack } from "expo-router";
 
 export default function QuizLayout() {
   return (
     <>
-      <Slot />
+      <Stack
+        screenOptions={{
+          title: "Quiz",
+          headerShown: true,
+          headerStyle: { backgroundColor: "white" },
+        }}
+      >
+        <Slot />
+      </Stack>
     </>
   );
 }

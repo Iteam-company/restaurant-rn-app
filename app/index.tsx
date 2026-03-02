@@ -1,20 +1,10 @@
-import { useFocusEffect, useRouter } from "expo-router";
-import { useCallback } from "react";
-import { ActivityIndicator } from "react-native-paper";
-import Wrapper from "@/modules/common/components/Wrapper";
+import Loader from "@/components/Loader";
+import Wrapper from "@/components/Wrapper";
 
 export default function HomeScreen() {
-  const router = useRouter();
-
-  useFocusEffect(
-    useCallback(() => {
-      router.push("/auth/signin");
-    }, [router])
-  );
-
   return (
-    <Wrapper centered>
-      <ActivityIndicator animating />
+    <Wrapper>
+      <Loader isLoading={true} />
     </Wrapper>
   );
 }

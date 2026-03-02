@@ -1,9 +1,9 @@
-import Wrapper from "@/modules/common/components/Wrapper";
-import EditWorker from "@/modules/restaurant/components/RestaurantInfo/editWorker/EditWorker";
+import Wrapper from "@/components/Wrapper";
+import EditWorker from "@/pages/Forms/User/EditWorker";
 
 const EditUserScreen = () => {
   return (
-    <Wrapper paddingOff headerTitle={"Edit Worker Profile"}>
+    <Wrapper>
       <EditWorker />
     </Wrapper>
   );
