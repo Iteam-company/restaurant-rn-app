@@ -1,11 +1,10 @@
-import { useValidateTokenQuery } from "@/modules/auth/redux/slices/auth-api";
-import Wrapper from "@/modules/common/components/Wrapper";
-import getFabUiSettings from "@/modules/common/constants/getFabUiSettings.ios";
-import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
-import CurrentUserInfo from "@/modules/restaurant/components/RestaurantInfo/userInfo/CurrentUserInfo";
-import { StyleSheet } from "react-native";
-import { FAB } from "react-native-paper";
+import { useValidateTokenQuery } from "@/lib/redux/slices/auth-api";
+import Wrapper from "@/components/Wrapper";
+import { navigateToEditUser } from "@/utils/flowNavigation";
+import CurrentUserInfo from "@/pages/User/UserProfile";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react-native";
 
 export default function User() {
   const insets = useSafeAreaInsets();
@@ -13,37 +12,21 @@ export default function User() {
   const { data: currentUser } = useValidateTokenQuery();
 
   return (
-    <Wrapper centered>
+    <Wrapper>
       <CurrentUserInfo />
       {currentUser && (
-        <FAB
-          icon="pencil"
-          style={[styles.fab, getFabUiSettings(insets)]}
+        <Button
+          size="icon"
+          variant="secondary"
+          className="absolute right-6 h-12 w-12 rounded-xl shadow-md"
+          style={{ bottom: insets.bottom + 56 }}
           onPress={() => {
             navigateToEditUser(currentUser?.id || 0);
           }}
-        />
+        >
+          <Pencil size={24} className="text-primary-foreground" />
+        </Button>
       )}
     </Wrapper>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: "relative",
-  },
-  scrollView: {
-    flex: 1,
-  },
-  content: {
-    width: "100%",
-    paddingBottom: 80,
-  },
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
-});

@@ -1,9 +1,9 @@
-import Wrapper from "@/modules/common/components/Wrapper";
-import { QuizDetails } from "@/modules/quiz/components/QuizDetails/QuizDetails";
+import Wrapper from "@/components/Wrapper";
+import { QuizDetails } from "@/pages/Quiz/components/QuizDetails/QuizDetails";
 
 export default function TakeQuizPage() {
   return (
-    <Wrapper paddingOff>
+    <Wrapper>
       <QuizDetails />
     </Wrapper>
   );
