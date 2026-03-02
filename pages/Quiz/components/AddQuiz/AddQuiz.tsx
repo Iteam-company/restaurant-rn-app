@@ -1,4 +1,4 @@
-import FormWrapper from "@/modules/common/components/FormWrapper";
+import FormWrapper from "@/components/FormWrapper";
 import { router } from "expo-router";
 import { useFormik } from "formik";
 import { ScrollView, View } from "react-native";
@@ -9,7 +9,7 @@ import {
   statusItem,
   validationSchema,
 } from "./utils";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 
 const AddQuiz = () => {
   const [createQuiz, { isLoading: isCreatingQuiz }] = useCreateQuizMutation();

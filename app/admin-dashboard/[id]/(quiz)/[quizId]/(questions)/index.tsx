@@ -2,7 +2,7 @@ import Wrapper from "@/components/Wrapper";
 import {
   navigateToCreateQuestion,
   navigateToGenerateQuestions,
-} from "@/modules/common/utils/flowNavigation";
+} from "@/utils/flowNavigation";
 import QuestionList from "@/pages/Question/QuestionList";
 import { useGlobalSearchParams } from "expo-router";
 import { useState } from "react";

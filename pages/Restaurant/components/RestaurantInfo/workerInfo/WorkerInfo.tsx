@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { useGetUserByIdQuery } from "@/lib/redux/slices/user-api";
-import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import TabBarOffset from "@/components/TabBarOffset";
 import { useLocalSearchParams } from "expo-router";
 import {
   BadgeCheck,

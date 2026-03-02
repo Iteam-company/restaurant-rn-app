@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Text } from "@/components/ui/text";
 import { ICreateQuestionDTO } from "@/lib/redux/types";
-import VariantsCreator from "@/modules/common/components/VariantsCreator";
+import VariantsCreator from "@/pages/Question/components/VariantsCreator";
 import { MoreVertical } from "lucide-react-native";
 import { useCallback, useState } from "react";
 import { View } from "react-native";

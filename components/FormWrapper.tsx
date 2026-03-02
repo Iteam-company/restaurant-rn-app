@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
 export default function FormWrapper({ children }: PropsWithChildren) {
   return (

@@ -1,11 +1,11 @@
 import * as DocumentPicker from "expo-document-picker";
 import { View } from "react-native";
-import { useFileSelect } from "../hooks/useFileSelect";
 import { FC } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FileText, Upload, X } from "lucide-react-native";
 import { Text } from "@/components/ui/text";
+import { useFileSelect } from "@/hooks/useFileSelect";
 
 type File = DocumentPicker.DocumentPickerAsset;
 

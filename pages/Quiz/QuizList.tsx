@@ -4,11 +4,11 @@ import { FlatList, View } from "react-native";
 import { useGetQuizSearchQuery } from "../../lib/redux/slices/quiz-api";
 import QuizItem from "./QuizCard";
 import { DifficultyLevelEnum, StatusEnum } from "@/lib/redux/types";
-import Chip from "@/components/chip";
+import Chip from "@/components/Chip";
 import { Input } from "@/components/ui/input";
-import useDebounce from "@/modules/common/hooks/useDebounce";
 import { Separator } from "@/components/ui/separator";
 import QuizCardSkeleton from "../Skeleton/QuizCard";
+import useDebounce from "@/hooks/useDebounce";
 
 const QuizList = () => {
   const { id: restaurantId } = useLocalSearchParams<{ id: string }>();

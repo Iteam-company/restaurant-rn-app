@@ -1,13 +1,13 @@
-import InformationDialog from "@/modules/common/components/InformationDialog";
+import InformationDialog from "@/pages/Quiz/components/InformationDialog";
 import { useGetQuestionsQuery } from "@/lib/redux/slices/question-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useTimer } from "react-timer-hook";
 import { useCreateQuizResultMutation } from "../../../../lib/redux/slices/quiz-api";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";

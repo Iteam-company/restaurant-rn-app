@@ -1,4 +1,3 @@
-import useDebounce from "@/modules/common/hooks/useDebounce";
 import { useState } from "react";
 import { FlatList, View } from "react-native";
 import { useSearchQuizResultQuery } from "../../lib/redux/slices/quiz-api";
@@ -6,6 +5,7 @@ import { QuizResultCard } from "./QuizResultCard";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import QuizResultCardSkeleton from "../Skeleton/QuizResultCard";
+import useDebounce from "@/hooks/useDebounce";
 
 const QuizResultList = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");

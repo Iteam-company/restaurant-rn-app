@@ -4,8 +4,9 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
-import { secureStorage } from "@/modules/common/utils/secureStorage";
-import { API_URL } from "@/modules/common/constants/api";
+import { API_URL } from "@/constants/api";
+// eslint-disable-next-line import/no-unresolved
+import { secureStorage } from "@/utils/secureStorage";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,

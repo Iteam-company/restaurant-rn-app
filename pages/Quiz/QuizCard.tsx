@@ -1,12 +1,12 @@
-import { USER_ROLE } from "@/modules/common/constants/api";
-import { navigateToEditQuiz } from "@/modules/common/utils/flowNavigation";
+import { USER_ROLE } from "@/constants/api";
+import { navigateToEditQuiz } from "@/utils/flowNavigation";
 import { useGlobalSearchParams, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { Pressable, View } from "react-native";
 import { useDeleteQuizMutation } from "../../lib/redux/slices/quiz-api";
 import { IQuizInfo } from "@/lib/redux/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Chip from "@/components/chip";
+import Chip from "@/components/Chip";
 import {
   DropdownMenu,
   DropdownMenuContent,

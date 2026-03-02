@@ -1,5 +1,4 @@
-import TabBarOffset from "@/modules/common/components/TabBarOffset";
-import { useFileSelect } from "@/modules/common/hooks/useFileSelect";
+import TabBarOffset from "@/components/TabBarOffset";
 import { useGetQuizQuery } from "@/lib/redux/slices/quiz-api";
 import * as DocumentPicker from "expo-document-picker";
 import { router, useLocalSearchParams } from "expo-router";
@@ -16,16 +15,17 @@ import {
   generateQuestionValidationSchema,
   initialFormData,
 } from "./utils";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
-import FileUploader from "@/modules/common/components/FileUploader";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
+import FileUploader from "@/pages/Question/components/FileUploader";
 import { ICreateQuestionDTO } from "@/lib/redux/types";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { useFileSelect } from "@/hooks/useFileSelect";
 
 const GenerateQuestion = () => {
   const { quizId } = useLocalSearchParams<{

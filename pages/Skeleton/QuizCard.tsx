@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { USER_ROLE } from "@/modules/common/constants/api";
+import { USER_ROLE } from "@/constants/api";
 import { useTheme } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import { MenuIcon } from "lucide-react-native";

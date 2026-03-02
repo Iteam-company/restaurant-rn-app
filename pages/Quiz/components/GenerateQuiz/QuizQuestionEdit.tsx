@@ -13,7 +13,7 @@ import { useGenerateQuestionsMutation } from "@/lib/redux/slices/question-api";
 import Toast from "react-native-toast-message";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCreateQuizMutation } from "../../../../lib/redux/slices/quiz-api";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
 import {
   DifficultyLevelEnum,
   ICreateQuestionDTO,

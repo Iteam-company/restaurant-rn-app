@@ -1,6 +1,6 @@
 import { UserROLES } from "@/lib/redux/types";
-import { Badge } from "./ui/badge";
-import { Text } from "./ui/text";
+import { Badge } from "../../components/ui/badge";
+import { Text } from "../../components/ui/text";
 import { FC } from "react";
 
 type Props = {

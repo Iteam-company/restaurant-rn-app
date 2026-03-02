@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import * as SecureStore from "expo-secure-store";
-import { USER_ROLE } from "@/modules/common/constants/api";
+import { USER_ROLE } from "@/constants/api";
 import { MenuIcon } from "lucide-react-native";
 
 const QuizResultCardSkeleton = () => {

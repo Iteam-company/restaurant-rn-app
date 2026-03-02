@@ -1,4 +1,4 @@
-import { handleFile } from "@/modules/common/utils/handleFile";
+import { handleFile } from "@/utils/handleFile";
 import { router, useLocalSearchParams } from "expo-router";
 import { useFormik } from "formik";
 import { useEffect } from "react";
@@ -8,17 +8,17 @@ import {
   useUpdateRestaurantMutation,
   useUploadRestaurantImageMutation,
 } from "@/lib/redux/slices/restaurant-api";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useTheme } from "@react-navigation/native";
 import { editRestaurantValidationSchema } from "../utils";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { CameraIcon } from "lucide-react-native";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import ErrorText from "@/components/error-text";
+import ErrorText from "@/components/ErrorText";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 

@@ -1,6 +1,6 @@
 import useIos26 from "@/lib/hook/useIos26";
-import { IconSymbol } from "@/modules/common/components/ui/IconSymbol";
-import { TabBackground } from "@/modules/common/components/ui/TabBarBackground";
+import { IconSymbol } from "@/components/IconSymbol";
+import { TabBackground } from "@/components/TabBarBackground";
 import { AntDesign } from "@expo/vector-icons";
 import { Stack, Tabs } from "expo-router";
 import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";

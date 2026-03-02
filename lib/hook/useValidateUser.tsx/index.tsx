@@ -1,10 +1,10 @@
 import React, { useEffect, createContext, useContext } from "react";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
-import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
 import { useValidateTokenQuery } from "@/lib/redux/slices/auth-api";
-import { USER_ROLE } from "@/modules/common/constants/api";
+import { USER_ROLE } from "@/constants/api";
 import { UserROLES, UserType } from "@/lib/redux/types";
+import { useAuthToken } from "@/hooks/useAuthToken";
 
 const UserContext = createContext<{ user?: UserType }>({});
 

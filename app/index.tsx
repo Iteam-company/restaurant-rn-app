@@ -1,4 +1,4 @@
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import Wrapper from "@/components/Wrapper";
 
 export default function HomeScreen() {

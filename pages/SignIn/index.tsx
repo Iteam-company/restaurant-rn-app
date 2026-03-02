@@ -1,4 +1,3 @@
-import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { ActivityIndicator, View } from "react-native";
@@ -6,12 +5,13 @@ import { useSigninMutation } from "../../lib/redux/slices/auth-api";
 import { validationSchema, initialValues, phoneRegex } from "./utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import ErrorText from "@/components/error-text";
+import ErrorText from "@/components/ErrorText";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { router } from "expo-router";
 import { Eye, EyeOff } from "lucide-react-native";
+import { useAuthToken } from "@/hooks/useAuthToken";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);

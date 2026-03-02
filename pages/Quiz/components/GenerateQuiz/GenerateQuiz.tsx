@@ -1,10 +1,10 @@
-import TabBarOffset from "@/modules/common/components/TabBarOffset";
+import TabBarOffset from "@/components/TabBarOffset";
 import { useGenerateQuizzesMutation } from "@/lib/redux/slices/quiz-api";
 import * as DocumentPicker from "expo-document-picker";
 import { useCallback } from "react";
 import { ScrollView, View } from "react-native";
 import { GenerateQuizInitialValues, GenerateQuizSchema } from "./utils";
-import FileUploader from "@/modules/common/components/FileUploader";
+import FileUploader from "@/pages/Question/components/FileUploader";
 import { useFormik } from "formik";
 import Toast from "react-native-toast-message";
 import QuizQuestionEdit from "./QuizQuestionEdit";
@@ -12,7 +12,7 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import { Text } from "@/components/ui/text";
 import { router } from "expo-router";
 

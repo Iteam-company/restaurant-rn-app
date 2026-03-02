@@ -1,4 +1,4 @@
-import { navigateToEditRestaurant } from "@/modules/common/utils/flowNavigation";
+import { navigateToEditRestaurant } from "@/utils/flowNavigation";
 import { useDeleteRestaurantMutation } from "@/lib/redux/slices/restaurant-api";
 import { FC } from "react";
 import { Image, View } from "react-native";

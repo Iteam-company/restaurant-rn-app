@@ -1,4 +1,4 @@
-import { navigateToEditQuestion } from "@/modules/common/utils/flowNavigation";
+import { navigateToEditQuestion } from "@/utils/flowNavigation";
 import { useGlobalSearchParams, router } from "expo-router";
 import { ScrollView, View } from "react-native";
 import {
@@ -6,7 +6,7 @@ import {
   useGetOneQuestionQuery,
 } from "../../../../lib/redux/slices/question-api";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";

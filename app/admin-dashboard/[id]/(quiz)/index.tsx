@@ -3,10 +3,10 @@ import Wrapper from "@/components/Wrapper";
 import {
   navigateToCreateQuiz,
   navigateToGenerateQuiz,
-} from "@/modules/common/utils/flowNavigation";
+} from "@/utils/flowNavigation";
 import QuizList from "@/pages/Quiz/QuizList";
 import { useGlobalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Plus, Sparkles, Minus } from "lucide-react-native";
 import { LayoutAnimation, Pressable, View } from "react-native";
