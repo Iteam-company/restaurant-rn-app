@@ -1,8 +1,18 @@
-import { Slot } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import React from "react";
 
 const UserLayout: React.FC = () => {
-  return <Slot />;
+  return (
+    <Stack
+      screenOptions={{
+        title: "User",
+        headerShown: true,
+        headerStyle: { backgroundColor: "white" },
+      }}
+    >
+      <Slot />
+    </Stack>
+  );
 };
 
 export default UserLayout;

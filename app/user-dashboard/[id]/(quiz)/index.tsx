@@ -1,9 +1,9 @@
-import Wrapper from "@/modules/common/components/Wrapper";
-import QuizList from "@/modules/quiz/components/QuizList";
+import Wrapper from "@/components/Wrapper";
+import QuizList from "@/pages/Quiz/QuizList";
 
 const RestaurantQuiz = () => {
   return (
-    <Wrapper paddingOff>
+    <Wrapper>
       <QuizList />
     </Wrapper>
   );

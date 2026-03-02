@@ -1,9 +1,9 @@
-import Wrapper from "@/modules/common/components/Wrapper";
-import EditQuiz from "@/modules/quiz/components/EditQuiz/EditQuiz";
+import Wrapper from "@/components/Wrapper";
+import EditQuiz from "@/pages/Quiz/components/EditQuiz/EditQuiz";
 
 const EditQuizScreen = () => {
   return (
-    <Wrapper paddingOff headerTitle={"Edit Quiz"}>
+    <Wrapper>
       <EditQuiz />
     </Wrapper>
   );

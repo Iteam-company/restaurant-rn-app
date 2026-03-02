@@ -1,9 +1,9 @@
-import Wrapper from "@/modules/common/components/Wrapper";
-import CreateRestaurant from "@/modules/restaurant/components/CreateRestaurant/CreateRestaurant";
+import Wrapper from "@/components/Wrapper";
+import CreateRestaurant from "@/pages/Forms/Restaurant/CreateRestaurant";
 
 const CreateRestaurantScreen = () => {
   return (
-    <Wrapper centered paddingOff>
+    <Wrapper>
       <CreateRestaurant />
     </Wrapper>
   );
