@@ -1,13 +1,12 @@
-import Wrapper from "@/modules/common/components/Wrapper";
-import GenerateQuiz from "@/modules/quiz/components/GenerateQuiz/GenerateQuiz";
+import Wrapper from "@/components/Wrapper";
+import GenerateQuiz from "@/pages/Quiz/components/GenerateQuiz/GenerateQuiz";
 
 const GenerateQuizPage = () => {
   return (
-    <Wrapper paddingOff headerTitle={"Generate Quiz"}>
+    <Wrapper>
       <GenerateQuiz />
     </Wrapper>
   );
 };
 
 export default GenerateQuizPage;
-
