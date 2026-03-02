@@ -1,5 +1,4 @@
 import Toast, { ToastConfig } from "react-native-toast-message";
-
 import { ComponentProps } from "react";
 import { SerializedError } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";

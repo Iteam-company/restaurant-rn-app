@@ -1,5 +1,5 @@
 import { useSignupMutation } from "@/lib/redux/slices/auth-api";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
 import { useAddWorkerMutation } from "@/lib/redux/slices/restaurant-api";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useFormik } from "formik";
@@ -7,15 +7,15 @@ import { useState } from "react";
 import { View } from "react-native";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { UserROLES } from "@/lib/redux/types";
-import ErrorText from "@/components/error-text";
+import ErrorText from "@/components/ErrorText";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react-native";
-import UserRoleSelect from "@/components/user-role-select";
 import { Text } from "@/components/ui/text";
 import { createUserInitialValues, createUserValidationSchema } from "../utils";
+import UserRoleSelect from "./UserRoleSelect";
 
 export default function CreateUser() {
   const router = useRouter();

@@ -1,5 +1,5 @@
-import FormWrapper from "@/modules/common/components/FormWrapper";
-import VariantsCreator from "@/modules/common/components/VariantsCreator";
+import FormWrapper from "@/components/FormWrapper";
+import VariantsCreator from "@/pages/Question/components/VariantsCreator";
 import { useGetQuizByRestaurantQuery } from "@/lib/redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
@@ -7,7 +7,7 @@ import { useCallback, useMemo } from "react";
 import { ScrollView, View } from "react-native";
 import { useCreateQuestionMutation } from "../../../../lib/redux/slices/question-api";
 import { initialValues, quizItems, validationSchema } from "./utils";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 
 const AddQuestion = () => {
   const { id: restaurantId, quizId } = useGlobalSearchParams<{

@@ -5,7 +5,7 @@ import { useGetUserByIdQuery } from "@/lib/redux/slices/user-api";
 import { Text } from "@/components/ui/text";
 import { useTheme } from "@react-navigation/native";
 import UserItemSkeleton from "../Skeleton/UserItem";
-import UserRoleBadge from "@/components/user-role-badge";
+import UserRoleBadge from "@/pages/User/UserRoleBadge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MenuIcon } from "lucide-react-native";
-import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
+import { navigateToEditUser } from "@/utils/flowNavigation";
 import { useGlobalSearchParams } from "expo-router";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useRemoveWorkerMutation } from "@/lib/redux/slices/restaurant-api";

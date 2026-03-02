@@ -17,8 +17,7 @@ import {
   createRestaurantInitialValues,
   createRestaurantValidationSchema,
 } from "../utils";
-import { handleFile } from "@/modules/common/utils/handleFile";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { handleFile } from "@/utils/handleFile";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useTheme } from "@react-navigation/native";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -27,9 +26,10 @@ import { CameraIcon } from "lucide-react-native";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import ErrorText from "@/components/error-text";
-import OwnersSelect from "@/components/owners-select";
+import ErrorText from "@/components/ErrorText";
 import { Text } from "@/components/ui/text";
+import OwnersSelect from "./OwnersSelect";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
 
 export default function CreateRestaurant() {
   const { colors } = useTheme();

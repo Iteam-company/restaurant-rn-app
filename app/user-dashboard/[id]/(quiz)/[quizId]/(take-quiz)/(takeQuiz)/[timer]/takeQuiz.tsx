@@ -1,4 +1,3 @@
-import React from "react";
 import Wrapper from "@/components/Wrapper";
 import TakeQuiz from "@/pages/Quiz/components/TakeQuiz/TakeQuiz";
 

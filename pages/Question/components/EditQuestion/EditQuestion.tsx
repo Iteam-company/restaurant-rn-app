@@ -1,5 +1,5 @@
-import FormWrapper from "@/modules/common/components/FormWrapper";
-import VariantsCreator from "@/modules/common/components/VariantsCreator";
+import FormWrapper from "@/components/FormWrapper";
+import VariantsCreator from "@/pages/Question/components/VariantsCreator";
 import { useGetQuizByRestaurantQuery } from "@/lib/redux/slices/quiz-api";
 import { router, useGlobalSearchParams } from "expo-router";
 import { useFormik } from "formik";
@@ -10,9 +10,9 @@ import {
   useUpdateQuestionMutation,
 } from "../../../../lib/redux/slices/question-api";
 import { quizItems, validationSchema } from "../AddQuestion/utils";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";

@@ -1,7 +1,6 @@
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
-import { USER_ROLE } from "@/modules/common/constants/api";
-
-import { handleFile } from "@/modules/common/utils/handleFile";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
+import { USER_ROLE } from "@/constants/api";
+import { handleFile } from "@/utils/handleFile";
 import { useRemoveWorkerMutation } from "@/lib/redux/slices/restaurant-api";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -22,16 +21,16 @@ import { UserROLES } from "@/lib/redux/types";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useTheme } from "@react-navigation/native";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import ErrorText from "@/components/error-text";
-import UserRoleDropdown from "@/components/user-role-select";
+import ErrorText from "@/components/ErrorText";
 import { Label } from "@/components/ui/label";
 import UserAvatar from "@/pages/User/UserAvatar";
 import { CameraIcon } from "lucide-react-native";
 import { Input } from "@/components/ui/input";
+import UserRoleDropdown from "./UserRoleSelect";
 
 interface WorkerFormData {
   firstName: string;

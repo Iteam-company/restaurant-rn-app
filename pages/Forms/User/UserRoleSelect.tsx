@@ -1,16 +1,8 @@
 import { UserROLES } from "@/lib/redux/types";
 import { FC } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 import { capitalize } from "@/lib/utils";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Props = {
   value: UserROLES;

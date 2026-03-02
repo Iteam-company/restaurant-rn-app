@@ -1,6 +1,6 @@
 import { useValidateTokenQuery } from "@/lib/redux/slices/auth-api";
 import Wrapper from "@/components/Wrapper";
-import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
+import { navigateToEditUser } from "@/utils/flowNavigation";
 import CurrentUserInfo from "@/pages/User/UserProfile";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/ui/button";

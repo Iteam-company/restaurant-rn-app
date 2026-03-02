@@ -1,9 +1,6 @@
-import OfflineScreen from "@/modules/common/components/Offline/OfflineScreen";
-import ToastInit from "@/modules/common/components/Toast/ToastInit";
-import { AuthTokenProvider } from "@/modules/common/hooks/useAuthToken";
-import { useIsOnline } from "@/modules/common/hooks/useIsOnline";
+import OfflineScreen from "@/components/OfflineScreen";
+import ToastInit from "@/components/Toast/ToastInit";
 import { store } from "@/lib/redux/store/store";
-// import { theme } from "@/modules/common/theme/theme";
 import {
   createNavigationContainerRef,
   ThemeProvider,
@@ -21,6 +18,8 @@ import { NAV_THEME } from "@/lib/theme";
 import "../global.css";
 import { useColorScheme } from "react-native";
 import { UserValidationProvider } from "@/lib/hook/useValidateUser.tsx";
+import { AuthTokenProvider } from "@/hooks/useAuthToken";
+import { useIsOnline } from "@/hooks/useIsOnline";
 
 SplashScreen.preventAutoHideAsync();
 export const navigationRef = createNavigationContainerRef();
@@ -48,12 +47,10 @@ export default function RootLayout() {
         <SafeAreaProvider>
           <ThemeProvider value={NAV_THEME[colorScheme || "light"]}>
             <UserValidationProvider>
-              {/* <PaperProvider theme={theme}> */}
               <NetworkGate />
               <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
               <PortalHost />
               <ToastInit />
-              {/* </PaperProvider> */}
             </UserValidationProvider>
           </ThemeProvider>
         </SafeAreaProvider>

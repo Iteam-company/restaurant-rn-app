@@ -1,10 +1,10 @@
-import { navigateToEditQuestion } from "@/modules/common/utils/flowNavigation";
+import { navigateToEditQuestion } from "@/utils/flowNavigation";
 import { router, useGlobalSearchParams } from "expo-router";
 import { Pressable } from "react-native";
 import { useDeleteQuestionMutation } from "../../lib/redux/slices/question-api";
 import { IQuestionInfo } from "@/lib/redux/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Chip from "@/components/chip";
+import Chip from "@/components/Chip";
 import {
   CheckCircleIcon,
   CircleQuestionMarkIcon,

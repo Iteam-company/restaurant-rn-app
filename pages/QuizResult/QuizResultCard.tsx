@@ -1,10 +1,10 @@
-import { USER_ROLE } from "@/modules/common/constants/api";
+import { USER_ROLE } from "@/constants/api";
 import { useDeleteQuizResultMutation } from "@/lib/redux/slices/quiz-api";
 import * as SecureStore from "expo-secure-store";
 import { StyleSheet, View } from "react-native";
 import { IQuizResultInfo } from "@/lib/redux/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Loader from "@/components/loader";
+import Loader from "@/components/Loader";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CalendarIcon, MenuIcon, TrophyIcon } from "lucide-react-native";
 import { Text } from "@/components/ui/text";
-import Chip from "@/components/chip";
+import Chip from "@/components/Chip";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useTheme } from "@react-navigation/native";
 

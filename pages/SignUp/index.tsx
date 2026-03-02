@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useSignupMutation } from "../../lib/redux/slices/auth-api";
-import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
-import { toastErrorHandler } from "@/modules/common/components/Toast/toastErrorHandler";
+import { toastErrorHandler } from "@/components/Toast/toastErrorHandler";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import ErrorText from "@/components/error-text";
+import ErrorText from "@/components/ErrorText";
 import { Button } from "@/components/ui/button";
 import { router } from "expo-router";
 import { Eye, EyeOff } from "lucide-react-native";
@@ -18,6 +17,7 @@ import {
   createUserInitialValues,
   createUserValidationSchema,
 } from "../Forms/utils";
+import { useAuthToken } from "@/hooks/useAuthToken";
 
 export default function SignUp() {
   const [signUp, { isLoading, error }] = useSignupMutation();

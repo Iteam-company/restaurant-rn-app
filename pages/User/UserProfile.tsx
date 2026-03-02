@@ -1,7 +1,6 @@
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import { USER_ROLE } from "@/modules/common/constants/api";
-import { useAuthToken } from "@/modules/common/hooks/useAuthToken";
+import { USER_ROLE } from "@/constants/api";
 import {
   useGetCurrentUserQuery,
   useGetUserByIdQuery,
@@ -14,9 +13,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import * as Linking from "expo-linking";
 import UserAvatar from "./UserAvatar";
-import Loader from "@/components/loader";
-import UserRoleBadge from "@/components/user-role-badge";
-import { navigateToEditUser } from "@/modules/common/utils/flowNavigation";
+import Loader from "@/components/Loader";
+import UserRoleBadge from "@/pages/User/UserRoleBadge";
+import { navigateToEditUser } from "@/utils/flowNavigation";
+import { useAuthToken } from "@/hooks/useAuthToken";
 
 const InfoBlock = ({
   value,

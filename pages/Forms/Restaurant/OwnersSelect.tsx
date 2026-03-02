@@ -1,16 +1,10 @@
 import { useGetOwnersQuery } from "@/lib/redux/slices/restaurant-api";
 import { FC } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+
 import { capitalize } from "@/lib/utils";
-import Loader from "./loader";
 import { useGetUserByIdQuery } from "@/lib/redux/slices/user-api";
+import Loader from "@/components/Loader";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Props = {
   value: string;

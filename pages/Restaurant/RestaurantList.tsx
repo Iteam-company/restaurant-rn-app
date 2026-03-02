@@ -1,4 +1,4 @@
-import { navigateToCreateRestaurant } from "@/modules/common/utils/flowNavigation";
+import { navigateToCreateRestaurant } from "@/utils/flowNavigation";
 import { useGetRestaurantsQuery } from "@/lib/redux/slices/restaurant-api";
 import { FlatList } from "react-native";
 

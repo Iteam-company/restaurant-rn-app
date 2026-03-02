@@ -1,4 +1,4 @@
-import ButtonBack from "@/components/button-back";
+import ButtonBack from "@/components/ButtonBack";
 import { Stack } from "expo-router";
 
 export default function QuizIdLayout() {
